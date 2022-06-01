@@ -318,7 +318,7 @@ function checkAccount(stockId: string, playerName: string): void {
 // format stock price fluctuation data
 function formatFluct(fluctData: string): string {
 	// replace fluct data to symbols
-	return fluctData.replace(/1/gi, '▲').replace(/-/gi, '＝').replace(/0/gi, '▼')
+	return fluctData.replace(/1/gi, '▲').replace(/-/gi, '=').replace(/0/gi, '▼')
 }
 
 // process stock transaction
