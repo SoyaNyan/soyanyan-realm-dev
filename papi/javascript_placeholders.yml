@@ -1,0 +1,126 @@
+# Javascript Expansion: @VERSION@
+# This is the main configuration file for the Javascript Expansion.
+#
+# You will define your javascript placeholders in this file.
+#
+# Javascript files must be located in the:
+#  /plugins/placeholderapi/javascripts/ folder
+#
+# A detailed guide on how to create your own javascript placeholders
+# can be found here:
+# https://github.com/PlaceholderAPI-Expansions/Javascript-Expansion/wiki
+#
+# Your javascript placeholders will be identified by: %javascript_<identifier>%
+#
+# Configuration format:
+#
+# <identifier>:
+#   file: <name of file>.<file extension>
+#
+# Example:
+#
+# 'my_placeholder':
+#   file: 'my_placeholder.js'
+
+global_store:
+  file: 'globalDataStore.js'
+item_display_data:
+  file: 'getItemDisplayData.js'
+item_kr_name:
+  file: 'getItemKrName.js'
+item_damage:
+  file: 'getItemDamage.js'
+item_repair_cost:
+  file: 'getItemRepairCost.js'
+item_nbt_data:
+  file: 'getItemNBTData.js'
+item_reduced_repair_cost:
+  file: 'getReducedItemRepairCost.js'
+item_reduced_data:
+  file: 'getReducedItemNBTData.js'
+item_enchants:
+  file: 'getItemEnchants.js'
+repair_cost_limit:
+  file: 'checkItemRepairCostLimit.js'
+is_valid_enchant:
+  file: 'checkValidEnchant.js'
+is_valid_item:
+  file: 'checkValidItem.js'
+is_upgradable:
+  file: 'checkIsUpgradable.js'
+has_any_enchants:
+  file: 'checkEnchants.js'
+has_enchant_essence:
+  file: 'checkEnchantEssence.js'
+has_protect_scroll:
+  file: 'checkProtectScroll.js'
+has_repair_cost:
+  file: 'checkRepairCost.js'
+apply_protect_scroll:
+  file: 'applyProtectScroll.js'
+protect_scroll_name:
+  file: 'getProtectScrollName.js'
+next_enchant_level:
+  file: 'getNextEnchantLevel.js'
+upgrade_success_chance:
+  file: 'getUpgradeSuccessChance.js'
+upgrade_fail_chance:
+  file: 'getUpgradeFailChance.js'
+downgrade_chance:
+  file: 'getDowngradeChance.js'
+upgraded_enchants:
+  file: 'getUpgradedEnchants.js'
+downgraded_enchants:
+  file: 'getDowngradedEnchants.js'
+random_enchants:
+  file: 'getRandomEnchants.js'
+plus_is_upgradable:
+  file: 'checkIsUpgradablePlus.js'
+plus_next_enchant_level:
+  file: 'getNextEnchantLevelPlus.js'
+plus_upgrade_success_chance:
+  file: 'getUpgradeSuccessChancePlus.js'
+plus_upgrade_fail_chance:
+  file: 'getUpgradeFailChancePlus.js'
+plus_destroy_chance:
+  file: 'getDestroyChancePlus.js'
+plus_upgraded_enchants:
+  file: 'getUpgradedEnchantsPlus.js'
+plus_random_enchants:
+  file: 'getRandomEnchantsPlus.js'
+success_title:
+  file: 'getSuccessTitle.js'
+fail_title:
+  file: 'getFailTitle.js'
+random_box_title:
+  file: 'getRandomBoxTitle.js'
+random_box_rolling_title:
+  file: 'getRandomBoxRollingTitle.js'
+random_box_rolling_subtitle:
+  file: 'getRandomBoxRollingSubtitle.js'
+random_box_prize_title:
+  file: 'getRandomBoxPrizeTitle.js'
+event_random_box_prize_title:
+  file: 'getEventRandomBoxPrizeTitle.js'
+magic_recipe_command:
+  file: 'getMagicRecipeCommand.js'
+magic_recipe_plus_command:
+  file: 'getMagicRecipePlusCommand.js'
+golden_bottle_require_exp:
+  file: 'getGoldenBottleRequireExp.js'
+golden_bottle_count:
+  file: 'getGoldenBottleCount.js'
+golden_bottle_tax:
+  file: 'getGoldenBottleTax.js'
+is_weekend_event:
+  file: 'checkWeekendEventTime.js'
+weekend_event_chance:
+  file: 'getWeekendEventChance.js'
+total_item_exp:
+  file: 'getTotalItemExp.js'
+has_valid_check_value:
+  file: 'checkValidCheckValue.js'
+stock_store:
+  file: 'stockDataStore.js'
+check_store:
+  file: 'stockDataStoreV2.js'

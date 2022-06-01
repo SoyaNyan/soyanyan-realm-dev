@@ -1,0 +1,57 @@
+name: '#55CBCD&l신비로운 #ECEAE4&l종이'
+lore:
+- '&7신비로운 힘이 느껴지는 종이.'
+- '&7주문서 제작에 쓸 수 있다.'
+material: GLOBE_BANNER_PATTERN
+glow: true
+glowDrop: false
+disableStack: false
+keepItemOnDeath: false
+give-first-join: false
+give-slot: 0
+usage: 0
+usePerDay: -1
+usageLimit: -1
+disable-world: []
+unbreakable: false
+canBeUsedOnlyByTheOwner: false
+storeItemInfos: false
+config_4_2: true
+config_update: true
+headDBID: ''
+hideEnchantments: false
+hideUnbreakable: false
+hideAttributes: false
+hidePotionEffects: true
+hideUsage: false
+cancel-item-drop: false
+cancel-item-place: false
+cancel-tool-interactions: true
+cancel-item-craft-no-custom: true
+cancel-item-craft: true
+cancel-deposit-in-chest: false
+cancel-deposit-in-furnace: true
+cancel-item-burn: false
+cancel-stone-cutter: true
+cancel-enchant: true
+cancel-brewing: true
+cancel-anvil: true
+cancel-rename-anvil: true
+cancel-enchant-anvil: true
+cancel-beacon: true
+cancel-cartography: true
+cancel-composter: true
+cancel-dispenser: true
+cancel-dropper: true
+cancel-hopper: true
+cancel-lectern: true
+cancel-loom: true
+cancel-merchant: false
+cancel-grind-stone: true
+cancel-item-frame: true
+cancel-smithing-table: true
+cancel-consumption: true
+cancel-swap-hand: false
+locked-in-inventory: false
+cancelEventIfNoPerm: false
+cancelEventIfNotOwner: false

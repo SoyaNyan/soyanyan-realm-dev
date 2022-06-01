@@ -1,0 +1,91 @@
+name: '&7[#FFC8A2 ★ &7] &a&l가득찬 &e&l경험치 &b&l유리병 &7| &6500 &cexp'
+lore:
+  - '&7'
+  - '&7아이템 종류: &e경험치 &7(EE-FC002)'
+  - '&7경험치 용량: &6500 &cexp&7(&919&7lv)'
+  - '&7----------------------'
+  - '&f&l우클릭&7으로 사용하면 병에 저장된'
+  - '&7경험치 500exp(19lv)을 획득'
+  - '&7할 수 있다.'
+  - '&7----------------------'
+  - '&c&l<사용조건>'
+  - '&7'
+  - '&7사용가능 횟수: &b1&f&l회'
+  - '&7재사용 대기시간: &e3&f초'
+  - '&7사용방법: 공중에 우클릭'
+material: EXPERIENCE_BOTTLE
+headDBID: ''
+glow: true
+glowDrop: false
+disableStack: false
+keepItemOnDeath: false
+give-first-join: false
+give-slot: 0
+usage: 1
+usePerDay: -1
+usageLimit: -1
+disable-world: []
+unbreakable: false
+isSpecialProjectile: false
+canBeUsedOnlyByTheOwner: false
+storeItemInfos: false
+config_3_5: 'true'
+activators:
+  activator1:
+    activator: PLAYER_RIGHT_CLICK
+    displayName: '&e우클릭 사용'
+    usageModification: -1
+    usePerDay: -1
+    cancelEventIfMaxUsePerDay: false
+    cooldown: 3
+    displayCooldownMessage: true
+    autoUpdateItem: false
+    commands:
+      - exp give %player% 500
+    silenceOutput: false
+    blockCommands: []
+    detailedBlocks: []
+    cancelEventIfNotDetailedBlocks: false
+    onlyAirClick: true
+    onlyBlockClick: false
+    cancelEventIfInvalidRequiredExecutableItems: false
+    cancelEventIfInCooldown: true
+    cancelEvent: true
+    isCooldownInTicks: false
+    cooldownMsg: '&6>> 재사용 대기중... &7(%time_S%초)'
+cancel-item-drop: false
+cancel-item-place: false
+cancel-tool-interactions: false
+cancel-item-craft-no-custom: false
+cancel-item-craft: false
+cancel-deposit-in-chest: false
+cancel-deposit-in-furnace: false
+cancel-item-burn: false
+cancel-stone-cutter: false
+cancel-enchant: true
+cancel-brewing: true
+cancel-anvil: true
+cancel-beacon: false
+cancel-cartography: false
+cancel-composter: false
+cancel-dispenser: false
+cancel-dropper: false
+cancel-hopper: false
+cancel-lectern: false
+cancel-loom: false
+cancel-merchant: false
+cancel-grind-stone: false
+cancel-item-frame: false
+cancel-smithing-table: false
+cancel-consumption: true
+cancel-swap-hand: false
+locked-in-inventory: false
+cancelEventIfNoPerm: true
+cancelEventIfNotOwner: false
+hideEnchantments: false
+hideUnbreakable: false
+hideAttributes: false
+hidePotionEffects: false
+hideUsage: false
+cancel-rename-anvil: true
+cancel-enchant-anvil: false

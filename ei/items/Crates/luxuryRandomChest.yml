@@ -1,0 +1,125 @@
+name: '&7[#55CBCD ★★ &7] #F6EAC2&l눈부신 #FFFFB5&l랜덤 #ECEAE4&l박스'
+lore:
+  - '&7'
+  - '&7아이템 종류: &6&l랜덤박스'
+  - '&7---------------------'
+  - '&b&l획득 가능한 &9&l아이템 &7| &6&l확률&7:'
+  - '&c&l 꽝 &f: &c0&7%'
+  - '&8&l 석탄 &f: &a0&7%'
+  - '&e&l 구리 주괴 &f: &a0&7%'
+  - '&7&l 철 주괴 &f: &a0&7%'
+  - '&6&l 금 주괴 &f: &a35&7%'
+  - '&a&l 에메랄드 &f: &a35&7%'
+  - '&b&l 다이아몬드 &f: &a20&7%'
+  - '&5&l 네더라이트 주괴 &f: &a10&7%'
+  - '&7---------------------'
+  - '&e&l클릭&7해서 사용하면 일정 확률로'
+  - '&7랜덤한 &3&l아이템&7을 획득할 수 있다.'
+  - '&7---------------------'
+  - '&c&l<사용조건>'
+  - '&7'
+  - '&7사용가능 횟수: &b1&f&l회'
+  - '&7재사용 대기시간: &e5&f초'
+  - '&7사용방법: 공중에 클릭'
+material: CHEST
+glow: true
+glowDrop: true
+disableStack: false
+keepItemOnDeath: false
+give-first-join: false
+give-slot: 0
+hideEnchantments: false
+hideAttributes: false
+usage: 1
+hideUsage: false
+usePerDay: -1
+usageLimit: -1
+disable-world: []
+unbreakable: false
+hideUnbreakable: false
+isSpecialProjectile: false
+canBeUsedOnlyByTheOwner: false
+activators:
+  activator1:
+    activator: PLAYER_ALL_CLICK
+    displayName: 클릭 사용
+    usageModification: -1
+    usePerDay: -1
+    commands:
+      - SENDMESSAGE %item%를 사용했습니다.
+      - execute at %player% run playsound minecraft:entity.firework_rocket.launch voice
+        %player%
+      - title %player% title %javascript_random_box_title%
+      - title %player% subtitle [{"text":"눈부신","color":"#F6EAC2","bold":"true"},{"text":"
+        "},{"text":"랜덤","#FFFFB5":"#F6EAC2","bold":"true"},{"text":" "},{"text":"박스","color":"#ECEAE4","bold":"true"}]
+      - DELAY 2
+      - title %player% title %javascript_random_box_rolling_title%
+      - title %player% subtitle %javascript_random_box_rolling_subtitle%
+      - execute at %player% run playsound minecraft:entity.experience_orb.pickup voice %player%
+      - 'LOOP START: 30'
+      - DELAYTICK 2
+      - execute at %player% run playsound minecraft:block.note_block.bass ambient %player%
+      - LOOP END
+      - 'RANDOM RUN: 1'
+      - 'LOOP START: 35'
+      - title %player% times 0 60 0 +++ title %player% title %javascript_random_box_prize_title_gold% +++ title %player% subtitle {"text":""} +++ execute at %player% run playsound minecraft:entity.villager.yes voice %player% +++ give %player% gold_ingot 10
+      - LOOP END
+      - 'LOOP START: 35'
+      - title %player% times 0 60 0 +++ title %player% title %javascript_random_box_prize_title_emerald% +++ title %player% subtitle {"text":""} +++ execute at %player% run playsound minecraft:entity.villager.yes voice %player% +++ give %player% emerald 10
+      - LOOP END
+      - 'LOOP START: 20'
+      - title %player% times 0 60 0 +++ title %player% title %javascript_random_box_prize_title_diamond% +++ title %player% subtitle {"text":""} +++ execute at %player% run playsound minecraft:entity.villager.yes voice %player% +++ give %player% diamond 5 +++ broadcast &b&l%player_name% &f님이 %item%&7에서 &b다이아몬드 &7x &65 &f를 획득했습니다!
+      - LOOP END
+      - 'LOOP START: 10'
+      - title %player% times 0 60 0 +++ title %player% title %javascript_random_box_prize_title_netherite% +++ title %player% subtitle {"text":""} +++ execute at %player% run playsound minecraft:entity.villager.yes voice %player% +++ give %player% netherite_ingot 2 +++ broadcast &b&l%player_name% &f님이 %item%&7에서 &5네더라이트 주괴 &7x &62 &f를 획득했습니다!
+      - LOOP END
+      - RANDOM END
+    silenceOutput: true
+    blockCommands: []
+    detailedBlocks: []
+    onlyAirClick: true
+    onlyBlockClick: false
+    cancelEventIfInvalidRequiredExecutableItems: false
+    cancelEvent: true
+    cancelEventIfMaxUsePerDay: false
+    autoUpdateItem: false
+    cancelEventIfNotDetailedBlocks: false
+    cooldown: 5
+    displayCooldownMessage: true
+    cancelEventIfInCooldown: true
+    isCooldownInTicks: false
+    cooldownMsg: '&6>> 재사용 대기중... &7(%time_S%초)'
+config_3_5: 'true'
+headDBID: ''
+storeItemInfos: false
+cancel-item-drop: true
+cancel-item-place: true
+cancel-tool-interactions: true
+cancel-item-craft-no-custom: true
+cancel-item-craft: true
+cancel-deposit-in-chest: false
+cancel-deposit-in-furnace: true
+cancel-item-burn: true
+cancel-stone-cutter: true
+cancel-enchant: true
+cancel-brewing: true
+cancel-anvil: true
+cancel-rename-anvil: true
+cancel-enchant-anvil: true
+cancel-beacon: true
+cancel-cartography: true
+cancel-composter: true
+cancel-dispenser: true
+cancel-dropper: true
+cancel-hopper: true
+cancel-lectern: true
+cancel-loom: true
+cancel-merchant: false
+cancel-grind-stone: true
+cancel-item-frame: true
+cancel-smithing-table: true
+cancel-consumption: true
+cancel-swap-hand: false
+locked-in-inventory: false
+cancelEventIfNoPerm: false
+cancelEventIfNotOwner: false

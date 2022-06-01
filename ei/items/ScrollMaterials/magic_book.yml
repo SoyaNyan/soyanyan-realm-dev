@@ -1,0 +1,101 @@
+name: '&7[#FFC8A2 ★ &7] #ECEAE4&l주문서 #FF968A&l제작 #FFC8A2&l레시피'
+lore:
+  - '&7'
+  - '&7아이템 종류: &6&l특수 &2&l제작 &e&l아이템'
+  - '&7---------------------'
+  - '&b&l강화 주문서 &6&l획득확률&7:'
+  - '&f 일반 강화 주문서 : &a80&7%'
+  - '&c 놀라운 &f강화 주문서 : &a20&7%'
+  - '&7---------------------'
+  - '&5>> 혼돈의 주문서 종류는 획득할'
+  - '&5수 없다.'
+  - '&7---------------------'
+  - '&e&l클릭&7으로 사용하면 &f&n&l확률&7에 의해'
+  - '&7랜덤한 &b&l아이템 &9&l강화 주문서 &a&l1&7종을'
+  - '&7획득할 수 있다.'
+  - '&7---------------------'
+  - '&c&l<사용조건>'
+  - '&7'
+  - '&7사용가능 횟수: &b1&f&l회'
+  - '&7재사용 대기시간: &e5&f초'
+  - '&7사용방법: 공중에 클릭'
+material: KNOWLEDGE_BOOK
+glow: true
+glowDrop: false
+disableStack: false
+keepItemOnDeath: false
+give-first-join: false
+give-slot: 0
+usage: 1
+usePerDay: -1
+usageLimit: -1
+disable-world: []
+unbreakable: false
+canBeUsedOnlyByTheOwner: false
+storeItemInfos: false
+config_4_2: true
+config_update: true
+headDBID: ''
+cancel-item-drop: false
+cancel-item-place: false
+cancel-tool-interactions: true
+cancel-item-craft-no-custom: true
+cancel-item-craft: true
+cancel-deposit-in-chest: false
+cancel-deposit-in-furnace: true
+cancel-item-burn: false
+cancel-stone-cutter: true
+cancel-enchant: true
+cancel-brewing: true
+cancel-anvil: true
+cancel-rename-anvil: true
+cancel-enchant-anvil: true
+cancel-beacon: true
+cancel-cartography: true
+cancel-composter: true
+cancel-dispenser: true
+cancel-dropper: true
+cancel-hopper: true
+cancel-lectern: true
+cancel-loom: true
+cancel-merchant: false
+cancel-grind-stone: true
+cancel-item-frame: true
+cancel-smithing-table: true
+cancel-consumption: true
+cancel-swap-hand: false
+locked-in-inventory: false
+cancelEventIfNoPerm: false
+cancelEventIfNotOwner: false
+activators:
+  activator1:
+    activator: PLAYER_ALL_CLICK
+    displayName: 클릭 사용
+    usageModification: -1
+    usePerDay: -1
+    cancelEventIfMaxUsePerDay: false
+    autoUpdateItem: false
+    commands:
+      - 'RANDOM RUN: 1'
+      - 'LOOP START: 80'
+      - execute at %player% run playsound minecraft:entity.player.levelup voice
+        %player% +++ %javascript_magic_recipe_command% +++ broadcast &b&l%player%&f님이 %item%&f에서 §7[§#FFC8A2 ★★ §7] §#55CBCD§l아이템 §#ECEAE4§l강화 주문서을(를) 획득했습니다!
+      - LOOP END
+      - 'LOOP START: 20'
+      - execute at %player% run playsound minecraft:entity.player.levelup voice
+        %player% +++ %javascript_magic_recipe_plus_command% +++ broadcast &b&l%player%&f님이 %item%&f에서 §7[§#FFC8A2 ★★★ §7] §#ECD5E3§l놀라운 §#55CBCD§l아이템 §#ECEAE4§l강화 주문서을(를) 획득했습니다!
+      - LOOP END
+      - RANDOM END
+    silenceOutput: false
+    blockCommands: []
+    detailedBlocks: []
+    cancelEventIfNotDetailedBlocks: false
+    onlyAirClick: true
+    onlyBlockClick: false
+    cancelEventIfInvalidRequiredExecutableItems: false
+    cancelEvent: true
+    cooldown: 5
+    displayCooldownMessage: true
+    cancelEventIfInCooldown: true
+    isCooldownInTicks: false
+    cooldownMsg: '&6>> 재사용 대기중... &7(%time_S%초)'
