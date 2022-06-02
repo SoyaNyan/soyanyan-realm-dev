@@ -1,4 +1,13 @@
 /**
+  [ global objects ]
+*/
+var Data = new Object()
+var PlaceholderAPI = new Object()
+var Placeholder = new Object()
+var BukkitServer = new Object()
+var BukkitPlayer = new Object()
+var args = []
+/**
   [ constants ]
 */
 // player name
@@ -734,7 +743,7 @@ function nextUpdateETA(args) {
 		returnType = args[1]
 	// get seconds from 'Command Timer' plugin's placeholder
 	// >> https://www.spigotmc.org/resources/command-timer.24141/
-	var seconds = parseInt(parsePlaceholder('commandtimer_stockTimer_nextExecution'))
+	var seconds = parseInt('%commandtimer_stockTimer_nextExecution%')
 	// check seconds larger than 0
 	if (seconds <= 0) return '&60&f분 &60&f초'
 	// format time
