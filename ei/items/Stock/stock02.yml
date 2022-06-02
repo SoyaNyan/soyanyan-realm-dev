@@ -226,28 +226,13 @@ activators:
           messageIfNotValid: '&6>> 보유중인 주식 수가 부족합니다. &7(현재 보유량: %javascript_stock_store_playerStockCount,0,stock02%주)'
           cancelEventIfNotValid: false
   activator5:
-    activator: INVENTORY_CLICK
-    displayName: '&e인벤토리클릭'
-    usageModification: 0
-    usePerDay: -1
-    cancelEventIfMaxUsePerDay: false
-    commands:
-      - SENDMESSAGE &7[#CBAACB주식&7] &3%javascript_stock_store_stockName,0,stock03% &f주식정보 &e업데이트 &a완료. &7(주식증서)
-    cancelEventIfInvalidRequiredExecutableItems: false
-    detailedClick: LEFT
-    mustBeAProjectileLaunchWithTheSameEI: false
-    cancelEvent: false
-    autoUpdateItem: true
-    silenceOutput: false
-    detailedSlots: []
-  activator6:
     activator: PLAYER_SELECT_THE_EI
     displayName: '&e아이템선택'
     usageModification: 0
     usePerDay: -1
     cancelEventIfMaxUsePerDay: false
     commands:
-      - SENDMESSAGE &7[#CBAACB주식&7] &3%javascript_stock_store_stockName,0,stock03% &f주식정보 &e업데이트 &a완료. &7(주식증서)
+      - SENDMESSAGE &7[#CBAACB주식&7] &3%javascript_stock_store_stockName,0,stock02% &f주식정보 &e업데이트 &a완료. &7(주식증서)
     cancelEventIfInvalidRequiredExecutableItems: false
     mustBeAProjectileLaunchWithTheSameEI: false
     cancelEvent: false
