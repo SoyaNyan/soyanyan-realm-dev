@@ -1100,7 +1100,7 @@ function nextUpdateETA(args: string[]): string | boolean {
 
 	// get seconds from 'Command Timer' plugin's placeholder
 	// >> https://www.spigotmc.org/resources/command-timer.24141/
-	const seconds = parseInt('%commandtimer_stockTimer_nextExecution%')
+	const seconds = parseInt(parsePlaceholder('commandtimer_stockTimer_nextExecution'))
 
 	// check seconds larger than 0
 	if (seconds <= 0) return '&60&f분 &60&f초'
