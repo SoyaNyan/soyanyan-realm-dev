@@ -943,6 +943,8 @@ function clearStock() {
 */
 // placeholder controller
 function stockDataStore() {
+	// check constants
+	if (BukkitPlayer === undefined) return 'false'
 	// action result
 	var result = false
 	// get args

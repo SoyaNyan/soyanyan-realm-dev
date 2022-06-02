@@ -948,6 +948,9 @@ function clearStock(): boolean {
 
 // placeholder controller
 function stockDataStore(): string {
+	// check constants
+	if (BukkitPlayer === undefined) return 'false'
+
 	// action result
 	let result: any = false
 
