@@ -1,13 +1,4 @@
 /**
-  [ global objects ]
-*/
-var Data = new Object()
-var PlaceholderAPI = new Object()
-var Placeholder = new Object()
-var BukkitServer = new Object()
-var BukkitPlayer = new Object()
-var args = []
-/**
   [ constants ]
 */
 // player name
