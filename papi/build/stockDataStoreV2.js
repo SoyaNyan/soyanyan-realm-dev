@@ -1,6 +1,8 @@
 /**
   [ constants ]
 */
+// player name
+var PLAYER_NAME = '%player_name%'
 // stock trading fee setting
 var TRADING_FEE_RATE = 0.01
 // setting of stocks
@@ -235,7 +237,7 @@ function checkAccount(stockId, playerName) {
 // format stock price fluctuation data
 function formatFluct(fluctData) {
 	// replace fluct data to symbols
-	return fluctData.replace(/1/gi, '▲').replace(/-/gi, '＝').replace(/0/gi, '▼')
+	return fluctData.replace(/1/gi, '▲').replace(/-/gi, '=').replace(/0/gi, '▼')
 }
 // process stock transaction
 function processTransaction(stockData, amount, type, playerName) {
@@ -495,13 +497,12 @@ function playerStockCount(args) {
 	var action = args[0],
 		returnType = args[1],
 		stockId = args[2]
-	var playerName = parsePlaceholder('player_name')
 	// check stock exists
 	checkStock(stockId)
 	// check player stock account exists
-	checkAccount(stockId, playerName)
+	checkAccount(stockId, PLAYER_NAME)
 	// set yaml data path
-	var path = ''.concat(stockId, '.accounts.').concat(playerName)
+	var path = ''.concat(stockId, '.accounts.').concat(PLAYER_NAME)
 	// check return type (condition: player has stock in own account)
 	var cond = get(path) > 0
 	if (returnType === '1') return cond
@@ -619,19 +620,18 @@ function buyStock(args) {
 		returnType = args[1],
 		stockId = args[2],
 		trscAmount = args[3]
-	var playerName = parsePlaceholder('player_name')
 	// parse args
 	var amount = parseInt(trscAmount)
 	// check stock exists
 	checkStock(stockId)
 	// check player stock account exists
-	checkAccount(stockId, playerName)
+	checkAccount(stockId, PLAYER_NAME)
 	// get stock data
 	var stockData = getStockData(stockId)
 	// get account data
-	var accountData = getAccountData(stockId, playerName)
+	var accountData = getAccountData(stockId, PLAYER_NAME)
 	// process transaction
-	var processResult = processTransaction(stockData, amount, 'buy', playerName)
+	var processResult = processTransaction(stockData, amount, 'buy', PLAYER_NAME)
 	// update data
 	if (processResult) {
 		// update stock data
@@ -645,7 +645,7 @@ function buyStock(args) {
 		setStockData(stockId, updateData)
 		// update account data
 		var updateAccount = accountData + amount
-		setAccountData(stockId, playerName, updateAccount)
+		setAccountData(stockId, PLAYER_NAME, updateAccount)
 	}
 	return processResult
 }
@@ -656,21 +656,20 @@ function sellStock(args) {
 		returnType = args[1],
 		stockId = args[2],
 		trscAmount = args[3]
-	var playerName = parsePlaceholder('player_name')
 	// parse args
 	var amount = parseInt(trscAmount)
 	// check stock exists
 	checkStock(stockId)
 	// check player stock account exists
-	checkAccount(stockId, playerName)
+	checkAccount(stockId, PLAYER_NAME)
 	// get stock data
 	var stockData = getStockData(stockId)
 	// get account data
-	var accountData = getAccountData(stockId, playerName)
+	var accountData = getAccountData(stockId, PLAYER_NAME)
 	// check stock amount
 	if (accountData - amount < 0) return false
 	// process transaction
-	var processResult = processTransaction(stockData, amount, 'sell', playerName)
+	var processResult = processTransaction(stockData, amount, 'sell', PLAYER_NAME)
 	// update data
 	if (processResult) {
 		// update stock data
@@ -684,7 +683,7 @@ function sellStock(args) {
 		setStockData(stockId, updateData)
 		// update account data
 		var updateAccount = accountData - amount
-		setAccountData(stockId, playerName, updateAccount)
+		setAccountData(stockId, PLAYER_NAME, updateAccount)
 	}
 	return processResult
 }
