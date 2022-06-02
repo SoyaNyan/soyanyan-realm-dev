@@ -38,6 +38,9 @@ type StrictStockDataType = {
 /**
   [ constants ] 
 */
+// player name
+const PLAYER_NAME = '%player_name%'
+
 // stock trading fee setting
 const TRADING_FEE_RATE = 0.01
 
@@ -642,9 +645,6 @@ function giveExp(items: { [index: string]: number }): boolean {
 		'1000000': 'exp_filled_starlight_1000000',
 	}
 
-	// get player name
-	const playerName = parsePlaceholder('player_name')
-
 	// give each item to player
 	for (const item in items) {
 		// item id
@@ -656,7 +656,7 @@ function giveExp(items: { [index: string]: number }): boolean {
 		// check amount is 0
 		if (amount > 0) {
 			// create command
-			const command = `ei give ${playerName} ${itemId} ${amount}`
+			const command = `ei give ${PLAYER_NAME} ${itemId} ${amount}`
 
 			// execute command
 			execConsoleCommand(command)
@@ -823,16 +823,15 @@ function fluctPercentage(args: string[]): DataType {
 function playerStockCount(args: string[]): DataType {
 	// get args
 	const [action, returnType, stockId] = args
-	const playerName = parsePlaceholder('player_name')
 
 	// check stock exists
 	checkStock(stockId)
 
 	// check player stock account exists
-	checkAccount(stockId, playerName)
+	checkAccount(stockId, PLAYER_NAME)
 
 	// set yaml data path
-	const path = `${stockId}.accounts.${playerName}`
+	const path = `${stockId}.accounts.${PLAYER_NAME}`
 
 	// check return type (condition: player has stock in own account)
 	const cond = get(path) > 0
@@ -965,7 +964,6 @@ function priceFluctuation(args: string[]): DataType {
 function buyStock(args: string[]): boolean {
 	// get args
 	const [action, returnType, stockId, trscAmount] = args
-	const playerName = parsePlaceholder('player_name')
 
 	// parse args
 	const amount = parseInt(trscAmount)
@@ -974,13 +972,13 @@ function buyStock(args: string[]): boolean {
 	checkStock(stockId)
 
 	// check player stock account exists
-	checkAccount(stockId, playerName)
+	checkAccount(stockId, PLAYER_NAME)
 
 	// get stock data
 	const stockData = getStockData(stockId) as StrictStockDataType
 
 	// get account data
-	const accountData = getAccountData(stockId, playerName)
+	const accountData = getAccountData(stockId, PLAYER_NAME)
 
 	// process transaction
 	const processResult = processTransaction(stockData, amount, 'buy')
@@ -999,7 +997,7 @@ function buyStock(args: string[]): boolean {
 
 		// update account data
 		const updateAccount: number = accountData + amount
-		setAccountData(stockId, playerName, updateAccount)
+		setAccountData(stockId, PLAYER_NAME, updateAccount)
 	}
 
 	return processResult
@@ -1009,7 +1007,6 @@ function buyStock(args: string[]): boolean {
 function sellStock(args: string[]): boolean {
 	// get args
 	const [action, returnType, stockId, trscAmount] = args
-	const playerName = parsePlaceholder('player_name')
 
 	// parse args
 	const amount = parseInt(trscAmount)
@@ -1018,13 +1015,13 @@ function sellStock(args: string[]): boolean {
 	checkStock(stockId)
 
 	// check player stock account exists
-	checkAccount(stockId, playerName)
+	checkAccount(stockId, PLAYER_NAME)
 
 	// get stock data
 	const stockData = getStockData(stockId) as StrictStockDataType
 
 	// get account data
-	const accountData = getAccountData(stockId, playerName)
+	const accountData = getAccountData(stockId, PLAYER_NAME)
 
 	// check stock amount
 	if (accountData - amount < 0) return false
@@ -1046,7 +1043,7 @@ function sellStock(args: string[]): boolean {
 
 		// update account data
 		const updateAccount: number = accountData - amount
-		setAccountData(stockId, playerName, updateAccount)
+		setAccountData(stockId, PLAYER_NAME, updateAccount)
 	}
 
 	return processResult
