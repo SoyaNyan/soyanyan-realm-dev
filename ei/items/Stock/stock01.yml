@@ -5,7 +5,7 @@ lore:
   - '&7주식명: &3%javascript_stock_store_stockName,0,stock01%'
   - '&7------------------------'
   - '&7[ &c&l내 주식정보 &7]'
-  - '&7 > 보유수량: &d%javascript_stock_store_playerStockCount,0,stock01%&f주 (%player_name%)'
+  - '&7 > 보유수량: &d%javascript_stock_store_playerStockCount,0,stock01%&f주 &7(%player_name%)'
   - '&7------------------------'
   - '&7[ &c&l주식정보 &7]'
   - '&7 > 현재가격: &a%javascript_stock_store_currentPrice,0,stock01%&fE &7(%javascript_stock_store_stockFluct,4,stock01% %javascript_stock_store_priceFluctPercent,0,stock01%%&7)'
