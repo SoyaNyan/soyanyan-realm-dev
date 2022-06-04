@@ -698,6 +698,13 @@ function playerStockCount(args) {
 	var cond = data > 0
 	if (returnType === '1') return cond
 	if (returnType === '2') return encodeBoolean(cond)
+	if (returnType === '3') {
+		// get total shares of stock
+		var totalShares_1 = get(''.concat(stockId, '.totalShares'))
+		// calc share ratio
+		var shareRatio = fixDigits((data / totalShares_1) * 100)
+		return shareRatio
+	}
 	// normal return
 	return formatWithCommas(data)
 }
