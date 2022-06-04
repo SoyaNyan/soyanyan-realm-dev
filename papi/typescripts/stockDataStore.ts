@@ -876,6 +876,15 @@ function playerStockCount(args: string[]): DataType {
 	const cond = data > 0
 	if (returnType === '1') return cond
 	if (returnType === '2') return encodeBoolean(cond)
+	if (returnType === '3') {
+		// get total shares of stock
+		const totalShares = get(`${stockId}.totalShares`) as number
+
+		// calc share ratio
+		const shareRatio = fixDigits(((data as number) / totalShares) * 100)
+
+		return shareRatio
+	}
 
 	// normal return
 	return formatWithCommas(data)
