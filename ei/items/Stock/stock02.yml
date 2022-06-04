@@ -23,6 +23,7 @@ lore:
   - '&7 [&6우클릭&7] &f- &b1&f주 &c매도'
   - '&7 [&e쉬프트 &7+ &6좌클릭&7] &f- &b10&f주 &a매수'
   - '&7 [&e쉬프트 &7+ &6우클릭&7] &f- &b10&f주 &c매도'
+  - '&7 재사용 대기시간: &e10&f초'
 material: PAPER
 glow: true
 glowDrop: false
