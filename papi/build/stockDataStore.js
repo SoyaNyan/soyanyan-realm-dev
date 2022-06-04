@@ -1,3 +1,14 @@
+/**
+ * Author: SOYANYAN (소야냥)
+ * Name: stockDataStore.ts
+ * Version: v1.2.0
+ * Last Update: 2022-06-04
+ *
+ * TypeScript Version: v4.7.2
+ * Target: ES5
+ * JSX: None
+ * Module: ESNext
+ */
 var __assign =
 	(this && this.__assign) ||
 	function () {
@@ -25,10 +36,15 @@ var STOCKS = {
 		name: '소야냥건설',
 		lastPrice: 10000,
 		currentPrice: 10000,
-		buyCount: 0,
-		sellCount: 0,
+		totalShares: 0,
+		slotBuy: 0,
+		slotSell: 0,
+		slotBuyBal: 0,
+		slotSellBal: 0,
 		totalBuy: 0,
 		totalSell: 0,
+		totalBuyBal: 0,
+		totalSellBal: 0,
 		priceFluct: '##########',
 		accounts: '',
 	},
@@ -36,10 +52,15 @@ var STOCKS = {
 		name: '소야냥톡',
 		lastPrice: 50000,
 		currentPrice: 50000,
-		buyCount: 0,
-		sellCount: 0,
+		totalShares: 0,
+		slotBuy: 0,
+		slotSell: 0,
+		slotBuyBal: 0,
+		slotSellBal: 0,
 		totalBuy: 0,
 		totalSell: 0,
+		totalBuyBal: 0,
+		totalSellBal: 0,
 		priceFluct: '##########',
 		accounts: '',
 	},
@@ -47,10 +68,15 @@ var STOCKS = {
 		name: '소야냥그룹',
 		lastPrice: 100000,
 		currentPrice: 100000,
-		buyCount: 0,
-		sellCount: 0,
+		totalShares: 0,
+		slotBuy: 0,
+		slotSell: 0,
+		slotBuyBal: 0,
+		slotSellBal: 0,
 		totalBuy: 0,
 		totalSell: 0,
+		totalBuyBal: 0,
+		totalSellBal: 0,
 		priceFluct: '##########',
 		accounts: '',
 	},
@@ -217,50 +243,25 @@ function getStockData(stockId) {
 		name: get(''.concat(stockId, '.name')),
 		lastPrice: get(''.concat(stockId, '.lastPrice')),
 		currentPrice: get(''.concat(stockId, '.currentPrice')),
-		buyCount: get(''.concat(stockId, '.buyCount')),
-		sellCount: get(''.concat(stockId, '.sellCount')),
+		totalShares: get(''.concat(stockId, '.totalShares')),
+		slotBuy: get(''.concat(stockId, '.slotBuy')),
+		slotSell: get(''.concat(stockId, '.slotSell')),
+		slotBuyBal: get(''.concat(stockId, '.slotBuyBal')),
+		slotSellBal: get(''.concat(stockId, '.slotSellBal')),
 		totalBuy: get(''.concat(stockId, '.totalBuy')),
 		totalSell: get(''.concat(stockId, '.totalSell')),
+		totalBuyBal: get(''.concat(stockId, '.totalBuyBal')),
+		totalSellBal: get(''.concat(stockId, '.totalSellBal')),
 		priceFluct: get(''.concat(stockId, '.priceFluct')),
 	}
 }
 // set or update each stock data
 function setStockData(stockId, data) {
-	// set name
-	if (data.name !== undefined) {
-		set(''.concat(stockId, '.name'), data.name)
-	}
-	// set last price
-	if (data.lastPrice !== undefined) {
-		set(''.concat(stockId, '.lastPrice'), data.lastPrice)
-	}
-	// set current price
-	if (data.currentPrice !== undefined) {
-		set(''.concat(stockId, '.currentPrice'), data.currentPrice)
-	}
-	// set buy count
-	if (data.buyCount !== undefined) {
-		set(''.concat(stockId, '.buyCount'), data.buyCount)
-	}
-	// set sell count
-	if (data.sellCount !== undefined) {
-		set(''.concat(stockId, '.sellCount'), data.sellCount)
-	}
-	// set total buy
-	if (data.totalBuy !== undefined) {
-		set(''.concat(stockId, '.totalBuy'), data.totalBuy)
-	}
-	// set total sell
-	if (data.totalSell !== undefined) {
-		set(''.concat(stockId, '.totalSell'), data.totalSell)
-	}
-	// set price fluctuation
-	if (data.priceFluct !== undefined) {
-		set(''.concat(stockId, '.priceFluct'), data.priceFluct)
-	}
-	// set player accounts
-	if (data.accounts !== undefined) {
-		set(''.concat(stockId, '.accounts'), data.accounts)
+	// set data
+	for (var key in data) {
+		if (typeof data[key] !== 'undefined') {
+			set(''.concat(stockId, '.').concat(key), data[key])
+		}
 	}
 }
 // remove specific stock data
@@ -437,10 +438,10 @@ function getNextStockData(stockData) {
 	return {
 		lastPrice: currentPrice,
 		currentPrice: updatePrice,
-		buyCount: 0,
-		sellCount: 0,
-		totalBuy: 0,
-		totalSell: 0,
+		slotBuy: 0,
+		slotSell: 0,
+		slotBuyBal: 0,
+		slotSellBal: 0,
 		priceFluct: updateFluct,
 	}
 }
@@ -560,8 +561,10 @@ function stockName(args) {
 	checkStock(stockId)
 	// set yaml data path
 	var path = ''.concat(stockId, '.name')
+	// get data
+	var data = get(path)
 	// normal return
-	return get(path)
+	return data
 }
 // get current buying price with trading fee
 function buyPrice(args) {
@@ -613,13 +616,15 @@ function currentPrice(args) {
 	checkStock(stockId)
 	// set yaml data path
 	var path = ''.concat(stockId, '.currentPrice')
+	// get data
+	var data = get(path)
 	// check return type (condition: currentPrice > lastPrice)
 	var last = get(''.concat(stockId, '.lastPrice'))
-	var cond = get(path) > last
+	var cond = data > last
 	if (returnType === '1') return cond
 	if (returnType === '2') return encodeBoolean(cond)
 	// normal return
-	return formatWithCommas(get(path))
+	return formatWithCommas(data)
 }
 // get last price by stockId
 function lastPrice(args) {
@@ -631,13 +636,33 @@ function lastPrice(args) {
 	checkStock(stockId)
 	// set yaml data path
 	var path = ''.concat(stockId, '.lastPrice')
+	// get data
+	var data = get(path)
 	// check return type (condition: currentPrice > lastPrice)
 	var curr = get(''.concat(stockId, '.currentPrice'))
-	var cond = get(path) < curr
+	var cond = data < curr
 	if (returnType === '1') return cond
 	if (returnType === '2') return encodeBoolean(cond)
 	// normal return
-	return formatWithCommas(get(path))
+	return formatWithCommas(data)
+}
+function totalShares(args) {
+	// get args
+	var action = args[0],
+		returnType = args[1],
+		stockId = args[2]
+	// check stock exists
+	checkStock(stockId)
+	// set yaml data path
+	var path = ''.concat(stockId, '.totalShares')
+	// get data
+	var data = get(path)
+	// check return type (condition: totalShares > 0)
+	var cond = data > 0
+	if (returnType === '1') return cond
+	if (returnType === '2') return encodeBoolean(cond)
+	// normal return
+	return formatWithCommas(data)
 }
 function fluctPercentage(args) {
 	// get args
@@ -667,49 +692,93 @@ function playerStockCount(args) {
 	checkAccount(stockId, PLAYER_NAME)
 	// set yaml data path
 	var path = ''.concat(stockId, '.accounts.').concat(PLAYER_NAME)
+	// get data
+	var data = get(path)
 	// check return type (condition: player has stock in own account)
-	var cond = get(path) > 0
+	var cond = data > 0
 	if (returnType === '1') return cond
 	if (returnType === '2') return encodeBoolean(cond)
 	// normal return
-	return formatWithCommas(get(path))
+	return formatWithCommas(data)
+}
+// get slot stock buy count
+function slotBuy(args) {
+	// get args
+	var action = args[0],
+		returnType = args[1],
+		stockId = args[2]
+	// check stock exists
+	checkStock(stockId)
+	// set yaml data path
+	var path = ''.concat(stockId, '.slotBuy')
+	// get data
+	var data = get(path)
+	// check return type (condition: if player bought this stock one or more)
+	var cond = data > 0
+	if (returnType === '1') return cond
+	if (returnType === '2') return encodeBoolean(cond)
+	// normal return
+	return formatWithCommas(data)
+}
+// get slot stock sell count
+function slotSell(args) {
+	// get args
+	var action = args[0],
+		returnType = args[1],
+		stockId = args[2]
+	// check stock exists
+	checkStock(stockId)
+	// set yaml data path
+	var path = ''.concat(stockId, '.slotSell')
+	// get data
+	var data = get(path)
+	// check return type (condition: if player sold this stock one or more)
+	var cond = data > 0
+	if (returnType === '1') return cond
+	if (returnType === '2') return encodeBoolean(cond)
+	// normal return
+	return formatWithCommas(data)
+}
+// get slot stock buy balance
+function slotBuyBal(args) {
+	// get args
+	var action = args[0],
+		returnType = args[1],
+		stockId = args[2]
+	// check stock exists
+	checkStock(stockId)
+	// set yaml data path
+	var path = ''.concat(stockId, '.slotBuyBal')
+	// get data
+	var data = get(path)
+	// check return type (condition: if total buy balance is larger then 0)
+	var cond = data > 0
+	if (returnType === '1') return cond
+	if (returnType === '2') return encodeBoolean(cond)
+	// normal return
+	return formatWithCommas(data)
+}
+// get slot stock sell balance
+function slotSellBal(args) {
+	// get args
+	var action = args[0],
+		returnType = args[1],
+		stockId = args[2]
+	// check stock exists
+	checkStock(stockId)
+	// set yaml data path
+	var path = ''.concat(stockId, '.slotSellBal')
+	// get data
+	var data = get(path)
+	// check return type (condition: if total sell balance is larger then 0)
+	var cond = data > 0
+	if (returnType === '1') return cond
+	if (returnType === '2') return encodeBoolean(cond)
+	// normal return
+	return formatWithCommas(data)
 }
 // get total stock buy count
-function stockBuyCount(args) {
-	// get args
-	var action = args[0],
-		returnType = args[1],
-		stockId = args[2]
-	// check stock exists
-	checkStock(stockId)
-	// set yaml data path
-	var path = ''.concat(stockId, '.buyCount')
-	// check return type (condition: if player bought this stock one or more)
-	var cond = get(path) > 0
-	if (returnType === '1') return cond
-	if (returnType === '2') return encodeBoolean(cond)
-	// normal return
-	return formatWithCommas(get(path))
-}
-// get total stock sell count
-function stockSellCount(args) {
-	// get args
-	var action = args[0],
-		returnType = args[1],
-		stockId = args[2]
-	// check stock exists
-	checkStock(stockId)
-	// set yaml data path
-	var path = ''.concat(stockId, '.sellCount')
-	// check return type (condition: if player sold this stock one or more)
-	var cond = get(path) > 0
-	if (returnType === '1') return cond
-	if (returnType === '2') return encodeBoolean(cond)
-	// normal return
-	return formatWithCommas(get(path))
-}
-// get total stock buy balance
-function stockBuyBalance(args) {
+function totalBuy(args) {
 	// get args
 	var action = args[0],
 		returnType = args[1],
@@ -718,15 +787,17 @@ function stockBuyBalance(args) {
 	checkStock(stockId)
 	// set yaml data path
 	var path = ''.concat(stockId, '.totalBuy')
-	// check return type (condition: if total buy balance is larger then 0)
-	var cond = get(path) > 0
+	// get data
+	var data = get(path)
+	// check return type (condition: if player bought this stock one or more)
+	var cond = data > 0
 	if (returnType === '1') return cond
 	if (returnType === '2') return encodeBoolean(cond)
 	// normal return
-	return formatWithCommas(get(path))
+	return formatWithCommas(data)
 }
-// get total stock sell balance
-function stockSellBalance(args) {
+// get total stock sell count
+function totalSell(args) {
 	// get args
 	var action = args[0],
 		returnType = args[1],
@@ -735,12 +806,52 @@ function stockSellBalance(args) {
 	checkStock(stockId)
 	// set yaml data path
 	var path = ''.concat(stockId, '.totalSell')
-	// check return type (condition: if total sell balance is larger then 0)
-	var cond = get(path) > 0
+	// get data
+	var data = get(path)
+	// check return type (condition: if player sold this stock one or more)
+	var cond = data > 0
 	if (returnType === '1') return cond
 	if (returnType === '2') return encodeBoolean(cond)
 	// normal return
-	return formatWithCommas(get(path))
+	return formatWithCommas(data)
+}
+// get total stock buy balance
+function totalBuyBal(args) {
+	// get args
+	var action = args[0],
+		returnType = args[1],
+		stockId = args[2]
+	// check stock exists
+	checkStock(stockId)
+	// set yaml data path
+	var path = ''.concat(stockId, '.totalBuyBal')
+	// get data
+	var data = get(path)
+	// check return type (condition: if total buy balance is larger then 0)
+	var cond = data > 0
+	if (returnType === '1') return cond
+	if (returnType === '2') return encodeBoolean(cond)
+	// normal return
+	return formatWithCommas(data)
+}
+// get total stock sell balance
+function totalSellBal(args) {
+	// get args
+	var action = args[0],
+		returnType = args[1],
+		stockId = args[2]
+	// check stock exists
+	checkStock(stockId)
+	// set yaml data path
+	var path = ''.concat(stockId, '.totalSellBal')
+	// get data
+	var data = get(path)
+	// check return type (condition: if total sell balance is larger then 0)
+	var cond = data > 0
+	if (returnType === '1') return cond
+	if (returnType === '2') return encodeBoolean(cond)
+	// normal return
+	return formatWithCommas(data)
 }
 // get stock price fluctuation data
 function priceFluctuation(args) {
@@ -752,8 +863,10 @@ function priceFluctuation(args) {
 	checkStock(stockId)
 	// set yaml data path
 	var path = ''.concat(stockId, '.priceFluct')
+	// get data
+	var data = get(path)
 	// check return type (condition: convert fluctuation data to symbol)
-	var fluctData = stringify(get(path))
+	var fluctData = stringify(data)
 	if (returnType === '1') return formatFluct(fluctData)
 	if (returnType === '2') return formatFluct(getLastFluct(fluctData))
 	if (returnType === '3') {
@@ -775,7 +888,7 @@ function priceFluctuation(args) {
 		return '&7'.concat(fluctSymbol)
 	}
 	// normal return
-	return get(path)
+	return data
 }
 // buy stock (give stock to player)
 function buyStock(args) {
@@ -798,13 +911,15 @@ function buyStock(args) {
 	var processResult = processTransaction(stockData, amount, 'buy')
 	// update data
 	if (processResult) {
+		// calc cost
+		var cost = stockData.currentPrice * amount
 		// update stock data
 		var updateData = {
-			buyCount: stockData.buyCount !== undefined ? stockData.buyCount + amount : 0,
-			totalBuy:
-				stockData.totalBuy !== undefined && stockData.currentPrice !== undefined
-					? stockData.totalBuy + stockData.currentPrice * amount
-					: 0,
+			totalShares: stockData.totalShares + amount,
+			slotBuy: stockData.slotBuy + amount,
+			slotBuyBal: stockData.slotBuyBal + cost,
+			totalBuy: stockData.totalBuy + amount,
+			totalBuyBal: stockData.totalBuyBal + cost,
 		}
 		setStockData(stockId, updateData)
 		// update account data
@@ -836,13 +951,15 @@ function sellStock(args) {
 	var processResult = processTransaction(stockData, amount, 'sell')
 	// update data
 	if (processResult) {
+		// calc profit
+		var profit = stockData.currentPrice * amount
 		// update stock data
 		var updateData = {
-			sellCount: stockData.sellCount !== undefined ? stockData.sellCount + amount : 0,
-			totalSell:
-				stockData.totalSell !== undefined && stockData.currentPrice !== undefined
-					? stockData.totalSell + stockData.currentPrice * amount
-					: 0,
+			totalShares: stockData.totalShares - amount,
+			slotSell: stockData.slotSell + amount,
+			slotSellBal: stockData.slotSellBal + profit,
+			totalSell: stockData.totalSell + amount,
+			totalSellBal: stockData.totalSellBal + profit,
 		}
 		setStockData(stockId, updateData)
 		// update account data
@@ -932,10 +1049,15 @@ function clearStock() {
 	name: string
 	lastPrice: number
 	currentPrice: number
-	buyCount: number
-	sellCount: number
-	totalBuy: number
+			totalShares: number
+	slotBuy: number
+	slotSell: number
+	slotBuyBal: number
+	slotSellBal: number
+			totalBuy: number
 	totalSell: number
+	totalBuyBal: number
+	totalSellBal: number
 			priceFluct: string # '1', '0', '-' 10 slots
 	account:
 		[playerName]: [playerStockCount: number]
@@ -1000,6 +1122,12 @@ function stockDataStore() {
 			// execute
 			result = lastPrice(args)
 			break
+		case 'totalShares': // get total shares of stock
+			// check args
+			if (args.length !== 3) return 'false'
+			// execute
+			result = totalShares(args)
+			break
 		case 'priceFluctPercent': // get price fluct in percentage
 			// check args
 			if (args.length !== 3) return 'false'
@@ -1012,29 +1140,53 @@ function stockDataStore() {
 			// execute
 			result = playerStockCount(args)
 			break
-		case 'stockBuyCount': // get total stock buy count
+		case 'slotBuy': // get slot stock buy count
 			// check args
 			if (args.length !== 3) return 'false'
 			// execute
-			result = stockBuyCount(args)
+			result = slotBuy(args)
 			break
-		case 'stockSellCount': // get total stock sell count
+		case 'slotSell': // get slot stock sell count
 			// check args
 			if (args.length !== 3) return 'false'
 			// execute
-			result = stockSellCount(args)
+			result = slotSell(args)
 			break
-		case 'stockBuyBalance': // get total stock buy balance
+		case 'slotBuyBal': // get slot stock buy balance
 			// check args
 			if (args.length !== 3) return 'false'
 			// execute
-			result = stockBuyBalance(args)
+			result = slotBuyBal(args)
 			break
-		case 'stockSellBalance': // get total stock sell balance
+		case 'slotSellBal': // get slot stock sell balance
 			// check args
 			if (args.length !== 3) return 'false'
 			// execute
-			result = stockSellBalance(args)
+			result = slotSellBal(args)
+			break
+		case 'totalBuy': // get total stock buy count
+			// check args
+			if (args.length !== 3) return 'false'
+			// execute
+			result = totalBuy(args)
+			break
+		case 'totalSell': // get total stock sell count
+			// check args
+			if (args.length !== 3) return 'false'
+			// execute
+			result = totalSell(args)
+			break
+		case 'totalBuyBal': // get total stock buy balance
+			// check args
+			if (args.length !== 3) return 'false'
+			// execute
+			result = totalBuyBal(args)
+			break
+		case 'totalSellBal': // get total stock sell balance
+			// check args
+			if (args.length !== 3) return 'false'
+			// execute
+			result = totalSellBal(args)
 			break
 		case 'stockFluct': // get stock price fluctuation data
 			// check args

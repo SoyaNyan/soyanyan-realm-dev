@@ -3,6 +3,11 @@
  * Name: stockDataStore.ts
  * Version: v1.2.0
  * Last Update: 2022-06-04
+ *
+ * TypeScript Version: v4.7.2
+ * Target: ES5
+ * JSX: None
+ * Module: ESNext
  */
 
 /**
@@ -21,6 +26,7 @@ const args: string[] = []
 // available stored data types
 type DataType = number | string | boolean
 type StockDataType = {
+	[index: string]: number | string | undefined
 	name?: string
 	lastPrice?: number
 	currentPrice?: number
@@ -322,8 +328,8 @@ function getStockData(stockId: string): StockDataType {
 function setStockData(stockId: string, data: StockDataType): void {
 	// set data
 	for (const key in data) {
-		if (data[key] !== undefined) {
-			set(`${stockId}.${key}`, data[key])
+		if (typeof data[key] !== 'undefined') {
+			set(`${stockId}.${key}`, data[key] as DataType)
 		}
 	}
 }
