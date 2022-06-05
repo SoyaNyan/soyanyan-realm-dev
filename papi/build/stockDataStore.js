@@ -1162,20 +1162,20 @@ function clearStock() {
 	name: string
 	lastPrice: number
 	currentPrice: number
-			totalShares: number
+	totalShares: number
 	slotBuy: number
 	slotSell: number
 	slotBuyBal: number
 	slotSellBal: number
-			totalBuy: number
+	totalBuy: number
 	totalSell: number
 	totalBuyBal: number
 	totalSellBal: number
-			priceFluct: string # '1', '0', '-' 10 slots
-	account:
+	priceFluct: string # '1', '0', '-' 10 slots
+	accounts:
 		[playerName]:
-							stocks: number
-							totalPrice: number
+			stocks: number
+			totalPrice: number
 */
 // placeholder controller
 function stockDataStore() {

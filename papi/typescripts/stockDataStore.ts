@@ -1463,7 +1463,7 @@ function clearStock(): boolean {
     totalBuyBal: number
     totalSellBal: number
 		priceFluct: string # '1', '0', '-' 10 slots
-    account:
+    accounts:
       [playerName]:
 				stocks: number
 				totalPrice: number
