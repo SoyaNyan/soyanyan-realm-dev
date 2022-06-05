@@ -1,4 +1,16 @@
 /**
+ * Author: SOYANYAN (소야냥)
+ * Name: stockDataStoreV2.ts
+ * Version: v1.3.0
+ * Last Update: 2022-06-05
+ *
+ * TypeScript Version: v4.7.2
+ * Target: ES5
+ * JSX: None
+ * Module: ESNext
+ */
+
+/**
   [ global objects ] 
 */
 const Data: any = new Object()
@@ -14,13 +26,19 @@ const args: string[] = []
 // available stored data types
 type DataType = number | string | boolean
 type StockDataType = {
+	[index: string]: number | string | undefined
 	name?: string
 	lastPrice?: number
 	currentPrice?: number
-	buyCount?: number
-	sellCount?: number
+	totalShares?: number
+	slotBuy?: number
+	slotSell?: number
+	slotBuyBal?: number
+	slotSellBal?: number
 	totalBuy?: number
 	totalSell?: number
+	totalBuyBal?: number
+	totalSellBal?: number
 	priceFluct?: string
 	accounts?: string
 }
@@ -28,11 +46,21 @@ type StrictStockDataType = {
 	name: string
 	lastPrice: number
 	currentPrice: number
-	buyCount: number
-	sellCount: number
+	totalShares: number
+	slotBuy: number
+	slotSell: number
+	slotBuyBal: number
+	slotSellBal: number
 	totalBuy: number
 	totalSell: number
+	totalBuyBal: number
+	totalSellBal: number
 	priceFluct: string
+}
+type AccountDataType = {
+	[index: string]: number
+	stocks: number
+	totalPrice: number
 }
 
 /**
@@ -52,10 +80,15 @@ const STOCKS: {
 		name: '소야냥건설',
 		lastPrice: 10000,
 		currentPrice: 10000,
-		buyCount: 0,
-		sellCount: 0,
+		totalShares: 0,
+		slotBuy: 0,
+		slotSell: 0,
+		slotBuyBal: 0,
+		slotSellBal: 0,
 		totalBuy: 0,
 		totalSell: 0,
+		totalBuyBal: 0,
+		totalSellBal: 0,
 		priceFluct: '##########',
 		accounts: '',
 	},
@@ -63,10 +96,15 @@ const STOCKS: {
 		name: '소야냥톡',
 		lastPrice: 50000,
 		currentPrice: 50000,
-		buyCount: 0,
-		sellCount: 0,
+		totalShares: 0,
+		slotBuy: 0,
+		slotSell: 0,
+		slotBuyBal: 0,
+		slotSellBal: 0,
 		totalBuy: 0,
 		totalSell: 0,
+		totalBuyBal: 0,
+		totalSellBal: 0,
 		priceFluct: '##########',
 		accounts: '',
 	},
@@ -74,10 +112,15 @@ const STOCKS: {
 		name: '소야냥그룹',
 		lastPrice: 100000,
 		currentPrice: 100000,
-		buyCount: 0,
-		sellCount: 0,
+		totalShares: 0,
+		slotBuy: 0,
+		slotSell: 0,
+		slotBuyBal: 0,
+		slotSellBal: 0,
 		totalBuy: 0,
 		totalSell: 0,
+		totalBuyBal: 0,
+		totalSellBal: 0,
 		priceFluct: '##########',
 		accounts: '',
 	},
@@ -192,7 +235,7 @@ function fixDigits(value: number): number {
 
 // format currency with commas
 function formatWithCommas(value: DataType): string {
-	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/, ',')
+	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
 
 /**
@@ -225,59 +268,26 @@ function getStockData(stockId: string): StockDataType {
 		name: get(`${stockId}.name`) as string,
 		lastPrice: get(`${stockId}.lastPrice`) as number,
 		currentPrice: get(`${stockId}.currentPrice`) as number,
-		buyCount: get(`${stockId}.buyCount`) as number,
-		sellCount: get(`${stockId}.sellCount`) as number,
+		totalShares: get(`${stockId}.totalShares`) as number,
+		slotBuy: get(`${stockId}.slotBuy`) as number,
+		slotSell: get(`${stockId}.slotSell`) as number,
+		slotBuyBal: get(`${stockId}.slotBuyBal`) as number,
+		slotSellBal: get(`${stockId}.slotSellBal`) as number,
 		totalBuy: get(`${stockId}.totalBuy`) as number,
 		totalSell: get(`${stockId}.totalSell`) as number,
+		totalBuyBal: get(`${stockId}.totalBuyBal`) as number,
+		totalSellBal: get(`${stockId}.totalSellBal`) as number,
 		priceFluct: get(`${stockId}.priceFluct`) as string,
 	}
 }
 
 // set or update each stock data
 function setStockData(stockId: string, data: StockDataType): void {
-	// set name
-	if (data.name !== undefined) {
-		set(`${stockId}.name`, data.name)
-	}
-
-	// set last price
-	if (data.lastPrice !== undefined) {
-		set(`${stockId}.lastPrice`, data.lastPrice)
-	}
-
-	// set current price
-	if (data.currentPrice !== undefined) {
-		set(`${stockId}.currentPrice`, data.currentPrice)
-	}
-
-	// set buy count
-	if (data.buyCount !== undefined) {
-		set(`${stockId}.buyCount`, data.buyCount)
-	}
-
-	// set sell count
-	if (data.sellCount !== undefined) {
-		set(`${stockId}.sellCount`, data.sellCount)
-	}
-
-	// set total buy
-	if (data.totalBuy !== undefined) {
-		set(`${stockId}.totalBuy`, data.totalBuy)
-	}
-
-	// set total sell
-	if (data.totalSell !== undefined) {
-		set(`${stockId}.totalSell`, data.totalSell)
-	}
-
-	// set price fluctuation
-	if (data.priceFluct !== undefined) {
-		set(`${stockId}.priceFluct`, data.priceFluct)
-	}
-
-	// set player accounts
-	if (data.accounts !== undefined) {
-		set(`${stockId}.accounts`, data.accounts)
+	// set data
+	for (const key in data) {
+		if (typeof data[key] !== 'undefined') {
+			set(`${stockId}.${key}`, data[key] as DataType)
+		}
 	}
 }
 
@@ -298,24 +308,33 @@ function checkStock(stockId: string): void {
 }
 
 // get player's stock account data
-function getAccountData(stockId: string, playerName: string): number {
-	return get(`${stockId}.accounts.${playerName}`) as number
+function getAccountData(stockId: string, playerName: string): AccountDataType {
+	return {
+		stocks: get(`${stockId}.accounts.${playerName}.stocks`) as number,
+		totalPrice: get(`${stockId}.accounts.${playerName}.totalPrice`) as number,
+	}
 }
 
 // set or update player's stock account data
-function setAccountData(stockId: string, playerName: string, data: number): void {
-	// set player's stock count
-	if (data !== undefined) {
-		set(`${stockId}.accounts.${playerName}`, data)
+function setAccountData(stockId: string, playerName: string, data: AccountDataType): void {
+	// set data
+	for (const key in data) {
+		if (typeof data[key] !== 'undefined') {
+			set(`${stockId}.accounts.${playerName}.${key}`, data[key] as number)
+		}
 	}
 }
 
 // check player has specific stock account
 function checkAccount(stockId: string, playerName: string): void {
-	const path = `${stockId}.accounts.${playerName}`
+	const path = `${stockId}.accounts.${playerName}.stocks`
 
 	// if account not exists, initialize it
-	if (!exists(path)) set(path, 0)
+	if (!exists(path))
+		setAccountData(stockId, playerName, {
+			stocks: 0,
+			totalPrice: 0,
+		})
 }
 
 // format stock price fluctuation data
@@ -477,7 +496,7 @@ function giveCheck(value: number, playerName: string): boolean {
 // initialize stocks' data
 function initStocks(args: string[]): boolean {
 	// get args
-	const [action, stockId] = args
+	const [, stockId] = args
 
 	// check stockId specified
 	if (stockId === undefined) {
@@ -495,7 +514,7 @@ function initStocks(args: string[]): boolean {
 // get name of stock
 function stockName(args: string[]): DataType {
 	// get args
-	const [action, returnType, stockId] = args
+	const [, returnType, stockId] = args
 
 	// check stock exists
 	checkStock(stockId)
@@ -503,14 +522,17 @@ function stockName(args: string[]): DataType {
 	// set yaml data path
 	const path = `${stockId}.name`
 
+	// get data
+	const data = get(path)
+
 	// normal return
-	return get(path)
+	return data
 }
 
 // get current buying price with trading fee
 function buyPrice(args: string[]): DataType {
 	// get args
-	const [action, returnType, stockId, trscAmount] = args
+	const [, returnType, stockId, trscAmount] = args
 
 	// parse args
 	const amount = parseInt(trscAmount)
@@ -534,7 +556,7 @@ function buyPrice(args: string[]): DataType {
 // get current selling price with trading fee
 function sellPrice(args: string[]): DataType {
 	// get args
-	const [action, returnType, stockId, trscAmount] = args
+	const [, returnType, stockId, trscAmount] = args
 
 	// parse args
 	const amount = parseInt(trscAmount)
@@ -558,7 +580,7 @@ function sellPrice(args: string[]): DataType {
 // get current price by stockId
 function currentPrice(args: string[]): DataType {
 	// get args
-	const [action, returnType, stockId] = args
+	const [, returnType, stockId] = args
 
 	// check stock exists
 	checkStock(stockId)
@@ -566,20 +588,23 @@ function currentPrice(args: string[]): DataType {
 	// set yaml data path
 	const path = `${stockId}.currentPrice`
 
+	// get data
+	const data = get(path)
+
 	// check return type (condition: currentPrice > lastPrice)
 	const last = get(`${stockId}.lastPrice`)
-	const cond = get(path) > last
+	const cond = data > last
 	if (returnType === '1') return cond
 	if (returnType === '2') return encodeBoolean(cond)
 
 	// normal return
-	return formatWithCommas(get(path))
+	return formatWithCommas(data)
 }
 
 // get last price by stockId
 function lastPrice(args: string[]): DataType {
 	// get args
-	const [action, returnType, stockId] = args
+	const [, returnType, stockId] = args
 
 	// check stock exists
 	checkStock(stockId)
@@ -587,19 +612,46 @@ function lastPrice(args: string[]): DataType {
 	// set yaml data path
 	const path = `${stockId}.lastPrice`
 
+	// get data
+	const data = get(path)
+
 	// check return type (condition: currentPrice > lastPrice)
 	const curr = get(`${stockId}.currentPrice`)
-	const cond = get(path) < curr
+	const cond = data < curr
 	if (returnType === '1') return cond
 	if (returnType === '2') return encodeBoolean(cond)
 
 	// normal return
-	return formatWithCommas(get(path))
+	return formatWithCommas(data)
 }
 
+// get total shares of stock
+function totalShares(args: string[]): DataType {
+	// get args
+	const [, returnType, stockId] = args
+
+	// check stock exists
+	checkStock(stockId)
+
+	// set yaml data path
+	const path = `${stockId}.totalShares`
+
+	// get data
+	const data = get(path)
+
+	// check return type (condition: totalShares > 0)
+	const cond = data > 0
+	if (returnType === '1') return cond
+	if (returnType === '2') return encodeBoolean(cond)
+
+	// normal return
+	return formatWithCommas(data)
+}
+
+// get price fluct in percentage
 function fluctPercentage(args: string[]): DataType {
 	// get args
-	const [action, returnType, stockId] = args
+	const [, returnType, stockId] = args
 
 	// check stock exists
 	checkStock(stockId)
@@ -617,7 +669,7 @@ function fluctPercentage(args: string[]): DataType {
 // get stock count that player has
 function playerStockCount(args: string[]): DataType {
 	// get args
-	const [action, returnType, stockId] = args
+	const [, returnType, stockId] = args
 
 	// check stock exists
 	checkStock(stockId)
@@ -626,61 +678,190 @@ function playerStockCount(args: string[]): DataType {
 	checkAccount(stockId, PLAYER_NAME)
 
 	// set yaml data path
-	const path = `${stockId}.accounts.${PLAYER_NAME}`
+	const path = `${stockId}.accounts.${PLAYER_NAME}.stocks`
+
+	// get data
+	const data = get(path)
 
 	// check return type (condition: player has stock in own account)
-	const cond = get(path) > 0
+	const cond = data > 0
+	if (returnType === '1') return cond
+	if (returnType === '2') return encodeBoolean(cond)
+	if (returnType === '3') {
+		// get total shares of stock
+		const totalShares = get(`${stockId}.totalShares`) as number
+
+		// calc share ratio
+		const shareRatio = totalShares <= 0 ? 0 : ((data as number) / totalShares) * 100
+
+		return shareRatio.toFixed(2)
+	}
+
+	// normal return
+	return formatWithCommas(data)
+}
+
+// get average price of player's stock
+function averagePrice(args: string[]): DataType {
+	// get args
+	const [, returnType, stockId] = args
+
+	// check stock exists
+	checkStock(stockId)
+
+	// get stock data
+	const { currentPrice } = getStockData(stockId) as StrictStockDataType
+
+	// check player stock account exists
+	checkAccount(stockId, PLAYER_NAME)
+
+	// get player account data
+	const { stocks, totalPrice } = getAccountData(stockId, PLAYER_NAME)
+
+	// calc average price
+	const averagePrice = stocks <= 0 ? 0 : totalPrice / stocks
+
+	// check return type (condition: average price < current price)
+	const cond = stocks <= 0 ? false : averagePrice < currentPrice
 	if (returnType === '1') return cond
 	if (returnType === '2') return encodeBoolean(cond)
 
 	// normal return
-	return formatWithCommas(get(path))
+	return formatWithCommas(averagePrice.toFixed(2))
+}
+
+// get estimated profit of player
+function estimatedProfit(args: string[]): DataType {
+	// get args
+	const [, returnType, stockId] = args
+
+	// check stock exists
+	checkStock(stockId)
+
+	// get stock data
+	const { currentPrice } = getStockData(stockId) as StrictStockDataType
+
+	// check player stock account exists
+	checkAccount(stockId, PLAYER_NAME)
+
+	// get player account data
+	const { stocks, totalPrice } = getAccountData(stockId, PLAYER_NAME)
+
+	// calc estimated profit
+	const estimatedProfit = currentPrice * stocks - totalPrice
+
+	// check return type (condition: estimated profit > 0)
+	const cond = estimatedProfit > 0
+	if (returnType === '1') return cond
+	if (returnType === '2') return encodeBoolean(cond)
+	if (returnType === '3') return cond ? '&a+' : estimatedProfit === 0 ? '' : '&c'
+	if (returnType === '4') {
+		// calc estimated profit as percentage
+		const percentage = stocks <= 0 ? 0 : (estimatedProfit / totalPrice) * 100
+
+		return percentage.toFixed(2)
+	}
+
+	// normal return
+	return formatWithCommas(estimatedProfit)
+}
+
+// get slot stock buy count
+function slotBuy(args: string[]): DataType {
+	// get args
+	const [, returnType, stockId] = args
+
+	// check stock exists
+	checkStock(stockId)
+
+	// set yaml data path
+	const path = `${stockId}.slotBuy`
+
+	// get data
+	const data = get(path)
+
+	// check return type (condition: if player bought this stock one or more)
+	const cond = data > 0
+	if (returnType === '1') return cond
+	if (returnType === '2') return encodeBoolean(cond)
+
+	// normal return
+	return formatWithCommas(data)
+}
+
+// get slot stock sell count
+function slotSell(args: string[]): DataType {
+	// get args
+	const [, returnType, stockId] = args
+
+	// check stock exists
+	checkStock(stockId)
+
+	// set yaml data path
+	const path = `${stockId}.slotSell`
+
+	// get data
+	const data = get(path)
+
+	// check return type (condition: if player sold this stock one or more)
+	const cond = data > 0
+	if (returnType === '1') return cond
+	if (returnType === '2') return encodeBoolean(cond)
+
+	// normal return
+	return formatWithCommas(data)
+}
+
+// get slot stock buy balance
+function slotBuyBal(args: string[]): DataType {
+	// get args
+	const [, returnType, stockId] = args
+
+	// check stock exists
+	checkStock(stockId)
+
+	// set yaml data path
+	const path = `${stockId}.slotBuyBal`
+
+	// get data
+	const data = get(path)
+
+	// check return type (condition: if total buy balance is larger then 0)
+	const cond = data > 0
+	if (returnType === '1') return cond
+	if (returnType === '2') return encodeBoolean(cond)
+
+	// normal return
+	return formatWithCommas(data)
+}
+
+// get slot stock sell balance
+function slotSellBal(args: string[]): DataType {
+	// get args
+	const [, returnType, stockId] = args
+
+	// check stock exists
+	checkStock(stockId)
+
+	// set yaml data path
+	const path = `${stockId}.slotSellBal`
+
+	// get data
+	const data = get(path)
+
+	// check return type (condition: if total sell balance is larger then 0)
+	const cond = data > 0
+	if (returnType === '1') return cond
+	if (returnType === '2') return encodeBoolean(cond)
+
+	// normal return
+	return formatWithCommas(data)
 }
 
 // get total stock buy count
-function stockBuyCount(args: string[]): DataType {
+function totalBuy(args: string[]): DataType {
 	// get args
-	const [action, returnType, stockId] = args
-
-	// check stock exists
-	checkStock(stockId)
-
-	// set yaml data path
-	const path = `${stockId}.buyCount`
-
-	// check return type (condition: if player bought this stock one or more)
-	const cond = get(path) > 0
-	if (returnType === '1') return cond
-	if (returnType === '2') return encodeBoolean(cond)
-
-	// normal return
-	return formatWithCommas(get(path))
-}
-
-// get total stock sell count
-function stockSellCount(args: string[]): DataType {
-	// get args
-	const [action, returnType, stockId] = args
-
-	// check stock exists
-	checkStock(stockId)
-
-	// set yaml data path
-	const path = `${stockId}.sellCount`
-
-	// check return type (condition: if player sold this stock one or more)
-	const cond = get(path) > 0
-	if (returnType === '1') return cond
-	if (returnType === '2') return encodeBoolean(cond)
-
-	// normal return
-	return formatWithCommas(get(path))
-}
-
-// get total stock buy balance
-function stockBuyBalance(args: string[]): DataType {
-	// get args
-	const [action, returnType, stockId] = args
+	const [, returnType, stockId] = args
 
 	// check stock exists
 	checkStock(stockId)
@@ -688,19 +869,22 @@ function stockBuyBalance(args: string[]): DataType {
 	// set yaml data path
 	const path = `${stockId}.totalBuy`
 
-	// check return type (condition: if total buy balance is larger then 0)
-	const cond = get(path) > 0
+	// get data
+	const data = get(path)
+
+	// check return type (condition: if player bought this stock one or more)
+	const cond = data > 0
 	if (returnType === '1') return cond
 	if (returnType === '2') return encodeBoolean(cond)
 
 	// normal return
-	return formatWithCommas(get(path))
+	return formatWithCommas(data)
 }
 
-// get total stock sell balance
-function stockSellBalance(args: string[]): DataType {
+// get total stock sell count
+function totalSell(args: string[]): DataType {
 	// get args
-	const [action, returnType, stockId] = args
+	const [, returnType, stockId] = args
 
 	// check stock exists
 	checkStock(stockId)
@@ -708,19 +892,68 @@ function stockSellBalance(args: string[]): DataType {
 	// set yaml data path
 	const path = `${stockId}.totalSell`
 
-	// check return type (condition: if total sell balance is larger then 0)
-	const cond = get(path) > 0
+	// get data
+	const data = get(path)
+
+	// check return type (condition: if player sold this stock one or more)
+	const cond = data > 0
 	if (returnType === '1') return cond
 	if (returnType === '2') return encodeBoolean(cond)
 
 	// normal return
-	return formatWithCommas(get(path))
+	return formatWithCommas(data)
+}
+
+// get total stock buy balance
+function totalBuyBal(args: string[]): DataType {
+	// get args
+	const [, returnType, stockId] = args
+
+	// check stock exists
+	checkStock(stockId)
+
+	// set yaml data path
+	const path = `${stockId}.totalBuyBal`
+
+	// get data
+	const data = get(path)
+
+	// check return type (condition: if total buy balance is larger then 0)
+	const cond = data > 0
+	if (returnType === '1') return cond
+	if (returnType === '2') return encodeBoolean(cond)
+
+	// normal return
+	return formatWithCommas(data)
+}
+
+// get total stock sell balance
+function totalSellBal(args: string[]): DataType {
+	// get args
+	const [, returnType, stockId] = args
+
+	// check stock exists
+	checkStock(stockId)
+
+	// set yaml data path
+	const path = `${stockId}.totalSellBal`
+
+	// get data
+	const data = get(path)
+
+	// check return type (condition: if total sell balance is larger then 0)
+	const cond = data > 0
+	if (returnType === '1') return cond
+	if (returnType === '2') return encodeBoolean(cond)
+
+	// normal return
+	return formatWithCommas(data)
 }
 
 // get stock price fluctuation data
 function priceFluctuation(args: string[]): DataType {
 	// get args
-	const [action, returnType, stockId] = args
+	const [, returnType, stockId] = args
 
 	// check stock exists
 	checkStock(stockId)
@@ -728,8 +961,11 @@ function priceFluctuation(args: string[]): DataType {
 	// set yaml data path
 	const path = `${stockId}.priceFluct`
 
+	// get data
+	const data = get(path)
+
 	// check return type (condition: convert fluctuation data to symbol)
-	const fluctData = stringify(get(path))
+	const fluctData = stringify(data)
 	if (returnType === '1') return formatFluct(fluctData)
 	if (returnType === '2') return formatFluct(getLastFluct(fluctData))
 	if (returnType === '3') {
@@ -752,13 +988,13 @@ function priceFluctuation(args: string[]): DataType {
 	}
 
 	// normal return
-	return get(path)
+	return data
 }
 
 // buy stock (give stock to player)
 function buyStock(args: string[]): boolean {
 	// get args
-	const [action, returnType, stockId, trscAmount] = args
+	const [, returnType, stockId, trscAmount] = args
 
 	// parse args
 	const amount = parseInt(trscAmount)
@@ -773,25 +1009,31 @@ function buyStock(args: string[]): boolean {
 	const stockData = getStockData(stockId) as StrictStockDataType
 
 	// get account data
-	const accountData = getAccountData(stockId, PLAYER_NAME)
+	const { stocks, totalPrice } = getAccountData(stockId, PLAYER_NAME)
 
 	// process transaction
 	const processResult = processTransaction(stockData, amount, 'buy', PLAYER_NAME)
 
 	// update data
 	if (processResult) {
+		// calc cost
+		const cost = stockData.currentPrice * amount
+
 		// update stock data
 		const updateData: StockDataType = {
-			buyCount: stockData.buyCount !== undefined ? stockData.buyCount + amount : 0,
-			totalBuy:
-				stockData.totalBuy !== undefined && stockData.currentPrice !== undefined
-					? stockData.totalBuy + stockData.currentPrice * amount
-					: 0,
+			totalShares: stockData.totalShares + amount,
+			slotBuy: stockData.slotBuy + amount,
+			slotBuyBal: stockData.slotBuyBal + cost,
+			totalBuy: stockData.totalBuy + amount,
+			totalBuyBal: stockData.totalBuyBal + cost,
 		}
 		setStockData(stockId, updateData)
 
 		// update account data
-		const updateAccount: number = accountData + amount
+		const updateAccount: AccountDataType = {
+			stocks: stocks + amount,
+			totalPrice: totalPrice + cost,
+		}
 		setAccountData(stockId, PLAYER_NAME, updateAccount)
 	}
 
@@ -801,7 +1043,7 @@ function buyStock(args: string[]): boolean {
 // sell stock (take stock from player)
 function sellStock(args: string[]): boolean {
 	// get args
-	const [action, returnType, stockId, trscAmount] = args
+	const [, returnType, stockId, trscAmount] = args
 
 	// parse args
 	const amount = parseInt(trscAmount)
@@ -816,29 +1058,35 @@ function sellStock(args: string[]): boolean {
 	const stockData = getStockData(stockId) as StrictStockDataType
 
 	// get account data
-	const accountData = getAccountData(stockId, PLAYER_NAME)
+	const { stocks, totalPrice } = getAccountData(stockId, PLAYER_NAME)
 
 	// check stock amount
-	if (accountData - amount < 0) return false
+	if (stocks - amount < 0) return false
 
 	// process transaction
 	const processResult = processTransaction(stockData, amount, 'sell', PLAYER_NAME)
 
 	// update data
 	if (processResult) {
+		// calc profit
+		const profit = stockData.currentPrice * amount
+
 		// update stock data
 		const updateData: StockDataType = {
-			sellCount: stockData.sellCount !== undefined ? stockData.sellCount + amount : 0,
-			totalSell:
-				stockData.totalSell !== undefined && stockData.currentPrice !== undefined
-					? stockData.totalSell + stockData.currentPrice * amount
-					: 0,
+			totalShares: stockData.totalShares - amount,
+			slotSell: stockData.slotSell + amount,
+			slotSellBal: stockData.slotSellBal + profit,
+			totalSell: stockData.totalSell + amount,
+			totalSellBal: stockData.totalSellBal + profit,
 		}
 		setStockData(stockId, updateData)
 
 		// update account data
-		const updateAccount: number = accountData - amount
-		setAccountData(stockId, PLAYER_NAME, updateAccount)
+		const updatedAccount: AccountDataType = {
+			stocks: stocks - amount,
+			totalPrice: totalPrice - profit,
+		}
+		setAccountData(stockId, PLAYER_NAME, updatedAccount)
 	}
 
 	return processResult
@@ -847,21 +1095,44 @@ function sellStock(args: string[]): boolean {
 // give stock to player (for admin)
 function giveStock(args: string[]): boolean {
 	// get args
-	const [action, returnType, stockId, giveAmount, playerName] = args
+	const [, returnType, stockId, giveAmount, playerName] = args
 
 	// parse args
 	const amount = parseInt(giveAmount)
+
+	// check stock exists
+	checkStock(stockId)
+
+	// get stock data
+	const stockData = getStockData(stockId) as StrictStockDataType
+
+	// calc cost
+	const cost = stockData.currentPrice * amount
+
+	// update stock data
+	const updateData: StockDataType = {
+		totalShares: stockData.totalShares + amount,
+		slotBuy: stockData.slotBuy + amount,
+		slotBuyBal: stockData.slotBuyBal + cost,
+		totalBuy: stockData.totalBuy + amount,
+		totalBuyBal: stockData.totalBuyBal + cost,
+	}
+	setStockData(stockId, updateData)
 
 	// check player stock account exists
 	checkAccount(stockId, playerName)
 
 	// get account data
-	const accountData = getAccountData(stockId, playerName)
+	const { stocks, totalPrice } = getAccountData(stockId, playerName)
 
 	// update account data
-	const updatedAmount = accountData + amount
-	const updateAccount: number = updatedAmount < 0 ? 0 : updatedAmount
-	setAccountData(stockId, playerName, updateAccount)
+	const updatedStocks = stocks + amount
+	const updatedTotalPrice = totalPrice + stockData.currentPrice * amount
+	const updatedAccount: AccountDataType = {
+		stocks: updatedStocks < 0 ? 0 : updatedStocks,
+		totalPrice: updatedTotalPrice < 0 ? 0 : updatedTotalPrice,
+	}
+	setAccountData(stockId, playerName, updatedAccount)
 
 	return true
 }
@@ -869,7 +1140,7 @@ function giveStock(args: string[]): boolean {
 // set volatility to stock price
 function setStockVolatility(args: string[]): string | boolean {
 	// get args
-	const [action, returnType, stockId] = args
+	const [, returnType, stockId] = args
 
 	// check stockId specified
 	if (stockId === undefined) {
@@ -891,7 +1162,7 @@ function setStockVolatility(args: string[]): string | boolean {
 // get next update ETA in mm:ss units
 function nextUpdateETA(args: string[]): string | boolean {
 	// get args
-	const [action, returnType] = args
+	const [, returnType] = args
 
 	// get seconds from 'Command Timer' plugin's placeholder
 	// >> https://www.spigotmc.org/resources/command-timer.24141/
@@ -916,7 +1187,7 @@ function nextUpdateETA(args: string[]): string | boolean {
 // remove specific stock data
 function removeStock(args: string[]): boolean {
 	// get args
-	const [action, stockId] = args
+	const [, stockId] = args
 
 	// remove stock data
 	return removeStockData(stockId)
@@ -936,14 +1207,20 @@ function clearStock(): boolean {
     name: string
     lastPrice: number
     currentPrice: number
-    buyCount: number
-    sellCount: number
-    totalBuy: number
+		totalShares: number
+    slotBuy: number
+    slotSell: number
+    slotBuyBal: number
+    slotSellBal: number
+		totalBuy: number
     totalSell: number
+    totalBuyBal: number
+    totalSellBal: number
 		priceFluct: string # '1', '0', '-' 10 slots
     account:
-      [playerName]: [playerStockCount: number]
-      ...
+      [playerName]:
+				stocks: number
+				totalPrice: number
 */
 
 // placeholder controller
@@ -1007,6 +1284,13 @@ function stockDataStore(): string {
 			// execute
 			result = lastPrice(args)
 			break
+		case 'totalShares': // get total shares of stock
+			// check args
+			if (args.length !== 3) return 'false'
+
+			// execute
+			result = totalShares(args)
+			break
 		case 'priceFluctPercent': // get price fluct in percentage
 			// check args
 			if (args.length !== 3) return 'false'
@@ -1021,33 +1305,75 @@ function stockDataStore(): string {
 			// execute
 			result = playerStockCount(args)
 			break
-		case 'stockBuyCount': // get total stock buy count
+		case 'averagePrice': // get average price of player's stock
 			// check args
 			if (args.length !== 3) return 'false'
 
 			// execute
-			result = stockBuyCount(args)
+			result = averagePrice(args)
 			break
-		case 'stockSellCount': // get total stock sell count
+		case 'estimatedProfit': // get estimated profit of player
 			// check args
 			if (args.length !== 3) return 'false'
 
 			// execute
-			result = stockSellCount(args)
+			result = estimatedProfit(args)
 			break
-		case 'stockBuyBalance': // get total stock buy balance
+		case 'slotBuy': // get slot stock buy count
 			// check args
 			if (args.length !== 3) return 'false'
 
 			// execute
-			result = stockBuyBalance(args)
+			result = slotBuy(args)
 			break
-		case 'stockSellBalance': // get total stock sell balance
+		case 'slotSell': // get slot stock sell count
 			// check args
 			if (args.length !== 3) return 'false'
 
 			// execute
-			result = stockSellBalance(args)
+			result = slotSell(args)
+			break
+		case 'slotBuyBal': // get slot stock buy balance
+			// check args
+			if (args.length !== 3) return 'false'
+
+			// execute
+			result = slotBuyBal(args)
+			break
+		case 'slotSellBal': // get slot stock sell balance
+			// check args
+			if (args.length !== 3) return 'false'
+
+			// execute
+			result = slotSellBal(args)
+			break
+		case 'totalBuy': // get total stock buy count
+			// check args
+			if (args.length !== 3) return 'false'
+
+			// execute
+			result = totalBuy(args)
+			break
+		case 'totalSell': // get total stock sell count
+			// check args
+			if (args.length !== 3) return 'false'
+
+			// execute
+			result = totalSell(args)
+			break
+		case 'totalBuyBal': // get total stock buy balance
+			// check args
+			if (args.length !== 3) return 'false'
+
+			// execute
+			result = totalBuyBal(args)
+			break
+		case 'totalSellBal': // get total stock sell balance
+			// check args
+			if (args.length !== 3) return 'false'
+
+			// execute
+			result = totalSellBal(args)
 			break
 		case 'stockFluct': // get stock price fluctuation data
 			// check args
