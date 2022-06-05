@@ -214,7 +214,7 @@ function fixDigits(value) {
 }
 // format currency with commas
 function formatWithCommas(value) {
-	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/, ',')
+	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
 /**
 	[ Spigot API utilities ]
@@ -756,7 +756,7 @@ function estimatedProfit(args) {
 	if (returnType === '3') return cond ? '&a+' : estimatedProfit === 0 ? '' : '&c-'
 	if (returnType === '4') {
 		// calc estimated profit as percentage
-		var percentage = stocks <= 0 ? 0 : ((currentPrice * stocks) / totalPrice) * 100
+		var percentage = stocks <= 0 ? 0 : (estimatedProfit / totalPrice) * 100
 		return percentage.toFixed(2)
 	}
 	// normal return

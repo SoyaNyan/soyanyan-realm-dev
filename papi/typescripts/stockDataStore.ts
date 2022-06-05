@@ -283,7 +283,7 @@ function fixDigits(value: number): number {
 
 // format currency with commas
 function formatWithCommas(value: DataType): string {
-	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/, ',')
+	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
 
 /**
@@ -960,7 +960,7 @@ function estimatedProfit(args: string[]): DataType {
 	if (returnType === '3') return cond ? '&a+' : estimatedProfit === 0 ? '' : '&c-'
 	if (returnType === '4') {
 		// calc estimated profit as percentage
-		const percentage = stocks <= 0 ? 0 : ((currentPrice * stocks) / totalPrice) * 100
+		const percentage = stocks <= 0 ? 0 : (estimatedProfit / totalPrice) * 100
 
 		return percentage.toFixed(2)
 	}
