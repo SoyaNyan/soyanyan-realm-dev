@@ -93,7 +93,9 @@ activators:
     usePerDay: -1
     cancelEventIfMaxUsePerDay: false
     commands:
+      - 'LOOP START: %javascript_stock_store_buyStock,1,stock03,1%'
       - 'SENDMESSAGE &7[#CBAACB주식&7] &3%javascript_stock_store_stockName,0,stock03% &f주식의 &e1&f주 &6매수 &a성공! &7(매수액: %javascript_stock_store_buyPrice,1,stock03,1%E)'
+      - LOOP END
     blockCommands: []
     detailedBlocks: []
     cancelEventIfNotDetailedBlocks: false
@@ -117,7 +119,7 @@ activators:
       placeholdersConditions:
         plchC1:
           type: PLAYER_STRING
-          part1: '%javascript_stock_store_buyStock,0,stock03,1%'
+          part1: '%javascript_stock_store_checkBalance,1,stock03,1%'
           comparator: EQUALS
           part2: 'true'
           messageIfNotValid: '&6>> 경험치가 부족합니다. &7(필요 경험치: %javascript_stock_store_buyPrice,1,stock03,1%E)'
@@ -129,7 +131,9 @@ activators:
     usePerDay: -1
     cancelEventIfMaxUsePerDay: false
     commands:
+      - 'LOOP START: %javascript_stock_store_sellStock,0,stock03,1%'
       - 'SENDMESSAGE &7[#CBAACB주식&7] &3%javascript_stock_store_stockName,0,stock03% &f주식의 &e1&f주 &6매도 &a성공! &7(매도액: %javascript_stock_store_sellPrice,1,stock03,1%E)'
+      - LOOP END
     blockCommands: []
     detailedBlocks: []
     cancelEventIfNotDetailedBlocks: false
@@ -153,7 +157,7 @@ activators:
       placeholdersConditions:
         plchC1:
           type: PLAYER_STRING
-          part1: '%javascript_stock_store_sellStock,0,stock03,1%'
+          part1: '%javascript_stock_store_playerStockCount,4,stock03,1%'
           comparator: EQUALS
           part2: 'true'
           messageIfNotValid: '&6>> 보유중인 주식 수가 부족합니다. &7(현재 보유량: %javascript_stock_store_playerStockCount,0,stock03%주)'
@@ -165,7 +169,9 @@ activators:
     usePerDay: -1
     cancelEventIfMaxUsePerDay: false
     commands:
+      - 'LOOP START: %javascript_stock_store_buyStock,1,stock03,10%'
       - 'SENDMESSAGE &7[#CBAACB주식&7] &3%javascript_stock_store_stockName,0,stock03% &f주식의 &e10&f주 &6매수 &a성공! &7(매수액: %javascript_stock_store_buyPrice,1,stock03,10%E)'
+      - LOOP END
     blockCommands: []
     detailedBlocks: []
     cancelEventIfNotDetailedBlocks: false
@@ -189,10 +195,10 @@ activators:
       placeholdersConditions:
         plchC1:
           type: PLAYER_STRING
-          part1: '%javascript_stock_store_buyStock,0,stock03,10%'
+          part1: '%javascript_stock_store_checkBalance,1,stock03,10%'
           comparator: EQUALS
           part2: 'true'
-          messageIfNotValid: '&6>> 경험치가 부족합니다. &7(필요 경험치: %javascript_stock_store_buyPrice,1,stock03,10%E)'
+          messageIfNotValid: '&6>> 경험치가 부족합니다. &7(필요 경험치: %javascript_stock_store_buyPrice,1,stock03,1%E)'
           cancelEventIfNotValid: false
   activator4:
     activator: PLAYER_RIGHT_CLICK
@@ -201,7 +207,9 @@ activators:
     usePerDay: -1
     cancelEventIfMaxUsePerDay: false
     commands:
+      - 'LOOP START: %javascript_stock_store_sellStock,0,stock03,10%'
       - 'SENDMESSAGE &7[#CBAACB주식&7] &3%javascript_stock_store_stockName,0,stock03% &f주식의 &e10&f주 &6매도 &a성공! &7(매도액: %javascript_stock_store_sellPrice,1,stock03,10%E)'
+      - LOOP END
     blockCommands: []
     detailedBlocks: []
     cancelEventIfNotDetailedBlocks: false
@@ -225,7 +233,7 @@ activators:
       placeholdersConditions:
         plchC1:
           type: PLAYER_STRING
-          part1: '%javascript_stock_store_sellStock,0,stock03,10%'
+          part1: '%javascript_stock_store_playerStockCount,4,stock03,10%'
           comparator: EQUALS
           part2: 'true'
           messageIfNotValid: '&6>> 보유중인 주식 수가 부족합니다. &7(현재 보유량: %javascript_stock_store_playerStockCount,0,stock03%주)'

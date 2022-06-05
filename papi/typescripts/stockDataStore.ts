@@ -708,12 +708,35 @@ function initStocks(args: string[]): boolean {
 }
 
 // check player balance
-function checkBalance(args: string[]): number {
+function checkBalance(args: string[]): DataType {
+	// get args
+	const [, returnType, stockId, trscAmount] = args
+
 	// get total exp balance in player's inventory
-	const balance = checkTotalItemExp()
+	const totalExp = checkTotalItemExp()
 
 	// normal return
-	return balance
+	if (typeof stockId !== 'undefined' && typeof trscAmount !== 'undefined') {
+		// parse args
+		const amount = parseInt(trscAmount)
+
+		// check stock exists
+		checkStock(stockId)
+
+		// get stock data
+		const { currentPrice } = getStockData(stockId) as StrictStockDataType
+
+		// get price when buying
+		const price = getCost(currentPrice, amount)
+
+		// check return type (condition: total exp >= price)
+		const cond = totalExp >= price
+		if (returnType === '1') return cond
+		if (returnType === '2') return encodeBoolean(cond)
+	}
+
+	// normal return
+	return totalExp
 }
 
 // get name of stock
@@ -751,7 +774,7 @@ function buyPrice(args: string[]): DataType {
 	// get price when buying
 	const price = getCost(currentPrice, amount)
 
-	// check return type (condition: currentPrice > lastPrice)
+	// check return type
 	if (returnType === '1') return formatWithCommas(price)
 
 	// normal return
@@ -775,7 +798,7 @@ function sellPrice(args: string[]): DataType {
 	// get price when buying
 	const price = getProfit(currentPrice, amount)
 
-	// check return type (condition: currentPrice > lastPrice)
+	// check return type
 	if (returnType === '1') return formatWithCommas(price)
 
 	// normal return
@@ -874,7 +897,7 @@ function fluctPercentage(args: string[]): DataType {
 // get stock count that player has
 function playerStockCount(args: string[]): DataType {
 	// get args
-	const [, returnType, stockId] = args
+	const [, returnType, stockId, trscAmount] = args
 
 	// check stock exists
 	checkStock(stockId)
@@ -886,7 +909,7 @@ function playerStockCount(args: string[]): DataType {
 	const path = `${stockId}.accounts.${PLAYER_NAME}.stocks`
 
 	// get data
-	const data = get(path)
+	const data = get(path) as number
 
 	// check return type (condition: player has stock in own account)
 	const cond = data > 0
@@ -900,6 +923,16 @@ function playerStockCount(args: string[]): DataType {
 		const shareRatio = totalShares <= 0 ? 0 : ((data as number) / totalShares) * 100
 
 		return shareRatio.toFixed(2)
+	}
+	if (returnType === '4') {
+		// check trscAmount specified
+		if (typeof trscAmount === 'undefined') return false
+
+		// parse args
+		const amount = parseInt(trscAmount)
+
+		// check
+		return data - amount >= 0
 	}
 
 	// normal return
@@ -1197,7 +1230,7 @@ function priceFluctuation(args: string[]): DataType {
 }
 
 // buy stock (give stock to player)
-function buyStock(args: string[]): boolean {
+function buyStock(args: string[]): DataType {
 	// get args
 	const [, returnType, stockId, trscAmount] = args
 
@@ -1242,11 +1275,15 @@ function buyStock(args: string[]): boolean {
 		setAccountData(stockId, PLAYER_NAME, updateAccount)
 	}
 
+	// check return type (condition: transaction process success or not)
+	if (returnType === '1') return encodeBoolean(processResult)
+
+	// normal return
 	return processResult
 }
 
 // sell stock (take stock from player)
-function sellStock(args: string[]): boolean {
+function sellStock(args: string[]): DataType {
 	// get args
 	const [, returnType, stockId, trscAmount] = args
 
@@ -1294,6 +1331,10 @@ function sellStock(args: string[]): boolean {
 		setAccountData(stockId, PLAYER_NAME, updatedAccount)
 	}
 
+	// check return type (condition: transaction process success or not)
+	if (returnType === '1') return encodeBoolean(processResult)
+
+	// normal return
 	return processResult
 }
 
@@ -1456,7 +1497,7 @@ function stockDataStore(): string {
 			break
 		case 'checkBalance': // check player balance
 			// check args
-			if (args.length !== 1) return 'false'
+			if (args.length !== 2 && args.length !== 4) return 'false'
 
 			// execute
 			result = checkBalance(args)
@@ -1512,7 +1553,7 @@ function stockDataStore(): string {
 			break
 		case 'playerStockCount': // get stock count that player has
 			// check args
-			if (args.length !== 3) return 'false'
+			if (args.length !== 3 && args.length !== 4) return 'false'
 
 			// execute
 			result = playerStockCount(args)

@@ -554,10 +554,29 @@ function initStocks(args) {
 }
 // check player balance
 function checkBalance(args) {
+	// get args
+	var returnType = args[1],
+		stockId = args[2],
+		trscAmount = args[3]
 	// get total exp balance in player's inventory
-	var balance = checkTotalItemExp()
+	var totalExp = checkTotalItemExp()
 	// normal return
-	return balance
+	if (typeof stockId !== 'undefined' && typeof trscAmount !== 'undefined') {
+		// parse args
+		var amount = parseInt(trscAmount)
+		// check stock exists
+		checkStock(stockId)
+		// get stock data
+		var currentPrice_1 = getStockData(stockId).currentPrice
+		// get price when buying
+		var price = getCost(currentPrice_1, amount)
+		// check return type (condition: total exp >= price)
+		var cond = totalExp >= price
+		if (returnType === '1') return cond
+		if (returnType === '2') return encodeBoolean(cond)
+	}
+	// normal return
+	return totalExp
 }
 // get name of stock
 function stockName(args) {
@@ -587,7 +606,7 @@ function buyPrice(args) {
 	var currentPrice = getStockData(stockId).currentPrice
 	// get price when buying
 	var price = getCost(currentPrice, amount)
-	// check return type (condition: currentPrice > lastPrice)
+	// check return type
 	if (returnType === '1') return formatWithCommas(price)
 	// normal return
 	return price
@@ -606,7 +625,7 @@ function sellPrice(args) {
 	var currentPrice = getStockData(stockId).currentPrice
 	// get price when buying
 	var price = getProfit(currentPrice, amount)
-	// check return type (condition: currentPrice > lastPrice)
+	// check return type
 	if (returnType === '1') return formatWithCommas(price)
 	// normal return
 	return price
@@ -687,7 +706,8 @@ function fluctPercentage(args) {
 function playerStockCount(args) {
 	// get args
 	var returnType = args[1],
-		stockId = args[2]
+		stockId = args[2],
+		trscAmount = args[3]
 	// check stock exists
 	checkStock(stockId)
 	// check player stock account exists
@@ -706,6 +726,14 @@ function playerStockCount(args) {
 		// calc share ratio
 		var shareRatio = totalShares_1 <= 0 ? 0 : (data / totalShares_1) * 100
 		return shareRatio.toFixed(2)
+	}
+	if (returnType === '4') {
+		// check trscAmount specified
+		if (typeof trscAmount === 'undefined') return false
+		// parse args
+		var amount = parseInt(trscAmount)
+		// check
+		return data - amount >= 0
 	}
 	// normal return
 	return formatWithCommas(data)
@@ -984,6 +1012,9 @@ function buyStock(args) {
 		}
 		setAccountData(stockId, PLAYER_NAME, updateAccount)
 	}
+	// check return type (condition: transaction process success or not)
+	if (returnType === '1') return encodeBoolean(processResult)
+	// normal return
 	return processResult
 }
 // sell stock (take stock from player)
@@ -1028,6 +1059,9 @@ function sellStock(args) {
 		}
 		setAccountData(stockId, PLAYER_NAME, updatedAccount)
 	}
+	// check return type (condition: transaction process success or not)
+	if (returnType === '1') return encodeBoolean(processResult)
+	// normal return
 	return processResult
 }
 // give stock to player (for admin)
@@ -1168,7 +1202,7 @@ function stockDataStore() {
 			break
 		case 'checkBalance': // check player balance
 			// check args
-			if (args.length !== 1) return 'false'
+			if (args.length !== 2 && args.length !== 4) return 'false'
 			// execute
 			result = checkBalance(args)
 			break
@@ -1216,7 +1250,7 @@ function stockDataStore() {
 			break
 		case 'playerStockCount': // get stock count that player has
 			// check args
-			if (args.length !== 3) return 'false'
+			if (args.length !== 3 && args.length !== 4) return 'false'
 			// execute
 			result = playerStockCount(args)
 			break
