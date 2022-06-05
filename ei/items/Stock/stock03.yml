@@ -8,7 +8,7 @@ lore:
   - '&7 > 소유자: %player_name%'
   - '&7 > 보유수량: &d%javascript_stock_store_playerStockCount,0,stock03%&f주 &7(지분: %javascript_stock_store_playerStockCount,3,stock03%%)'
   - '&7 > 평균단가: &e%javascript_stock_store_averagePrice,0,stock03%&fE'
-  - '&7 > 예측손익: %javascript_stock_store_estimatedProfit,3,stock03%%javascript_stock_store_estimatedProfit,0,stock03%&fE &7(%javascript_stock_store_estimatedProfit,3,stock03%%javascript_stock_store_estimatedProfit,4,stock03%%&7)'
+  - '&7 > 평가손익: %javascript_stock_store_estimatedProfit,3,stock03%%javascript_stock_store_estimatedProfit,0,stock03%&fE &7(%javascript_stock_store_estimatedProfit,3,stock03%%javascript_stock_store_estimatedProfit,4,stock03%%&7)'
   - '&7----------------------------'
   - '&7[ &c&l주식정보 &7]'
   - '&7 > 총 발행량: &6%javascript_stock_store_totalShares,0,stock03%&f주'
