@@ -649,6 +649,7 @@ function lastPrice(args) {
 	// normal return
 	return formatWithCommas(data)
 }
+// get total shares of stock
 function totalShares(args) {
 	// get args
 	var returnType = args[1],
@@ -666,6 +667,7 @@ function totalShares(args) {
 	// normal return
 	return formatWithCommas(data)
 }
+// get price fluct in percentage
 function fluctPercentage(args) {
 	// get args
 	var returnType = args[1],
@@ -1109,7 +1111,7 @@ function nextUpdateETA(args) {
 // remove specific stock data
 function removeStock(args) {
 	// get args
-	var stockId = args[0]
+	var stockId = args[1]
 	// remove stock data
 	return removeStockData(stockId)
 }

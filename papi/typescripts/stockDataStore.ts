@@ -830,6 +830,7 @@ function lastPrice(args: string[]): DataType {
 	return formatWithCommas(data)
 }
 
+// get total shares of stock
 function totalShares(args: string[]): DataType {
 	// get args
 	const [, returnType, stockId] = args
@@ -852,6 +853,7 @@ function totalShares(args: string[]): DataType {
 	return formatWithCommas(data)
 }
 
+// get price fluct in percentage
 function fluctPercentage(args: string[]): DataType {
 	// get args
 	const [, returnType, stockId] = args
@@ -1390,7 +1392,7 @@ function nextUpdateETA(args: string[]): string | boolean {
 // remove specific stock data
 function removeStock(args: string[]): boolean {
 	// get args
-	const [stockId] = args
+	const [, stockId] = args
 
 	// remove stock data
 	return removeStockData(stockId)
