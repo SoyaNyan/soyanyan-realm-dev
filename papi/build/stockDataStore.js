@@ -753,7 +753,12 @@ function estimatedProfit(args) {
 	var cond = estimatedProfit > 0
 	if (returnType === '1') return cond
 	if (returnType === '2') return encodeBoolean(cond)
-	if (returnType === '3') return cond ? '+' : estimatedProfit === 0 ? '' : '-'
+	if (returnType === '3') return cond ? '&a+' : estimatedProfit === 0 ? '' : '&c-'
+	if (returnType === '4') {
+		// calc estimated profit as percentage
+		var percentage = ((currentPrice * stocks) / totalPrice) * 100
+		return percentage.toFixed(2)
+	}
 	// normal return
 	return formatWithCommas(estimatedProfit)
 }
