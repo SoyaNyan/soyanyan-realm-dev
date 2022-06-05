@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: stockDataStore.ts
- * Version: v1.2.0
- * Last Update: 2022-06-04
+ * Version: v1.3.0
+ * Last Update: 2022-06-05
  *
  * TypeScript Version: v4.7.2
  * Target: ES5
@@ -279,20 +279,29 @@ function checkStock(stockId) {
 }
 // get player's stock account data
 function getAccountData(stockId, playerName) {
-	return get(''.concat(stockId, '.accounts.').concat(playerName))
+	return {
+		stocks: get(''.concat(stockId, '.accounts.').concat(playerName, '.stocks')),
+		totalPrice: get(''.concat(stockId, '.accounts.').concat(playerName, '.totalPrice')),
+	}
 }
 // set or update player's stock account data
 function setAccountData(stockId, playerName, data) {
-	// set player's stock count
-	if (data !== undefined) {
-		set(''.concat(stockId, '.accounts.').concat(playerName), data)
+	// set data
+	for (var key in data) {
+		if (typeof data[key] !== 'undefined') {
+			set(''.concat(stockId, '.accounts.').concat(playerName, '.').concat(key), data[key])
+		}
 	}
 }
 // check player has specific stock account
 function checkAccount(stockId, playerName) {
-	var path = ''.concat(stockId, '.accounts.').concat(playerName)
+	var path = ''.concat(stockId, '.accounts.').concat(playerName, '.stocks')
 	// if account not exists, initialize it
-	if (!exists(path)) set(path, 0)
+	if (!exists(path))
+		setAccountData(stockId, playerName, {
+			stocks: 0,
+			totalPrice: 0,
+		})
 }
 // format stock price fluctuation data
 function formatFluct(fluctData) {
@@ -531,8 +540,7 @@ function giveExp(items) {
 // initialize stocks' data
 function initStocks(args) {
 	// get args
-	var action = args[0],
-		stockId = args[1]
+	var stockId = args[0]
 	// check stockId specified
 	if (stockId === undefined) {
 		for (var stock in STOCKS) {
@@ -554,9 +562,8 @@ function checkBalance(args) {
 // get name of stock
 function stockName(args) {
 	// get args
-	var action = args[0],
-		returnType = args[1],
-		stockId = args[2]
+	var returnType = args[0],
+		stockId = args[1]
 	// check stock exists
 	checkStock(stockId)
 	// set yaml data path
@@ -569,10 +576,9 @@ function stockName(args) {
 // get current buying price with trading fee
 function buyPrice(args) {
 	// get args
-	var action = args[0],
-		returnType = args[1],
-		stockId = args[2],
-		trscAmount = args[3]
+	var returnType = args[0],
+		stockId = args[1],
+		trscAmount = args[2]
 	// parse args
 	var amount = parseInt(trscAmount)
 	// check stock exists
@@ -589,10 +595,9 @@ function buyPrice(args) {
 // get current selling price with trading fee
 function sellPrice(args) {
 	// get args
-	var action = args[0],
-		returnType = args[1],
-		stockId = args[2],
-		trscAmount = args[3]
+	var returnType = args[0],
+		stockId = args[1],
+		trscAmount = args[2]
 	// parse args
 	var amount = parseInt(trscAmount)
 	// check stock exists
@@ -609,9 +614,8 @@ function sellPrice(args) {
 // get current price by stockId
 function currentPrice(args) {
 	// get args
-	var action = args[0],
-		returnType = args[1],
-		stockId = args[2]
+	var returnType = args[0],
+		stockId = args[1]
 	// check stock exists
 	checkStock(stockId)
 	// set yaml data path
@@ -629,9 +633,8 @@ function currentPrice(args) {
 // get last price by stockId
 function lastPrice(args) {
 	// get args
-	var action = args[0],
-		returnType = args[1],
-		stockId = args[2]
+	var returnType = args[0],
+		stockId = args[1]
 	// check stock exists
 	checkStock(stockId)
 	// set yaml data path
@@ -648,9 +651,8 @@ function lastPrice(args) {
 }
 function totalShares(args) {
 	// get args
-	var action = args[0],
-		returnType = args[1],
-		stockId = args[2]
+	var returnType = args[0],
+		stockId = args[1]
 	// check stock exists
 	checkStock(stockId)
 	// set yaml data path
@@ -666,9 +668,8 @@ function totalShares(args) {
 }
 function fluctPercentage(args) {
 	// get args
-	var action = args[0],
-		returnType = args[1],
-		stockId = args[2]
+	var returnType = args[0],
+		stockId = args[1]
 	// check stock exists
 	checkStock(stockId)
 	// get stock data
@@ -683,9 +684,8 @@ function fluctPercentage(args) {
 // get stock count that player has
 function playerStockCount(args) {
 	// get args
-	var action = args[0],
-		returnType = args[1],
-		stockId = args[2]
+	var returnType = args[0],
+		stockId = args[1]
 	// check stock exists
 	checkStock(stockId)
 	// check player stock account exists
@@ -708,12 +708,60 @@ function playerStockCount(args) {
 	// normal return
 	return formatWithCommas(data)
 }
+// get average price of player's stock
+function averagePrice(args) {
+	// get args
+	var returnType = args[0],
+		stockId = args[1]
+	// check stock exists
+	checkStock(stockId)
+	// get stock data
+	var currentPrice = getStockData(stockId).currentPrice
+	// check player stock account exists
+	checkAccount(stockId, PLAYER_NAME)
+	// get player account data
+	var _a = getAccountData(stockId, PLAYER_NAME),
+		stocks = _a.stocks,
+		totalPrice = _a.totalPrice
+	// calc average price
+	var averagePrice = totalPrice / stocks
+	// check return type (condition: average price < current price)
+	var cond = averagePrice < currentPrice
+	if (returnType === '1') return cond
+	if (returnType === '2') return encodeBoolean(cond)
+	// normal return
+	return formatWithCommas(averagePrice.toFixed(2))
+}
+// get estimated profit of player
+function estimatedProfit(args) {
+	// get args
+	var returnType = args[0],
+		stockId = args[1]
+	// check stock exists
+	checkStock(stockId)
+	// get stock data
+	var currentPrice = getStockData(stockId).currentPrice
+	// check player stock account exists
+	checkAccount(stockId, PLAYER_NAME)
+	// get player account data
+	var _a = getAccountData(stockId, PLAYER_NAME),
+		stocks = _a.stocks,
+		totalPrice = _a.totalPrice
+	// calc estimated profit
+	var estimatedProfit = currentPrice * stocks - totalPrice
+	// check return type (condition: estimated profit > 0)
+	var cond = estimatedProfit > 0
+	if (returnType === '1') return cond
+	if (returnType === '2') return encodeBoolean(cond)
+	if (returnType === '3') return cond ? '+' : estimatedProfit === 0 ? '' : '-'
+	// normal return
+	return formatWithCommas(estimatedProfit)
+}
 // get slot stock buy count
 function slotBuy(args) {
 	// get args
-	var action = args[0],
-		returnType = args[1],
-		stockId = args[2]
+	var returnType = args[0],
+		stockId = args[1]
 	// check stock exists
 	checkStock(stockId)
 	// set yaml data path
@@ -730,9 +778,8 @@ function slotBuy(args) {
 // get slot stock sell count
 function slotSell(args) {
 	// get args
-	var action = args[0],
-		returnType = args[1],
-		stockId = args[2]
+	var returnType = args[0],
+		stockId = args[1]
 	// check stock exists
 	checkStock(stockId)
 	// set yaml data path
@@ -749,9 +796,8 @@ function slotSell(args) {
 // get slot stock buy balance
 function slotBuyBal(args) {
 	// get args
-	var action = args[0],
-		returnType = args[1],
-		stockId = args[2]
+	var returnType = args[0],
+		stockId = args[1]
 	// check stock exists
 	checkStock(stockId)
 	// set yaml data path
@@ -768,9 +814,8 @@ function slotBuyBal(args) {
 // get slot stock sell balance
 function slotSellBal(args) {
 	// get args
-	var action = args[0],
-		returnType = args[1],
-		stockId = args[2]
+	var returnType = args[0],
+		stockId = args[1]
 	// check stock exists
 	checkStock(stockId)
 	// set yaml data path
@@ -787,9 +832,8 @@ function slotSellBal(args) {
 // get total stock buy count
 function totalBuy(args) {
 	// get args
-	var action = args[0],
-		returnType = args[1],
-		stockId = args[2]
+	var returnType = args[0],
+		stockId = args[1]
 	// check stock exists
 	checkStock(stockId)
 	// set yaml data path
@@ -806,9 +850,8 @@ function totalBuy(args) {
 // get total stock sell count
 function totalSell(args) {
 	// get args
-	var action = args[0],
-		returnType = args[1],
-		stockId = args[2]
+	var returnType = args[0],
+		stockId = args[1]
 	// check stock exists
 	checkStock(stockId)
 	// set yaml data path
@@ -825,9 +868,8 @@ function totalSell(args) {
 // get total stock buy balance
 function totalBuyBal(args) {
 	// get args
-	var action = args[0],
-		returnType = args[1],
-		stockId = args[2]
+	var returnType = args[0],
+		stockId = args[1]
 	// check stock exists
 	checkStock(stockId)
 	// set yaml data path
@@ -844,9 +886,8 @@ function totalBuyBal(args) {
 // get total stock sell balance
 function totalSellBal(args) {
 	// get args
-	var action = args[0],
-		returnType = args[1],
-		stockId = args[2]
+	var returnType = args[0],
+		stockId = args[1]
 	// check stock exists
 	checkStock(stockId)
 	// set yaml data path
@@ -863,9 +904,8 @@ function totalSellBal(args) {
 // get stock price fluctuation data
 function priceFluctuation(args) {
 	// get args
-	var action = args[0],
-		returnType = args[1],
-		stockId = args[2]
+	var returnType = args[0],
+		stockId = args[1]
 	// check stock exists
 	checkStock(stockId)
 	// set yaml data path
@@ -900,10 +940,9 @@ function priceFluctuation(args) {
 // buy stock (give stock to player)
 function buyStock(args) {
 	// get args
-	var action = args[0],
-		returnType = args[1],
-		stockId = args[2],
-		trscAmount = args[3]
+	var returnType = args[0],
+		stockId = args[1],
+		trscAmount = args[2]
 	// parse args
 	var amount = parseInt(trscAmount)
 	// check stock exists
@@ -913,7 +952,9 @@ function buyStock(args) {
 	// get stock data
 	var stockData = getStockData(stockId)
 	// get account data
-	var accountData = getAccountData(stockId, PLAYER_NAME)
+	var _a = getAccountData(stockId, PLAYER_NAME),
+		stocks = _a.stocks,
+		totalPrice = _a.totalPrice
 	// process transaction
 	var processResult = processTransaction(stockData, amount, 'buy')
 	// update data
@@ -930,7 +971,10 @@ function buyStock(args) {
 		}
 		setStockData(stockId, updateData)
 		// update account data
-		var updateAccount = accountData + amount
+		var updateAccount = {
+			stocks: stocks + amount,
+			totalPrice: totalPrice + cost,
+		}
 		setAccountData(stockId, PLAYER_NAME, updateAccount)
 	}
 	return processResult
@@ -938,10 +982,9 @@ function buyStock(args) {
 // sell stock (take stock from player)
 function sellStock(args) {
 	// get args
-	var action = args[0],
-		returnType = args[1],
-		stockId = args[2],
-		trscAmount = args[3]
+	var returnType = args[0],
+		stockId = args[1],
+		trscAmount = args[2]
 	// parse args
 	var amount = parseInt(trscAmount)
 	// check stock exists
@@ -951,9 +994,11 @@ function sellStock(args) {
 	// get stock data
 	var stockData = getStockData(stockId)
 	// get account data
-	var accountData = getAccountData(stockId, PLAYER_NAME)
+	var _a = getAccountData(stockId, PLAYER_NAME),
+		stocks = _a.stocks,
+		totalPrice = _a.totalPrice
 	// check stock amount
-	if (accountData - amount < 0) return false
+	if (stocks - amount < 0) return false
 	// process transaction
 	var processResult = processTransaction(stockData, amount, 'sell')
 	// update data
@@ -970,37 +1015,47 @@ function sellStock(args) {
 		}
 		setStockData(stockId, updateData)
 		// update account data
-		var updateAccount = accountData - amount
-		setAccountData(stockId, PLAYER_NAME, updateAccount)
+		var updatedAccount = {
+			stocks: stocks - amount,
+			totalPrice: totalPrice - profit,
+		}
+		setAccountData(stockId, PLAYER_NAME, updatedAccount)
 	}
 	return processResult
 }
 // give stock to player (for admin)
 function giveStock(args) {
 	// get args
-	var action = args[0],
-		returnType = args[1],
-		stockId = args[2],
-		giveAmount = args[3],
-		playerName = args[4]
+	var returnType = args[0],
+		stockId = args[1],
+		giveAmount = args[2],
+		playerName = args[3]
 	// parse args
 	var amount = parseInt(giveAmount)
+	// check stock exists
+	checkStock(stockId)
+	var currentPrice = getStockData(stockId).currentPrice
 	// check player stock account exists
 	checkAccount(stockId, playerName)
 	// get account data
-	var accountData = getAccountData(stockId, playerName)
+	var _a = getAccountData(stockId, playerName),
+		stocks = _a.stocks,
+		totalPrice = _a.totalPrice
 	// update account data
-	var updatedAmount = accountData + amount
-	var updateAccount = updatedAmount < 0 ? 0 : updatedAmount
-	setAccountData(stockId, playerName, updateAccount)
+	var updatedStocks = stocks + amount
+	var updatedTotalPrice = totalPrice + currentPrice * amount
+	var updatedAccount = {
+		stocks: updatedStocks < 0 ? 0 : updatedStocks,
+		totalPrice: updatedTotalPrice < 0 ? 0 : updatedTotalPrice,
+	}
+	setAccountData(stockId, playerName, updatedAccount)
 	return true
 }
 // set volatility to stock price
 function setStockVolatility(args) {
 	// get args
-	var action = args[0],
-		returnType = args[1],
-		stockId = args[2]
+	var returnType = args[0],
+		stockId = args[1]
 	// check stockId specified
 	if (stockId === undefined) {
 		for (var stock in STOCKS) {
@@ -1018,8 +1073,7 @@ function setStockVolatility(args) {
 // get next update ETA in mm:ss units
 function nextUpdateETA(args) {
 	// get args
-	var action = args[0],
-		returnType = args[1]
+	var returnType = args[0]
 	// get seconds from 'Command Timer' plugin's placeholder
 	// >> https://www.spigotmc.org/resources/command-timer.24141/
 	var seconds = parseInt(parsePlaceholder('commandtimer_stockTimer_nextExecution'))
@@ -1038,8 +1092,7 @@ function nextUpdateETA(args) {
 // remove specific stock data
 function removeStock(args) {
 	// get args
-	var action = args[0],
-		stockId = args[1]
+	var stockId = args[0]
 	// remove stock data
 	return removeStockData(stockId)
 }
@@ -1067,8 +1120,9 @@ function clearStock() {
 	totalSellBal: number
 			priceFluct: string # '1', '0', '-' 10 slots
 	account:
-		[playerName]: [playerStockCount: number]
-		...
+		[playerName]:
+							stocks: number
+							totalPrice: number
 */
 // placeholder controller
 function stockDataStore() {
@@ -1084,162 +1138,175 @@ function stockDataStore() {
 					trscType?   => transaction type. 'buy' | 'sell'
 			]
 	*/
-	var action = args[0]
+	var action = args[0],
+		restArgs = args.slice(1)
 	// filter action
 	switch (action) {
 		case 'initStocks': // initialize stocks' data
 			// check args
-			if (args.length !== 1 && args.length !== 2) return 'false'
+			if (restArgs.length !== 0 && args.length !== 1) return 'false'
 			// execute
-			result = initStocks(args)
+			result = initStocks(restArgs)
 			break
 		case 'checkBalance': // check player balance
 			// check args
-			if (args.length !== 1) return 'false'
+			if (restArgs.length !== 0) return 'false'
 			// execute
-			result = checkBalance(args)
+			result = checkBalance(restArgs)
 			break
 		case 'stockName': // get name of stock
 			// check args
-			if (args.length !== 3) return 'false'
+			if (restArgs.length !== 2) return 'false'
 			// execute
-			result = stockName(args)
+			result = stockName(restArgs)
 			break
 		case 'buyPrice': // get buying price with trading fee
 			// check args
-			if (args.length !== 4) return 'false'
+			if (restArgs.length !== 3) return 'false'
 			// execute
-			result = buyPrice(args)
+			result = buyPrice(restArgs)
 			break
 		case 'sellPrice': // get selling price with trading fee
 			// check args
-			if (args.length !== 4) return 'false'
+			if (restArgs.length !== 3) return 'false'
 			// execute
-			result = sellPrice(args)
+			result = sellPrice(restArgs)
 			break
 		case 'currentPrice': // get current price by stockId
 			// check args
-			if (args.length !== 3) return 'false'
+			if (restArgs.length !== 2) return 'false'
 			// execute
-			result = currentPrice(args)
+			result = currentPrice(restArgs)
 			break
 		case 'lastPrice': // get last price by stockId
 			// check args
-			if (args.length !== 3) return 'false'
+			if (restArgs.length !== 2) return 'false'
 			// execute
-			result = lastPrice(args)
+			result = lastPrice(restArgs)
 			break
 		case 'totalShares': // get total shares of stock
 			// check args
-			if (args.length !== 3) return 'false'
+			if (restArgs.length !== 2) return 'false'
 			// execute
-			result = totalShares(args)
+			result = totalShares(restArgs)
 			break
 		case 'priceFluctPercent': // get price fluct in percentage
 			// check args
-			if (args.length !== 3) return 'false'
+			if (restArgs.length !== 2) return 'false'
 			// execute
-			result = fluctPercentage(args)
+			result = fluctPercentage(restArgs)
 			break
 		case 'playerStockCount': // get stock count that player has
 			// check args
-			if (args.length !== 3) return 'false'
+			if (restArgs.length !== 2) return 'false'
 			// execute
-			result = playerStockCount(args)
+			result = playerStockCount(restArgs)
+			break
+		case 'averagePrice': // get average price of player's stock
+			// check args
+			if (restArgs.length !== 2) return 'false'
+			// execute
+			result = averagePrice(restArgs)
+			break
+		case 'estimatedProfit': // get estimated profit of player
+			// check args
+			if (restArgs.length !== 2) return 'false'
+			// execute
+			result = estimatedProfit(restArgs)
 			break
 		case 'slotBuy': // get slot stock buy count
 			// check args
-			if (args.length !== 3) return 'false'
+			if (restArgs.length !== 2) return 'false'
 			// execute
-			result = slotBuy(args)
+			result = slotBuy(restArgs)
 			break
 		case 'slotSell': // get slot stock sell count
 			// check args
-			if (args.length !== 3) return 'false'
+			if (restArgs.length !== 2) return 'false'
 			// execute
-			result = slotSell(args)
+			result = slotSell(restArgs)
 			break
 		case 'slotBuyBal': // get slot stock buy balance
 			// check args
-			if (args.length !== 3) return 'false'
+			if (restArgs.length !== 2) return 'false'
 			// execute
-			result = slotBuyBal(args)
+			result = slotBuyBal(restArgs)
 			break
 		case 'slotSellBal': // get slot stock sell balance
 			// check args
-			if (args.length !== 3) return 'false'
+			if (restArgs.length !== 2) return 'false'
 			// execute
-			result = slotSellBal(args)
+			result = slotSellBal(restArgs)
 			break
 		case 'totalBuy': // get total stock buy count
 			// check args
-			if (args.length !== 3) return 'false'
+			if (restArgs.length !== 2) return 'false'
 			// execute
-			result = totalBuy(args)
+			result = totalBuy(restArgs)
 			break
 		case 'totalSell': // get total stock sell count
 			// check args
-			if (args.length !== 3) return 'false'
+			if (restArgs.length !== 2) return 'false'
 			// execute
-			result = totalSell(args)
+			result = totalSell(restArgs)
 			break
 		case 'totalBuyBal': // get total stock buy balance
 			// check args
-			if (args.length !== 3) return 'false'
+			if (restArgs.length !== 2) return 'false'
 			// execute
-			result = totalBuyBal(args)
+			result = totalBuyBal(restArgs)
 			break
 		case 'totalSellBal': // get total stock sell balance
 			// check args
-			if (args.length !== 3) return 'false'
+			if (restArgs.length !== 2) return 'false'
 			// execute
-			result = totalSellBal(args)
+			result = totalSellBal(restArgs)
 			break
 		case 'stockFluct': // get stock price fluctuation data
 			// check args
-			if (args.length !== 3) return 'false'
+			if (restArgs.length !== 2) return 'false'
 			// execute
-			result = priceFluctuation(args)
+			result = priceFluctuation(restArgs)
 			break
 		case 'buyStock': // buy stock (give stock to player)
 			// check args
-			if (args.length !== 4) return 'false'
+			if (restArgs.length !== 3) return 'false'
 			// execute
-			result = buyStock(args)
+			result = buyStock(restArgs)
 			break
 		case 'sellStock': // sell stock (take stock from player)
 			// check args
-			if (args.length !== 4) return 'false'
+			if (restArgs.length !== 3) return 'false'
 			// execute
-			result = sellStock(args)
+			result = sellStock(restArgs)
 			break
 		case 'giveStock': // give stock to player (for event only)
 			// check args
-			if (args.length !== 5) return 'false'
+			if (restArgs.length !== 4) return 'false'
 			// execute
-			result = giveStock(args)
+			result = giveStock(restArgs)
 			break
 		case 'setV':
 			// check args
-			if (args.length !== 2 && args.length !== 3) return 'false'
+			if (restArgs.length !== 1 && restArgs.length !== 2) return 'false'
 			// execute
-			result = setStockVolatility(args)
+			result = setStockVolatility(restArgs)
 			break
 		case 'nextUpdateETA': // get next update ETA in mm:ss units
 			// check args
-			if (args.length !== 2) return 'false'
+			if (restArgs.length !== 1) return 'false'
 			// execute
-			result = nextUpdateETA(args)
+			result = nextUpdateETA(restArgs)
 			break
 		case 'removeStock': // remove specific stock data
 			// check args
-			if (args.length !== 2) return 'false'
+			if (restArgs.length !== 1) return 'false'
 			// execute
-			result = removeStock(args)
+			result = removeStock(restArgs)
 			break
 		case 'clearStock': // clear all stock data
 			// check args
-			if (args.length !== 1) return 'false'
+			if (restArgs.length !== 0) return 'false'
 			// execute
 			result = clearStock()
 			break
