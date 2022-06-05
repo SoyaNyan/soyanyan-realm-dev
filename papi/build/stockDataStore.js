@@ -702,8 +702,8 @@ function playerStockCount(args) {
 		// get total shares of stock
 		var totalShares_1 = get(''.concat(stockId, '.totalShares'))
 		// calc share ratio
-		var shareRatio = totalShares_1 <= 0 ? 0 : fixDigits((data / totalShares_1) * 100)
-		return shareRatio
+		var shareRatio = totalShares_1 <= 0 ? 0 : (data / totalShares_1) * 100
+		return shareRatio.toFixed(2)
 	}
 	// normal return
 	return formatWithCommas(data)

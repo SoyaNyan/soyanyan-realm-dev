@@ -895,9 +895,9 @@ function playerStockCount(args: string[]): DataType {
 		const totalShares = get(`${stockId}.totalShares`) as number
 
 		// calc share ratio
-		const shareRatio = totalShares <= 0 ? 0 : fixDigits(((data as number) / totalShares) * 100)
+		const shareRatio = totalShares <= 0 ? 0 : ((data as number) / totalShares) * 100
 
-		return shareRatio
+		return shareRatio.toFixed(2)
 	}
 
 	// normal return
