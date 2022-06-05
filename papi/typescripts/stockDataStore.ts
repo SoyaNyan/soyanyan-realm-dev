@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: stockDataStore.ts
- * Version: v1.2.0
- * Last Update: 2022-06-04
+ * Version: v1.3.0
+ * Last Update: 2022-06-05
  *
  * TypeScript Version: v4.7.2
  * Target: ES5
@@ -913,7 +913,7 @@ function averagePrice(args: string[]): DataType {
 	checkStock(stockId)
 
 	// get stock data
-	const { currentPrice } = getStockData(stockId)
+	const { currentPrice } = getStockData(stockId) as StrictStockDataType
 
 	// check player stock account exists
 	checkAccount(stockId, PLAYER_NAME)
@@ -942,7 +942,7 @@ function estimatedProfit(args: string[]): DataType {
 	checkStock(stockId)
 
 	// get stock data
-	const { currentPrice } = getStockData(stockId)
+	const { currentPrice } = getStockData(stockId) as StrictStockDataType
 
 	// check player stock account exists
 	checkAccount(stockId, PLAYER_NAME)
@@ -1300,7 +1300,7 @@ function giveStock(args: string[]): boolean {
 	// check stock exists
 	checkStock(stockId)
 
-	const { currentPrice } = getStockData(stockId)
+	const { currentPrice } = getStockData(stockId) as StrictStockDataType
 
 	// check player stock account exists
 	checkAccount(stockId, playerName)
