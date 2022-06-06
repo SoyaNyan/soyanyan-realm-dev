@@ -76,22 +76,20 @@ if (!String.prototype.includes) {
 // Array.prototype.includes
 if (!Array.prototype.includes) {
 	Array.prototype.includes = function <T>(searchElement: T, fromIndex?: number) {
-		if (typeof fromIndex !== 'number') fromIndex = 0
-
-		const o = Object(this)
-		const len = o.length >>> 0
-
-		if (len === 0) return false
-
-		var n = fromIndex
-		var k = Math.max(n >= 0 ? n : len - Math.abs(n), 0)
-
 		function sameValueZero(x: T, y: T): boolean {
 			return x === y || (typeof x === 'number' && typeof y === 'number' && isNaN(x) && isNaN(y))
 		}
 
+		if (typeof fromIndex !== 'number') fromIndex = 0
+
+		const obj = Object(this)
+		const len = obj.length
+
+		if (len === 0) return false
+
+		let k = Math.max(fromIndex >= 0 ? fromIndex : len - Math.abs(fromIndex), 0)
 		while (k < len) {
-			if (sameValueZero(o[k], searchElement)) return true
+			if (sameValueZero(obj[k], searchElement)) return true
 			k++
 		}
 
