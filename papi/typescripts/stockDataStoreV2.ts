@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: stockDataStoreV2.ts
- * Version: v1.3.0
- * Last Update: 2022-06-05
+ * Version: v1.4.0
+ * Last Update: 2022-06-06
  *
  * TypeScript Version: v4.7.2
  * Target: ES5
@@ -62,6 +62,10 @@ type AccountDataType = {
 	stocks: number
 	totalPrice: number
 }
+type CommandObjectType = {
+	argLen: Array<number>
+	callback: (args: string[]) => DataType
+}
 
 /**
   [ constants ] 
@@ -110,6 +114,38 @@ const STOCKS: {
 	},
 	'stock03': {
 		name: '소야냥그룹',
+		lastPrice: 100000,
+		currentPrice: 100000,
+		totalShares: 0,
+		slotBuy: 0,
+		slotSell: 0,
+		slotBuyBal: 0,
+		slotSellBal: 0,
+		totalBuy: 0,
+		totalSell: 0,
+		totalBuyBal: 0,
+		totalSellBal: 0,
+		priceFluct: '##########',
+		accounts: '',
+	},
+	'stock04': {
+		name: '소야냥화학',
+		lastPrice: 50000,
+		currentPrice: 50000,
+		totalShares: 0,
+		slotBuy: 0,
+		slotSell: 0,
+		slotBuyBal: 0,
+		slotSellBal: 0,
+		totalBuy: 0,
+		totalSell: 0,
+		totalBuyBal: 0,
+		totalSellBal: 0,
+		priceFluct: '##########',
+		accounts: '',
+	},
+	'stock05': {
+		name: '소야냥전자',
 		lastPrice: 100000,
 		currentPrice: 100000,
 		totalShares: 0,
@@ -470,6 +506,14 @@ function getNextStockData(stockData: StrictStockDataType): StockDataType {
 /**
   [ check economy utilities ] 
 */
+// check player has valid amount of item
+function checkAmount(value: number, playerName: string): boolean {
+	const placeholder = `checkitem_nameequals:&f[&xB3FFB3수표&r] ${value}원,lorecontains:${playerName},amt:1,enchanted`
+
+	// if player has items in inventory
+	return parsePlaceholder(placeholder) === 'yes'
+}
+
 // remove check item (valid amount)
 function removeCheck(value: number, playerName: string): boolean {
 	const placeholder = `checkitem_remove_nameequals:&f[&xB3FFB3수표&r] ${value}원,lorecontains:${playerName},amt:1,enchanted`
@@ -511,6 +555,33 @@ function initStocks(args: string[]): boolean {
 	return true
 }
 
+// check player balance
+function checkBalance(args: string[]): DataType {
+	// get args
+	const [, returnType, stockId, trscAmount] = args
+
+	// parse args
+	const amount = parseInt(trscAmount)
+
+	// check stock exists
+	checkStock(stockId)
+
+	// get stock data
+	const { currentPrice } = getStockData(stockId) as StrictStockDataType
+
+	// get price when buying
+	const price = getCost(currentPrice, amount)
+
+	// check player has valid amount of item
+	const isValid = checkAmount(price, PLAYER_NAME)
+
+	// check return type
+	if (returnType === '1') return encodeBoolean(isValid)
+
+	// normal return
+	return isValid
+}
+
 // get name of stock
 function stockName(args: string[]): DataType {
 	// get args
@@ -546,7 +617,7 @@ function buyPrice(args: string[]): DataType {
 	// get price when buying
 	const price = getCost(currentPrice, amount)
 
-	// check return type (condition: currentPrice > lastPrice)
+	// check return type
 	if (returnType === '1') return formatWithCommas(price)
 
 	// normal return
@@ -570,7 +641,7 @@ function sellPrice(args: string[]): DataType {
 	// get price when buying
 	const price = getProfit(currentPrice, amount)
 
-	// check return type (condition: currentPrice > lastPrice)
+	// check return type
 	if (returnType === '1') return formatWithCommas(price)
 
 	// normal return
@@ -669,7 +740,7 @@ function fluctPercentage(args: string[]): DataType {
 // get stock count that player has
 function playerStockCount(args: string[]): DataType {
 	// get args
-	const [, returnType, stockId] = args
+	const [, returnType, stockId, trscAmount] = args
 
 	// check stock exists
 	checkStock(stockId)
@@ -681,7 +752,7 @@ function playerStockCount(args: string[]): DataType {
 	const path = `${stockId}.accounts.${PLAYER_NAME}.stocks`
 
 	// get data
-	const data = get(path)
+	const data = get(path) as number
 
 	// check return type (condition: player has stock in own account)
 	const cond = data > 0
@@ -695,6 +766,16 @@ function playerStockCount(args: string[]): DataType {
 		const shareRatio = totalShares <= 0 ? 0 : ((data as number) / totalShares) * 100
 
 		return shareRatio.toFixed(2)
+	}
+	if (returnType === '4') {
+		// check trscAmount specified
+		if (typeof trscAmount === 'undefined') return false
+
+		// parse args
+		const amount = parseInt(trscAmount)
+
+		// check
+		return data - amount >= 0
 	}
 
 	// normal return
@@ -992,7 +1073,7 @@ function priceFluctuation(args: string[]): DataType {
 }
 
 // buy stock (give stock to player)
-function buyStock(args: string[]): boolean {
+function buyStock(args: string[]): DataType {
 	// get args
 	const [, returnType, stockId, trscAmount] = args
 
@@ -1037,11 +1118,15 @@ function buyStock(args: string[]): boolean {
 		setAccountData(stockId, PLAYER_NAME, updateAccount)
 	}
 
+	// check return type (condition: transaction process success or not)
+	if (returnType === '1') return encodeBoolean(processResult)
+
+	// normal return
 	return processResult
 }
 
 // sell stock (take stock from player)
-function sellStock(args: string[]): boolean {
+function sellStock(args: string[]): DataType {
 	// get args
 	const [, returnType, stockId, trscAmount] = args
 
@@ -1089,6 +1174,10 @@ function sellStock(args: string[]): boolean {
 		setAccountData(stockId, PLAYER_NAME, updatedAccount)
 	}
 
+	// check return type (condition: transaction process success or not)
+	if (returnType === '1') return encodeBoolean(processResult)
+
+	// normal return
 	return processResult
 }
 
@@ -1240,200 +1329,132 @@ function stockDataStore(): string {
     */
 	const [action] = args
 
-	// filter action
-	switch (action) {
-		case 'initStocks': // initialize stocks' data
-			// check args
-			if (args.length !== 1 && args.length !== 2) return 'false'
-
-			// execute
-			result = initStocks(args)
-			break
-		case 'stockName': // get name of stock
-			// check args
-			if (args.length !== 3) return 'false'
-
-			// execute
-			result = stockName(args)
-			break
-		case 'buyPrice': // get buying price with trading fee
-			// check args
-			if (args.length !== 4) return 'false'
-
-			// execute
-			result = buyPrice(args)
-			break
-		case 'sellPrice': // get selling price with trading fee
-			// check args
-			if (args.length !== 4) return 'false'
-
-			// execute
-			result = sellPrice(args)
-			break
-		case 'currentPrice': // get current price by stockId
-			// check args
-			if (args.length !== 3) return 'false'
-
-			// execute
-			result = currentPrice(args)
-			break
-		case 'lastPrice': // get last price by stockId
-			// check args
-			if (args.length !== 3) return 'false'
-
-			// execute
-			result = lastPrice(args)
-			break
-		case 'totalShares': // get total shares of stock
-			// check args
-			if (args.length !== 3) return 'false'
-
-			// execute
-			result = totalShares(args)
-			break
-		case 'priceFluctPercent': // get price fluct in percentage
-			// check args
-			if (args.length !== 3) return 'false'
-
-			// execute
-			result = fluctPercentage(args)
-			break
-		case 'playerStockCount': // get stock count that player has
-			// check args
-			if (args.length !== 3) return 'false'
-
-			// execute
-			result = playerStockCount(args)
-			break
-		case 'averagePrice': // get average price of player's stock
-			// check args
-			if (args.length !== 3) return 'false'
-
-			// execute
-			result = averagePrice(args)
-			break
-		case 'estimatedProfit': // get estimated profit of player
-			// check args
-			if (args.length !== 3) return 'false'
-
-			// execute
-			result = estimatedProfit(args)
-			break
-		case 'slotBuy': // get slot stock buy count
-			// check args
-			if (args.length !== 3) return 'false'
-
-			// execute
-			result = slotBuy(args)
-			break
-		case 'slotSell': // get slot stock sell count
-			// check args
-			if (args.length !== 3) return 'false'
-
-			// execute
-			result = slotSell(args)
-			break
-		case 'slotBuyBal': // get slot stock buy balance
-			// check args
-			if (args.length !== 3) return 'false'
-
-			// execute
-			result = slotBuyBal(args)
-			break
-		case 'slotSellBal': // get slot stock sell balance
-			// check args
-			if (args.length !== 3) return 'false'
-
-			// execute
-			result = slotSellBal(args)
-			break
-		case 'totalBuy': // get total stock buy count
-			// check args
-			if (args.length !== 3) return 'false'
-
-			// execute
-			result = totalBuy(args)
-			break
-		case 'totalSell': // get total stock sell count
-			// check args
-			if (args.length !== 3) return 'false'
-
-			// execute
-			result = totalSell(args)
-			break
-		case 'totalBuyBal': // get total stock buy balance
-			// check args
-			if (args.length !== 3) return 'false'
-
-			// execute
-			result = totalBuyBal(args)
-			break
-		case 'totalSellBal': // get total stock sell balance
-			// check args
-			if (args.length !== 3) return 'false'
-
-			// execute
-			result = totalSellBal(args)
-			break
-		case 'stockFluct': // get stock price fluctuation data
-			// check args
-			if (args.length !== 3) return 'false'
-
-			// execute
-			result = priceFluctuation(args)
-			break
-		case 'buyStock': // buy stock (give stock to player)
-			// check args
-			if (args.length !== 4) return 'false'
-
-			// execute
-			result = buyStock(args)
-			break
-		case 'sellStock': // sell stock (take stock from player)
-			// check args
-			if (args.length !== 4) return 'false'
-
-			// execute
-			result = sellStock(args)
-			break
-		case 'giveStock': // give stock to player (for event only)
-			// check args
-			if (args.length !== 5) return 'false'
-
-			// execute
-			result = giveStock(args)
-			break
-		case 'setV':
-			// check args
-			if (args.length !== 2 && args.length !== 3) return 'false'
-
-			// execute
-			result = setStockVolatility(args)
-			break
-		case 'nextUpdateETA': // get next update ETA in mm:ss units
-			// check args
-			if (args.length !== 2) return 'false'
-
-			// execute
-			result = nextUpdateETA(args)
-			break
-		case 'removeStock': // remove specific stock data
-			// check args
-			if (args.length !== 2) return 'false'
-
-			// execute
-			result = removeStock(args)
-			break
-		case 'clearStock': // clear all stock data
-			// check args
-			if (args.length !== 1) return 'false'
-
-			// execute
-			result = clearStock()
-			break
-		default:
-			result = false
+	// command(placeholder) settings
+	const VALID_COMMANDS: { [index: string]: CommandObjectType } = {
+		initStocks: {
+			argLen: [1, 2],
+			callback: initStocks,
+		},
+		checkBalance: {
+			argLen: [4],
+			callback: checkBalance,
+		},
+		stockName: {
+			argLen: [3],
+			callback: stockName,
+		},
+		buyPrice: {
+			argLen: [4],
+			callback: buyPrice,
+		},
+		sellPrice: {
+			argLen: [4],
+			callback: sellPrice,
+		},
+		currentPrice: {
+			argLen: [3],
+			callback: currentPrice,
+		},
+		lastPrice: {
+			argLen: [3],
+			callback: lastPrice,
+		},
+		totalShares: {
+			argLen: [3],
+			callback: totalShares,
+		},
+		priceFluctPercent: {
+			argLen: [3],
+			callback: fluctPercentage,
+		},
+		playerStockCount: {
+			argLen: [3, 4],
+			callback: playerStockCount,
+		},
+		averagePrice: {
+			argLen: [3],
+			callback: averagePrice,
+		},
+		estimatedProfit: {
+			argLen: [3],
+			callback: estimatedProfit,
+		},
+		slotBuy: {
+			argLen: [3],
+			callback: slotBuy,
+		},
+		slotSell: {
+			argLen: [3],
+			callback: slotSell,
+		},
+		slotBuyBal: {
+			argLen: [3],
+			callback: slotBuyBal,
+		},
+		slotSellBal: {
+			argLen: [3],
+			callback: slotSellBal,
+		},
+		totalBuy: {
+			argLen: [3],
+			callback: totalBuy,
+		},
+		totalSell: {
+			argLen: [3],
+			callback: totalSell,
+		},
+		totalBuyBal: {
+			argLen: [3],
+			callback: totalBuyBal,
+		},
+		totalSellBal: {
+			argLen: [3],
+			callback: totalSellBal,
+		},
+		stockFluct: {
+			argLen: [3],
+			callback: priceFluctuation,
+		},
+		buyStock: {
+			argLen: [4],
+			callback: buyStock,
+		},
+		sellStock: {
+			argLen: [4],
+			callback: sellStock,
+		},
+		giveStock: {
+			argLen: [5],
+			callback: giveStock,
+		},
+		setV: {
+			argLen: [2, 3],
+			callback: setStockVolatility,
+		},
+		nextUpdateETA: {
+			argLen: [2],
+			callback: nextUpdateETA,
+		},
+		removeStock: {
+			argLen: [2],
+			callback: removeStock,
+		},
+		clearStock: {
+			argLen: [1],
+			callback: clearStock,
+		},
 	}
+
+	// check action
+	if (!(action in VALID_COMMANDS)) return 'false'
+
+	// check args
+	const { argLen, callback } = VALID_COMMANDS[action]
+	const isValidArgs = argLen.some((len) => args.length === len)
+	if (!isValidArgs) return 'false'
+
+	// execute callback
+	result = callback(args)
 
 	// return action result
 	return stringify(result)
