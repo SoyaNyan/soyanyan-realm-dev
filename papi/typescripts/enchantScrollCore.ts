@@ -65,11 +65,9 @@ if (!String.prototype.includes) {
 	String.prototype.includes = function (search: string, start?: number): boolean {
 		if (typeof start !== 'number') start = 0
 
-		if (start + search.length > this.length) {
-			return false
-		} else {
-			return this.indexOf(search, start) !== -1
-		}
+		if (start + search.length > this.length) return false
+
+		return this.indexOf(search, start) !== -1
 	}
 }
 
@@ -77,20 +75,19 @@ if (!String.prototype.includes) {
 if (!Array.prototype.includes) {
 	Array.prototype.includes = function <T>(searchElement: T, fromIndex?: number) {
 		function sameValueZero(x: T, y: T): boolean {
-			return x === y || (typeof x === 'number' && typeof y === 'number' && isNaN(x) && isNaN(y))
+			return x === y
 		}
+
+		const arr = Object(this)
 
 		if (typeof fromIndex !== 'number') fromIndex = 0
 
-		const obj = Object(this)
-		const len = obj.length
+		if (arr.length === 0) return false
 
-		if (len === 0) return false
-
-		let k = Math.max(fromIndex >= 0 ? fromIndex : len - Math.abs(fromIndex), 0)
-		while (k < len) {
-			if (sameValueZero(obj[k], searchElement)) return true
-			k++
+		let start = Math.max(fromIndex >= 0 ? fromIndex : arr.length - Math.abs(fromIndex), 0)
+		while (start < arr.length) {
+			if (sameValueZero(arr[start], searchElement)) return true
+			start++
 		}
 
 		return false
