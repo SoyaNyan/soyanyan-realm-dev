@@ -23,6 +23,17 @@ const args: string[] = []
 /**
   [ type definition ] 
 */
+// for polyfills
+declare global {
+	interface String {
+		includes(search: string, start?: number): boolean
+	}
+
+	interface Array<T> {
+		includes(searchElement: T, fromIndex?: number): boolean
+	}
+}
+
 // available stored data types
 type DataType = number | string | boolean
 
@@ -44,6 +55,48 @@ type ItemIntNBTDataType = {
 	[index: string]: number
 	Damage: number
 	RepairCost: number
+}
+
+/**
+[ polyfill ] 
+*/
+// String.prototype.includes
+if (!String.prototype.includes) {
+	String.prototype.includes = function (search: string, start?: number): boolean {
+		if (typeof start !== 'number') start = 0
+
+		if (start + search.length > this.length) {
+			return false
+		} else {
+			return this.indexOf(search, start) !== -1
+		}
+	}
+}
+
+// Array.prototype.includes
+if (!Array.prototype.includes) {
+	Array.prototype.includes = function <T>(searchElement: T, fromIndex?: number) {
+		if (typeof fromIndex !== 'number') fromIndex = 0
+
+		const o = Object(this)
+		const len = o.length >>> 0
+
+		if (len === 0) return false
+
+		var n = fromIndex
+		var k = Math.max(n >= 0 ? n : len - Math.abs(n), 0)
+
+		function sameValueZero(x: T, y: T): boolean {
+			return x === y || (typeof x === 'number' && typeof y === 'number' && isNaN(x) && isNaN(y))
+		}
+
+		while (k < len) {
+			if (sameValueZero(o[k], searchElement)) return true
+			k++
+		}
+
+		return false
+	}
 }
 
 /**
@@ -463,13 +516,13 @@ function getEnchantData(slot: number): ItemEnchantDataType {
 	const rawData = parsePlaceholder(`checkitem_getinfo:${slot}_enchantments:enchantment`).split('|')
 
 	// parse enchant data from raw data string
-	const enchantData = {}
+	const enchantData: ItemEnchantDataType = {}
 	rawData.forEach((enchantStr) => {
 		// split enchantments & level
 		const [enchant, level] = enchantStr.split(':')
 
 		// store data
-		enchantData[enchant] = level
+		enchantData[enchant] = parseInt(level)
 	})
 
 	// return enchant data
