@@ -196,6 +196,16 @@ const VALID_ENCHANTS: { [index: string]: ValidEnchantType } = {
 	},
 }
 
+const ENCHANT_BLAKLIST: Array<string> = [
+	'mending',
+	'silk_touch',
+	'aqua_affinity',
+	'flame',
+	'infinity',
+	'channeling',
+	'multishot',
+]
+
 const ENCHANT_LIMIT: { [index: string]: Array<number> } = {
 	// [enchantments]: [min, max]
 	// if plus scroll, max = max - 1
@@ -438,6 +448,15 @@ function execCommand(command: string): boolean {
 /**
   [ checkitem utilities ]
 */
+// check item is enchanted or not (in specific slot)
+function isEnchanted(slot: number): boolean {
+	// check enchanted
+	const enchanted = parsePlaceholder(`checkitem_getinfo:${slot}_enchanted`)
+
+	// return result
+	return enchanted === 'true'
+}
+
 // get enchant data of target item (in specific slot)
 function getEnchantData(slot: number): ItemEnchantDataType {
 	// get raw enchant data
@@ -503,6 +522,28 @@ function getRepairCost(slot: number): number {
 /**
   [ enchant scroll utilities ]
 */
+// check specific enchant's level limit
+function checkEnchantLevelLimit(
+	enchantData: ItemEnchantDataType,
+	enchant: string,
+	isPlus: boolean
+): boolean {
+	// get specific enchant's data
+	const level = enchantData[enchant]
+
+	// get limit of the enchant
+	const [min, max] = ENCHANT_LIMIT[enchant]
+
+	// check plus offset
+	const offset = isPlus ? -1 : 0
+
+	// check valid range of enchant level
+	const cond = level >= min && level < max + offset
+
+	// return result
+	return cond
+}
+
 // get repair cost limit of target item
 function getItemCostLimit(targetItem: string): number {
 	// get repair cost limit settings
@@ -556,6 +597,7 @@ function checkEnchant(args: string[]): DataType {
 	// check item material matches
 	const checkItem = items.some((item) => targetItem.includes(item))
 
+	// normal return
 	return checkSuffix || checkItem
 }
 
@@ -564,23 +606,14 @@ function checkUpgradable(args: string[]): DataType {
 	// get args
 	const [, returnType, enchant, isPlus] = args
 
-	// default
-	let isUpgradable = false
+	// parse args
+	const checkPlus = isPlus === '1'
 
 	// get enchant data from target item
 	const enchantData = getEnchantData(40)
 
-	// get specific enchant's data
-	const level = enchantData[enchant]
-
-	// get limit of the enchant
-	const [min, max] = ENCHANT_LIMIT[enchant]
-
-	// check plus offset
-	const offset = isPlus === '1' ? -1 : 0
-
-	// check valid range of enchant level
-	const cond = level >= min && level < max + offset
+	// check enchant level exceeds limit
+	const cond = checkEnchantLevelLimit(enchantData, enchant, checkPlus)
 
 	// normal return
 	return cond
@@ -611,6 +644,37 @@ function checkRepairCostLimit(args: string[]): DataType {
 
 	// normal return
 	return checkLimit
+}
+
+// check every enchants meets valid enchant settings (for random enchant scroll)
+function checkValidItem(args: string[]): DataType {
+	// get args
+	const [, returnType, isPlus] = args
+
+	// parse args
+	const checkPlus = isPlus === '1'
+
+	// check item is enchanted
+	if (!isEnchanted(40)) return false
+
+	// get enchant data from target item
+	const enchantData = getEnchantData(40)
+
+	// count upgradable enchants
+	let count = 0
+	for (const enchant in enchantData) {
+		// check unupgradable enchants
+		if (ENCHANT_BLAKLIST.includes(enchant)) continue
+
+		// check enchant level exceeds limit
+		if (!checkEnchantLevelLimit(enchantData, enchant, checkPlus)) return false
+
+		// enchant upgradable
+		count++
+	}
+
+	// normal return
+	return count > 0
 }
 
 // get repair cost limit of target item
@@ -649,6 +713,10 @@ function enchantScrollCore(): string {
 		checkCostLimit: {
 			argLen: [4],
 			callback: checkRepairCostLimit,
+		},
+		checkValidItem: {
+			argLen: [2],
+			callback: checkValidItem,
 		},
 		repairCostLimit: {
 			argLen: [2],
