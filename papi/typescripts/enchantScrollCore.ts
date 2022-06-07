@@ -28,7 +28,6 @@ declare global {
 	interface String {
 		includes(search: string, start?: number): boolean
 	}
-
 	interface Array<T> {
 		includes(searchElement: T, fromIndex?: number): boolean
 	}
@@ -55,6 +54,14 @@ type ItemIntNBTDataType = {
 	[index: string]: number
 	Damage: number
 	RepairCost: number
+}
+
+type ItemInfoType = {
+	name: string
+	placeholder: string
+	code: string
+	eiCode: string
+	mat: string
 }
 
 /**
@@ -97,6 +104,9 @@ if (!Array.prototype.includes) {
 /**
   [ constants ] 
 */
+// player name
+const PLAYER_NAME = '%player_name%'
+
 const VALID_ENCHANTS: { [index: string]: ValidEnchantType } = {
 	unbreaking: {
 		suffixes: [
@@ -373,6 +383,43 @@ const ENCHANT_PANALTY: { [index: string]: number } = {
 	random: 3,
 }
 
+// event settins
+const EVENT_DAYS: Array<number> = [0, 6]
+
+const EVENT_CHANCE_MULTIPLIER: number = 2
+
+// item settings
+const ITEM_SETTINGS: { [index: string]: ItemInfoType } = {
+	protectScroll: {
+		name: '&7[#55CBCD ★★★ &7] #ECD5E3&l아이템 #FFFFB5&l프로텍트 #ECEAE4&l스크롤',
+		placeholder: 'checkitem_amount_lorecontains:ES-PS001',
+		code: 'ES-PS001',
+		eiCode: 'enchantProtectScroll',
+		mat: 'FLOWER_BANNER_PATTERN',
+	},
+	enchantEssenceHigh: {
+		name: '&7[#55CBCD ★★★ &7] #ECEAE4&l강력한 #FF968A&l인챈트 #FFC8A2&l에센스',
+		placeholder: 'checkitem_amount_lorecontains:ES-ES001',
+		code: 'ES-ES001',
+		eiCode: 'enchantEssenceHigh',
+		mat: 'DIAMOND',
+	},
+	enchantEssenceMedium: {
+		name: '&7[#55CBCD ★★ &7] #ECEAE4&l쓸만한 #FF968A&l인챈트 #FFC8A2&l에센스',
+		placeholder: 'checkitem_amount_lorecontains:ES-ES002',
+		code: 'ES-ES002',
+		eiCode: 'enchantEssenceMedium',
+		mat: 'DIAMOND',
+	},
+	enchantEssenceLow: {
+		name: '&7[#55CBCD ★ &7] #ECEAE4&l미약한 #FF968A&l인챈트 #FFC8A2&l에센스',
+		placeholder: 'checkitem_amount_lorecontains:ES-ES003',
+		code: 'ES-ES003',
+		eiCode: 'enchantEssenceLow',
+		mat: 'DIAMOND',
+	},
+}
+
 /**
   [ data utilities ] 
 */
@@ -567,6 +614,24 @@ function getRepairCost(slot: number): number {
 	return RepairCost
 }
 
+// get settings of items
+function getItemInfo(itemCode: string): ItemInfoType {
+	// return info object
+	return ITEM_SETTINGS[itemCode]
+}
+
+// get amount of specific item in player's inventory
+function getInventoryItemAmount(itemCode: string): number {
+	// get placeholder
+	const { placeholder } = getItemInfo(itemCode)
+
+	// get item amount
+	const amount = parsePlaceholder(placeholder)
+
+	// return amount as number
+	return parseInt(amount)
+}
+
 /**
   [ enchant scroll utilities ]
 */
@@ -628,6 +693,18 @@ function getNextRepairCost(repairCost: number, enchant: string, isPlus: boolean)
 /**
   [ action handler ] 
 */
+// get item names (color coded)
+function itemNames(args: string[]): DataType {
+	// get args
+	const [, returnType, itemCode] = args
+
+	// get item name
+	const { name } = getItemInfo(itemCode)
+
+	// normal return
+	return name
+}
+
 // check target enchant or item is valid
 function checkEnchant(args: string[]): DataType {
 	// get args
@@ -740,6 +817,48 @@ function repairCostLimit(args: string[]): DataType {
 	return limit
 }
 
+// check if in event
+function checkEvent(args: string[]): DataType {
+	// get args
+	const [, returnType] = args
+
+	// check day of today
+	const today = new Date()
+	const day = today.getDay()
+
+	// check return type (condition: if today is event day)
+	const cond = EVENT_DAYS.includes(day)
+	if (returnType === '1') return encodeBoolean(cond)
+
+	// normal return
+	return cond
+}
+
+// get event chance multiplier
+function eventMultiplier(agrs: string[]): DataType {
+	// get args
+	const [, returnType] = args
+
+	// normal return
+	return EVENT_CHANCE_MULTIPLIER
+}
+
+// check player has protect scroll
+function checkProtectScroll(args: string[]): DataType {
+	// get args
+	const [, returnType] = args
+
+	// get amount of protect scroll
+	const amount = getInventoryItemAmount('protectScroll')
+
+	// check return type (condition: amount of protect scroll > 0)
+	const cond = amount > 0
+	if (returnType === '1') encodeBoolean(cond)
+
+	// normal return
+	return cond
+}
+
 // placeholder controller
 function enchantScrollCore(): string {
 	// action result
@@ -750,6 +869,10 @@ function enchantScrollCore(): string {
 
 	// command(placeholder) settings
 	const VALID_COMMANDS: { [index: string]: CommandObjectType } = {
+		itemNames: {
+			argLen: [2],
+			callback: itemNames,
+		},
 		checkEnchant: {
 			argLen: [3],
 			callback: checkEnchant,
@@ -769,6 +892,18 @@ function enchantScrollCore(): string {
 		repairCostLimit: {
 			argLen: [2],
 			callback: repairCostLimit,
+		},
+		checkEvent: {
+			argLen: [2],
+			callback: checkEvent,
+		},
+		eventMultiplier: {
+			argLen: [2],
+			callback: eventMultiplier,
+		},
+		checkProtectScroll: {
+			argLen: [2],
+			callback: checkProtectScroll,
 		},
 	}
 
