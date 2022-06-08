@@ -46,6 +46,21 @@ type ValidEnchantType = {
 	items: Array<string>
 }
 
+type EnchantChanceSettingType = {
+	chance: EnchantChanceType
+	rarityWeight: { [index: string]: number }
+}
+
+type EnchantChanceType = {
+	normal: EnchantChanceDetailType
+	plus: EnchantChanceDetailType
+}
+
+type EnchantChanceDetailType = {
+	success: Array<number>
+	fail: Array<number>
+}
+
 type ItemEnchantDataType = {
 	[index: string]: number
 }
@@ -62,6 +77,16 @@ type ItemInfoType = {
 	code: string
 	eiCode: string
 	mat: string
+	amount?: number
+}
+
+type StrictItemInfoType = {
+	name: string
+	placeholder: string
+	code: string
+	eiCode: string
+	mat: string
+	amount: number
 }
 
 /**
@@ -381,6 +406,59 @@ const ENCHANT_PANALTY: { [index: string]: number } = {
 	riptide: 2,
 	piercing: 1,
 	random: 3,
+}
+
+const ENCHANT_CHANCE: EnchantChanceSettingType = {
+	chance: {
+		normal: {
+			success: [1, 0.8, 0.7, 0.6, 0.55, 0.5, 0.3, 0.1, 0.01, 0.001],
+			fail: [0, 0, 0, 0.05, 0.05, 0.1, 0.1, 0.1, 0.2, 0.3],
+		},
+		plus: {
+			success: [1, 1, 0.5, 0.45, 0.4, 0.35, 0.3, 0.1, 0.01, 0.001],
+			fail: [0, 0, 0, 0.1, 0.1, 0.15, 0.15, 0.2, 0.25, 0.3],
+		},
+	},
+	rarityWeight: {
+		mending: 1,
+		silk_touch: 1,
+		unbreaking: 0.8,
+		efficiency: 1,
+		fortune: 0.5,
+		aqua_affinity: 1,
+		respiration: 0.8,
+		thorns: 0.8,
+		protection: 0.8,
+		projectile_protection: 0.9,
+		fire_protection: 0.9,
+		blast_protection: 0.9,
+		swift_sneak: 0.8,
+		feather_falling: 0.8,
+		soul_speed: 0.8,
+		depth_strider: 0.8,
+		frost_walker: 0.7,
+		fire_aspect: 0.7,
+		looting: 0.5,
+		knockback: 0.7,
+		sweeping: 0.8,
+		sharpness: 0.9,
+		smite: 0.9,
+		bane_of_arthropods: 1,
+		cleaving: 0.8,
+		power: 0.9,
+		punch: 0.7,
+		flame: 1,
+		infinity: 1,
+		lure: 0.5,
+		luck_of_the_sea: 0.5,
+		impaling: 0.9,
+		channeling: 1,
+		loyalty: 0.8,
+		riptide: 0.8,
+		quick_charge: 0.8,
+		piercing: 0.8,
+		multishot: 1,
+	},
 }
 
 // event settins
@@ -710,6 +788,23 @@ function getInventoryItemAmount(itemCode: string): number {
 /**
   [ enchant scroll utilities ]
 */
+// check if in event day
+function isEventDay(): boolean {
+	// check day of today
+	const today = new Date()
+	const day = today.getDay()
+
+	// if today is event day
+	return EVENT_DAYS.includes(day)
+}
+
+// get event chance multiplier if today is event day
+function getEventMultiplier(): number {
+	// check today is event day
+	if (isEventDay()) return EVENT_CHANCE_MULTIPLIER
+	return 1
+}
+
 // check specific enchant's level limit
 function checkEnchantLevelLimit(
 	enchantData: ItemEnchantDataType,
@@ -763,6 +858,122 @@ function getNextRepairCost(repairCost: number, enchant: string, isPlus: boolean)
 
 	// normal return
 	return nextRepairCost
+}
+
+// check which essence exists in slot
+function getEssenceInfo(slot: number): ItemInfoType | boolean {
+	// get enchant essence settings
+	const enchantEssence: { [index: string]: ItemInfoType } = {
+		enchantEssenceLow: ITEM_SETTINGS['enchantEssenceLow'],
+		enchantEssenceMedium: ITEM_SETTINGS['enchantEssenceMedium'],
+		enchantEssenceHigh: ITEM_SETTINGS['enchantEssenceHigh'],
+	}
+
+	// check kinds of essence
+	for (const essence in enchantEssence) {
+		// get code
+		const { code } = enchantEssence[essence]
+
+		// set placeholder
+		const placeholder = `checkitem_amount_inslot:${slot},lorecontains:${code}`
+
+		// checkitem result
+		const checkEssence = parseInt(parsePlaceholder(placeholder)) > 0
+
+		// return current essence's info if match
+		if (checkEssence)
+			return {
+				...enchantEssence[essence],
+				amount: parseInt(parsePlaceholder(placeholder)),
+			}
+	}
+
+	// no match
+	return false
+}
+
+// get boosted chance
+function getBoostedChance(): number {
+	// enchant essence setting
+	const enchantEssence: { [index: string]: number } = {
+		enchantEssenceLow: 0.001,
+		enchantEssenceMedium: 0.005,
+		enchantEssenceHigh: 0.01,
+	}
+
+	// enchant essence placeholder
+	const niddle = 'ES-ES'
+
+	// init slot
+	let slot: number = -1
+
+	// check player's quick slots (1 ~ 8)
+	for (let i = 1; i <= 8; i++) {
+		// set placeholder
+		const placeholder = `checkitem_amount_inslot:${i},lorecontains:${niddle}`
+
+		// check essence item exists
+		const essenceExists = parsePlaceholder(placeholder) === 'yes'
+
+		// save slot if essence item found
+		if (essenceExists) {
+			slot = i
+			break
+		}
+	}
+
+	// check if no essence
+	if (slot === -1) return 0
+
+	// get essence info
+	const essence = getEssenceInfo(slot)
+
+	// if invalid essence info
+	if (!essence) return 0
+
+	// calc boosted chance
+	const { eiCode, amount } = essence as StrictItemInfoType
+	const boost = enchantEssence[eiCode] * amount
+
+	// return boosted chance
+	return boost
+}
+
+// get enchant scroll result
+function getEnchantResult(enchant: string, level: number, isPlus: boolean): number {
+	// get enchant settings
+	const { chance, rarityWeight } = ENCHANT_CHANCE
+
+	// get success, fail chance
+	const { success, fail } = isPlus ? chance.plus : chance.normal
+
+	// set next enchant level
+	const nextLevel = isPlus ? level + 1 : level
+
+	// random number
+	const rand = Math.floor(Math.random() * 1000)
+
+	// get boosted chance by enchant essences
+	const boosted = getBoostedChance()
+
+	// calc success chance
+	const successChance =
+		1000 * (success[nextLevel] * getEventMultiplier() + boosted) * rarityWeight[enchant]
+
+	// success
+	if (rand <= successChance) return 1
+
+	// random number
+	const sideRand = Math.floor(Math.random() * 100)
+
+	// calc side effect chance
+	const sideEffectChance = 100 * fail[nextLevel]
+
+	// side effect
+	if (sideRand <= sideEffectChance) return -1
+
+	// fail
+	return 0
 }
 
 /**
@@ -897,12 +1108,8 @@ function checkEvent(args: string[]): DataType {
 	// get args
 	const [, returnType] = args
 
-	// check day of today
-	const today = new Date()
-	const day = today.getDay()
-
 	// check return type (condition: if today is event day)
-	const cond = EVENT_DAYS.includes(day)
+	const cond = isEventDay()
 	if (returnType === '1') return encodeBoolean(cond)
 
 	// normal return
@@ -915,7 +1122,7 @@ function eventMultiplier(agrs: string[]): DataType {
 	const [, returnType] = args
 
 	// normal return
-	return EVENT_CHANCE_MULTIPLIER
+	return getEventMultiplier()
 }
 
 // check player has protect scroll
@@ -962,6 +1169,21 @@ function nextRepairCost(args: string[]): DataType {
 
 	// normal return
 	return nextCost
+}
+
+// apply enchant scroll to target item
+function applyEnchant(args: string[]): DataType {
+	// get args
+	const [, returnType, enchant, isPlus] = args
+
+	// parse args
+	const checkPlus = isPlus === '1'
+
+	// get enchant data
+	const enchantData = getEnchantData(40)
+
+	// get enchant result
+	const result = getEnchantResult(enchant, enchantData[enchant], checkPlus)
 }
 
 // placeholder controller
@@ -1017,6 +1239,10 @@ function enchantScrollCore(): string {
 		nextRepairCost: {
 			argLen: [4],
 			callback: nextRepairCost,
+		},
+		applyEnchant: {
+			argLen: [4],
+			callback: applyEnchant,
 		},
 	}
 
