@@ -517,6 +517,69 @@ function encodeBoolean(data: boolean): string {
 	return data ? '1' : '0'
 }
 
+// EssentialsX:: convert colored string (#55CBCD -> &#55CBCD)
+function essentialsColorString(targetStr: string): string {
+	// translate color codes
+	const converted = translateHexCodes(targetStr, false)
+
+	// return converted string
+	return converted
+}
+
+// Console:: convert colored string (#55CBCD -> §x§5§5§C§B§C§D, &7 -> §7)
+function consoleColorString(targetStr: string): string {
+	// translate color codes
+	const converted = translateHexCodes(targetStr.replace(/&/g, '§'), true)
+
+	// return converted string
+	return converted
+}
+
+// translate mincraft color codes include hex (above mc v1.16)
+function translateHexCodes(targetStr: string, isConsole: boolean): string {
+	// set hex color code regex
+	const regex = /#[a-f0-9]{6}/gi
+
+	// check hex color codes
+	const matches = targetStr.match(regex)
+
+	// check nothing matches
+	if (matches === null) return ''
+
+	// init string
+	let converted = targetStr
+
+	// replace color codes
+	for (const match of matches) {
+		// match string(color)
+		const color = match
+
+		// for console commands
+		if (isConsole) {
+			// split characters
+			const hexCodeArray = color.split('')
+
+			// replace each character
+			for (let i = 0; i < hexCodeArray.length; i++) {
+				hexCodeArray[i] = `§${hexCodeArray[i]}`
+			}
+
+			// converted hex code
+			const hexCode = `§x${hexCodeArray.join('')}`
+
+			// apply converted color code
+			converted = converted.replace(color, hexCode)
+		}
+
+		// for EssentialsX commands
+		if (!isConsole) {
+			converted = converted.replace(color, `&${color}`)
+		}
+	}
+
+	return converted
+}
+
 /**
   [ Placeholder API utilities ]
 */
@@ -538,6 +601,12 @@ function execConsoleCommand(command: string): boolean {
 function execCommand(command: string): boolean {
 	if (command === undefined || command.length === 0) return false
 	return BukkitPlayer.performCommand(command)
+}
+
+// send message to player
+function sendMessage(message: string | Array<string>): boolean {
+	if (message === undefined || message.length === 0) return false
+	return BukkitPlayer.sendMessage(message)
 }
 
 /**
@@ -744,33 +813,6 @@ function checkUpgradable(args: string[]): DataType {
 	return cond
 }
 
-// check limit of target item's repair cost
-function checkRepairCostLimit(args: string[]): DataType {
-	// get args
-	const [, returnType, enchant, isPlus] = args
-
-	// parse args
-	const checkPlus = isPlus === '1'
-
-	// get target item (in player's off hand)
-	const targetItem = parsePlaceholder('player_item_in_offhand')
-
-	// get repair cost limit
-	const limit = getItemCostLimit(targetItem)
-
-	// get current repair cost
-	const repairCost = getRepairCost(40)
-
-	// get next repair cost (after panalty applied)
-	const nextRepairCost = getNextRepairCost(repairCost, enchant, checkPlus)
-
-	// check next repair cost exceeds limit
-	const checkLimit = limit >= nextRepairCost
-
-	// normal return
-	return checkLimit
-}
-
 // check every enchants meets valid enchant settings (for random enchant scroll)
 function checkValidItem(args: string[]): DataType {
 	// get args
@@ -800,6 +842,33 @@ function checkValidItem(args: string[]): DataType {
 
 	// normal return
 	return count > 0
+}
+
+// check limit of target item's repair cost
+function checkRepairCostLimit(args: string[]): DataType {
+	// get args
+	const [, returnType, enchant, isPlus] = args
+
+	// parse args
+	const checkPlus = isPlus === '1'
+
+	// get target item (in player's off hand)
+	const targetItem = parsePlaceholder('player_item_in_offhand')
+
+	// get repair cost limit
+	const limit = getItemCostLimit(targetItem)
+
+	// get current repair cost
+	const cost = getRepairCost(40)
+
+	// get next repair cost (after panalty applied)
+	const nextCost = getNextRepairCost(cost, enchant, checkPlus)
+
+	// check next repair cost exceeds limit
+	const checkLimit = limit >= nextCost
+
+	// normal return
+	return checkLimit
 }
 
 // get repair cost limit of target item
@@ -859,6 +928,36 @@ function checkProtectScroll(args: string[]): DataType {
 	return cond
 }
 
+// get repair cost of target item
+function repairCost(args: string[]): DataType {
+	// get args
+	const [, returnType] = args
+
+	// get current repair cost
+	const cost = getRepairCost(40)
+
+	// normal return
+	return cost
+}
+
+// get repair cost of target item after scroll applied
+function nextRepairCost(args: string[]): DataType {
+	// get args
+	const [, returnType, enchant, isPlus] = args
+
+	// parse args
+	const checkPlus = isPlus === '1'
+
+	// get current repair cost
+	const cost = getRepairCost(40)
+
+	// get next repair cost
+	const nextCost = getNextRepairCost(cost, enchant, checkPlus)
+
+	// normal return
+	return nextCost
+}
+
 // placeholder controller
 function enchantScrollCore(): string {
 	// action result
@@ -881,13 +980,13 @@ function enchantScrollCore(): string {
 			argLen: [4],
 			callback: checkUpgradable,
 		},
-		checkCostLimit: {
-			argLen: [4],
-			callback: checkRepairCostLimit,
-		},
 		checkValidItem: {
 			argLen: [2],
 			callback: checkValidItem,
+		},
+		checkCostLimit: {
+			argLen: [4],
+			callback: checkRepairCostLimit,
 		},
 		repairCostLimit: {
 			argLen: [2],
@@ -904,6 +1003,14 @@ function enchantScrollCore(): string {
 		checkProtectScroll: {
 			argLen: [2],
 			callback: checkProtectScroll,
+		},
+		repairCost: {
+			argLen: [2],
+			callback: repairCost,
+		},
+		nextRepairCost: {
+			argLen: [4],
+			callback: nextRepairCost,
 		},
 	}
 
