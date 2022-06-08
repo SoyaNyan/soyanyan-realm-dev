@@ -337,6 +337,12 @@ function execCommand(command: string): boolean {
 	return BukkitPlayer.performCommand(command)
 }
 
+// send message to player
+function sendMessage(message: string | Array<string>): boolean {
+	if (message === undefined || message.length === 0) return false
+	return BukkitPlayer.sendMessage(message)
+}
+
 // send message(log) to console
 function logConsole(message: string | Array<string>): boolean {
 	if (message === undefined || message.length === 0) return false

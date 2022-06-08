@@ -609,6 +609,12 @@ function sendMessage(message: string | Array<string>): boolean {
 	return BukkitPlayer.sendMessage(message)
 }
 
+// send message(log) to console
+function logConsole(message: string | Array<string>): boolean {
+	if (message === undefined || message.length === 0) return false
+	return BukkitServer.getConsoleSender().sendMessage(message)
+}
+
 /**
   [ checkitem utilities ]
 */
