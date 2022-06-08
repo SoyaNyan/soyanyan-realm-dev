@@ -506,7 +506,7 @@ function logCurrentPrice() {
 			name_1 = _a.name,
 			currentPrice_1 = _a.currentPrice
 		// add message
-		var message_1 = ''.concat(name_1, ': ').concat(currentPrice_1)
+		var message_1 = ''.concat(name_1, ':').concat(currentPrice_1)
 		// push price info
 		priceInfos.push(message_1)
 	}

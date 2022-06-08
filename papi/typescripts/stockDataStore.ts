@@ -647,7 +647,7 @@ function logCurrentPrice(): void {
 		const { name, currentPrice } = getStockData(stock)
 
 		// add message
-		const message = `${name}: ${currentPrice}`
+		const message = `${name}:${currentPrice}`
 
 		// push price info
 		priceInfos.push(message)
