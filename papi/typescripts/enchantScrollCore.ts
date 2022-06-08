@@ -544,7 +544,7 @@ function translateHexCodes(targetStr: string, isConsole: boolean): string {
 	const matches = targetStr.match(regex)
 
 	// check nothing matches
-	if (matches === null) return ''
+	if (matches === null) return targetStr
 
 	// init string
 	let converted = targetStr
