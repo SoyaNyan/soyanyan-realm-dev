@@ -337,6 +337,12 @@ function execCommand(command: string): boolean {
 	return BukkitPlayer.performCommand(command)
 }
 
+// send message(log) to console
+function logConsole(message: string | Array<string>): boolean {
+	if (message === undefined || message.length === 0) return false
+	return BukkitServer.getConsoleSender().sendMessage(message)
+}
+
 /**
   [ stock utilities ] 
 */
@@ -622,6 +628,39 @@ function getNextStockData(stockData: StrictStockDataType): StockDataType {
 		slotSellBal: 0,
 		priceFluct: updateFluct,
 	}
+}
+
+// logs every stock's current price to server console
+function logCurrentPrice(): void {
+	// init messages
+	const message: string = `[주식로그]`
+
+	// price info
+	const priceInfos: Array<string> = []
+
+	// check every stocks
+	for (const stock in STOCKS) {
+		// check stock exists
+		checkStock(stock)
+
+		// get stock data
+		const { name, currentPrice } = getStockData(stock)
+
+		// add message
+		const message = `${name}: ${currentPrice}`
+
+		// push price info
+		priceInfos.push(message)
+	}
+
+	// join price info
+	const priceMessage = priceInfos.join(',')
+
+	// create log message
+	const logMessage = `${message} ${priceMessage}`
+
+	// send log
+	logConsole(logMessage)
 }
 
 /**
@@ -1437,8 +1476,11 @@ function setStockVolatility(args: string[]): string | boolean {
 	const cond = true
 	if (returnType === '1') return encodeBoolean(cond)
 
+	// logs to server console
+	logCurrentPrice()
+
 	// return success ack
-	return '[주식] 주식가격 변동!'
+	return '[주식] 주식가격 변동 완료!'
 }
 
 // get next update ETA in mm:ss units

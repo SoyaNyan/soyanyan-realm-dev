@@ -261,6 +261,11 @@ function execCommand(command) {
 	if (command === undefined || command.length === 0) return false
 	return BukkitPlayer.performCommand(command)
 }
+// send message(log) to console
+function logConsole(message) {
+	if (message === undefined || message.length === 0) return false
+	return BukkitServer.getConsoleSender().sendMessage(message)
+}
 /**
 [ stock utilities ]
 */
@@ -486,6 +491,32 @@ function getNextStockData(stockData) {
 		priceFluct: updateFluct,
 	}
 }
+// logs every stock's current price to server console
+function logCurrentPrice() {
+	// init messages
+	var message = '[\uC8FC\uC2DD\uB85C\uADF8]'
+	// price info
+	var priceInfos = []
+	// check every stocks
+	for (var stock in STOCKS) {
+		// check stock exists
+		checkStock(stock)
+		// get stock data
+		var _a = getStockData(stock),
+			name_1 = _a.name,
+			currentPrice_1 = _a.currentPrice
+		// add message
+		var message_1 = ''.concat(name_1, ': ').concat(currentPrice_1)
+		// push price info
+		priceInfos.push(message_1)
+	}
+	// join price info
+	var priceMessage = priceInfos.join(',')
+	// create log message
+	var logMessage = ''.concat(message, ' ').concat(priceMessage)
+	// send log
+	logConsole(logMessage)
+}
 /**
 [ exp economy utilities ]
 */
@@ -599,9 +630,9 @@ function checkBalance(args) {
 		// check stock exists
 		checkStock(stockId)
 		// get stock data
-		var currentPrice_1 = getStockData(stockId).currentPrice
+		var currentPrice_2 = getStockData(stockId).currentPrice
 		// get price when buying
-		var price = getCost(currentPrice_1, amount)
+		var price = getCost(currentPrice_2, amount)
 		// check return type (condition: total exp >= price)
 		var cond = totalExp >= price
 		if (returnType === '1') return cond
@@ -1152,8 +1183,10 @@ function setStockVolatility(args) {
 	// check return type (condition: in update cooldown)
 	var cond = true
 	if (returnType === '1') return encodeBoolean(cond)
+	// logs to server console
+	logCurrentPrice()
 	// return success ack
-	return '[주식] 주식가격 변동!'
+	return '[주식] 주식가격 변동 완료!'
 }
 // get next update ETA in mm:ss units
 function nextUpdateETA(args) {
