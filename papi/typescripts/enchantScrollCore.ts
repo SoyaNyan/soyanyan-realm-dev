@@ -427,6 +427,324 @@ const ENCHANT_LIMIT: { [index: string]: Array<number> } = {
 	multishot: [1, 1],
 }
 
+const ENCHANT_SCROLLS: {
+	[index: string]: {
+		normal: { name: string; eiCode: string }
+		plus: { name: string; eiCode: string }
+	}
+} = {
+	unbreaking: {
+		normal: {
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l아이템 #FFFFB5&l내구 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollUnbreaking',
+		},
+		plus: {
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l아이템 #FFFFB5&l내구 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollUnbreakingPlus',
+		},
+	},
+	efficiency: {
+		normal: {
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l도구 #FFFFB5&l효율 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollEfficiency',
+		},
+		plus: {
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l도구 #FFFFB5&l효율 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollEfficiencyPlus',
+		},
+	},
+	fortune: {
+		normal: {
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l도구 #FFFFB5&l행운 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollFortune',
+		},
+		plus: {
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l도구 #FFFFB5&l행운 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollFortunePlus',
+		},
+	},
+	respiration: {
+		normal: {
+			name: '',
+			eiCode: '',
+		},
+		plus: {
+			name: '',
+			eiCode: '',
+		},
+	},
+	thorns: {
+		normal: {
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l방어구 #FFFFB5&l가시 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollThorns',
+		},
+		plus: {
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l방어구 #FFFFB5&l가시 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollThornsPlus',
+		},
+	},
+	protection: {
+		normal: {
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l방어구 #FFFFB5&l보호 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollProtection',
+		},
+		plus: {
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l방어구 #FFFFB5&l보호 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollProtectionPlus',
+		},
+	},
+	projectile_protection: {
+		normal: {
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l방어구 #FFFFB5&l발사체보호 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollProjectileProtection',
+		},
+		plus: {
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l방어구 #FFFFB5&l발사체보호 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollProjectileProtectionPlus',
+		},
+	},
+	fire_protection: {
+		normal: {
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l방어구 #FFFFB5&l화염보호 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollFireProtection',
+		},
+		plus: {
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l방어구 #FFFFB5&l화염보호 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollFireProtectionPlus',
+		},
+	},
+	blast_protection: {
+		normal: {
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l방어구 #FFFFB5&l폭발보호 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollBlastProtection',
+		},
+		plus: {
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l방어구 #FFFFB5&l폭발보호 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollBlastProtectionPlus',
+		},
+	},
+	swift_sneak: {
+		normal: {
+			name: '',
+			eiCode: '',
+		},
+		plus: {
+			name: '',
+			eiCode: '',
+		},
+	},
+	feather_falling: {
+		normal: {
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l방어구 #FFFFB5&l가벼운착지 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollFeatherFalling',
+		},
+		plus: {
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l방어구 #FFFFB5&l가벼운착지 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollFeatherFallingPlus',
+		},
+	},
+	soul_speed: {
+		normal: {
+			name: '',
+			eiCode: '',
+		},
+		plus: {
+			name: '',
+			eiCode: '',
+		},
+	},
+	depth_strider: {
+		normal: {
+			name: '',
+			eiCode: '',
+		},
+		plus: {
+			name: '',
+			eiCode: '',
+		},
+	},
+	frost_walker: {
+		normal: {
+			name: '',
+			eiCode: '',
+		},
+		plus: {
+			name: '',
+			eiCode: '',
+		},
+	},
+	fire_aspect: {
+		normal: {
+			name: '',
+			eiCode: '',
+		},
+		plus: {
+			name: '',
+			eiCode: '',
+		},
+	},
+	looting: {
+		normal: {
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l약탈 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollLooting',
+		},
+		plus: {
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l무기 #FFFFB5&l약탈 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollLootingPlus',
+		},
+	},
+	knockback: {
+		normal: {
+			name: '',
+			eiCode: '',
+		},
+		plus: {
+			name: '',
+			eiCode: '',
+		},
+	},
+	sweeping: {
+		normal: {
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l휩쓸기 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollSweeping',
+		},
+		plus: {
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l무기 #FFFFB5&l휩쓸기 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollSweepingPlus',
+		},
+	},
+	sharpness: {
+		normal: {
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l날카로움 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollSharpness',
+		},
+		plus: {
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l무기 #FFFFB5&l날카로움 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollSharpnessPlus',
+		},
+	},
+	smite: {
+		normal: {
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l강타 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollSmite',
+		},
+		plus: {
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l무기 #FFFFB5&l강타 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollSmitePlus',
+		},
+	},
+	bane_of_arthropods: {
+		normal: {
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l살충 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollBaneOfArthropods',
+		},
+		plus: {
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l무기 #FFFFB5&l살충 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollBaneOfArthropodsPlus',
+		},
+	},
+	cleaving: {
+		normal: {
+			name: '',
+			eiCode: '',
+		},
+		plus: {
+			name: '',
+			eiCode: '',
+		},
+	},
+	power: {
+		normal: {
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l힘 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollPower',
+		},
+		plus: {
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l무기 #FFFFB5&l힘 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollPowerPlus',
+		},
+	},
+	punch: {
+		normal: {
+			name: '',
+			eiCode: '',
+		},
+		plus: {
+			name: '',
+			eiCode: '',
+		},
+	},
+	lure: {
+		normal: {
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l도구 #FFFFB5&l미끼 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollLure',
+		},
+		plus: {
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l도구 #FFFFB5&l미끼 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollLurePlus',
+		},
+	},
+	luck_of_the_sea: {
+		normal: {
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l도구 #FFFFB5&l바다의행운 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollLuckOfTheSea',
+		},
+		plus: {
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l도구 #FFFFB5&l바다의행운 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollLuckOfTheSeaPlus',
+		},
+	},
+	impaling: {
+		normal: {
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l찌르기 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollImpaling',
+		},
+		plus: {
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l무기 #FFFFB5&l찌르기 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollImpalingPlus',
+		},
+	},
+	loyalty: {
+		normal: {
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l충성 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollLoyalty',
+		},
+		plus: {
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l무기 #FFFFB5&l충성 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollLoyaltyPlus',
+		},
+	},
+	riptide: {
+		normal: {
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l집전 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollRiptide',
+		},
+		plus: {
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l무기 #FFFFB5&l집전 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollRiptidePlus',
+		},
+	},
+	piercing: {
+		normal: {
+			name: '',
+			eiCode: '',
+		},
+		plus: {
+			name: '',
+			eiCode: '',
+		},
+	},
+	random: {
+		normal: {
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l아이템 #FFFFB5&l인챈트 #ECEAE4&l혼돈의 주문서',
+			eiCode: 'enchantScrollRandom',
+		},
+		plus: {
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l아이템 #FFFFB5&l인챈트 #ECEAE4&l혼돈의 주문서',
+			eiCode: 'enchantScrollRandomPlus',
+		},
+	},
+}
+
 const REPAIR_COST_LIMIT: {
 	material: { [index: string]: number }
 	base: { [index: string]: number }
@@ -990,7 +1308,7 @@ function playSound(sound: string, playerName: string): boolean {
 // broadcast message to all players
 function broadcastMessage(message: string): boolean {
 	// set command
-	const command = `broadcast ${message}`
+	const command = `broadcast ${essentialsColorString(message)}`
 
 	// exec command
 	return execConsoleCommand(command)
@@ -1928,17 +2246,53 @@ function applyEnchant(args: string[]): DataType {
 	// get enchant data
 	const enchantData = getEnchantData(40)
 
+	// get item damage info
+	const damage = getDamage(40)
+
+	// get item repair cost
+	const repairCost = getRepairCost(40)
+
+	// get item repair cost after scroll applied
+	const nextRepairCost = getNextRepairCost(repairCost, enchant, checkPlus)
+
+	// get item display name
+	const displayName = getDisplayName()
+
+	// get item lore
+	const lore = getLore()
+
 	// get nbt data after scroll applied
 	const nbtData: ItemIntNBTDataType = {
-		Damage: getDamage(40),
-		RepairCost: getNextRepairCost(getRepairCost(40), enchant, checkPlus),
+		Damage: damage,
+		RepairCost: nextRepairCost,
 	}
 
 	// get display data
 	const displayData: ConvertedDisplayDataType = {
-		Name: getDisplayName(),
-		Lore: getLore(),
+		Name: displayName,
+		Lore: lore,
 	}
+
+	// check event
+	if (isEventDay()) {
+		// get event multiplier
+		const multiplier = getEventMultiplier()
+
+		// set message
+		const message = `&7[&6강화&7] &c&l핫타임 &e&l이벤트&f로 &9&l강화 확률&f이 &6&l${multiplier}&7배 &f증가했습니다.`
+
+		// send message
+		sendMessage(consoleColorString(message))
+	}
+
+	// get scroll name
+	const { name } = checkPlus ? ENCHANT_SCROLLS[enchant].plus : ENCHANT_SCROLLS[enchant].normal
+
+	// set message about item use
+	const message = `&7[&6강화&7] ${name}를 사용했습니다. &7(패널티: ${repairCost} -> ${nextRepairCost})`
+
+	// send message
+	sendMessage(consoleColorString(message))
 
 	// check random enchant scroll
 	if (enchant === 'random') return applyRandomEnchant(enchantData, displayData, nbtData, checkPlus)
