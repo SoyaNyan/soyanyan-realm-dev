@@ -730,10 +730,13 @@ function logCurrentPrice(): void {
 		checkStock(stock)
 
 		// get stock data
-		const { name, currentPrice } = getStockData(stock)
+		const { name, currentPrice, priceFluct } = getStockData(stock) as StrictStockDataType
+
+		// get last fluct symbol
+		const lastFluct = formatFluct(getLastFluct(priceFluct))
 
 		// add message
-		const message = `${name}:${currentPrice}`
+		const message = `${name}:${lastFluct} ${currentPrice}`
 
 		// push price info
 		priceInfos.push(message)
@@ -1611,24 +1614,24 @@ function clearStock(): boolean {
 
 /**
   [ data store structure ]
-    - Format: YAML
+		- Format: YAML
 
   [stockId]:
-    name: string
-    lastPrice: number
-    currentPrice: number
+		name: string
+		lastPrice: number
+		currentPrice: number
 		totalShares: number
-    slotBuy: number
-    slotSell: number
-    slotBuyBal: number
-    slotSellBal: number
+		slotBuy: number
+		slotSell: number
+		slotBuyBal: number
+		slotSellBal: number
 		totalBuy: number
-    totalSell: number
-    totalBuyBal: number
-    totalSellBal: number
+		totalSell: number
+		totalBuyBal: number
+		totalSellBal: number
 		priceFluct: string # '1', '0', '-' 10 slots
-    accounts:
-      [playerName]:
+		accounts:
+			[playerName]:
 				stocks: number
 				totalPrice: number
 */

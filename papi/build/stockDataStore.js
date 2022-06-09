@@ -24,6 +24,15 @@ var __assign =
 		return __assign.apply(this, arguments)
 	}
 /**
+[ global objects ]
+*/
+var Data = new Object()
+var PlaceholderAPI = new Object()
+var Placeholder = new Object()
+var BukkitServer = new Object()
+var BukkitPlayer = new Object()
+var args = []
+/**
 [ constants ]
 */
 // player name
@@ -589,9 +598,12 @@ function logCurrentPrice() {
 		// get stock data
 		var _a = getStockData(stock),
 			name_1 = _a.name,
-			currentPrice_1 = _a.currentPrice
+			currentPrice_1 = _a.currentPrice,
+			priceFluct = _a.priceFluct
+		// get last fluct symbol
+		var lastFluct = formatFluct(getLastFluct(priceFluct))
 		// add message
-		var message_1 = ''.concat(name_1, ':').concat(currentPrice_1)
+		var message_1 = ''.concat(name_1, ':').concat(lastFluct, ' ').concat(currentPrice_1)
 		// push price info
 		priceInfos.push(message_1)
 	}
@@ -1306,24 +1318,24 @@ function clearStock() {
 }
 /**
 [ data store structure ]
-	- Format: YAML
+			- Format: YAML
 
 [stockId]:
-	name: string
-	lastPrice: number
-	currentPrice: number
+			name: string
+			lastPrice: number
+			currentPrice: number
 			totalShares: number
-	slotBuy: number
-	slotSell: number
-	slotBuyBal: number
-	slotSellBal: number
+			slotBuy: number
+			slotSell: number
+			slotBuyBal: number
+			slotSellBal: number
 			totalBuy: number
-	totalSell: number
-	totalBuyBal: number
-	totalSellBal: number
+			totalSell: number
+			totalBuyBal: number
+			totalSellBal: number
 			priceFluct: string # '1', '0', '-' 10 slots
-	accounts:
-		[playerName]:
+			accounts:
+					[playerName]:
 							stocks: number
 							totalPrice: number
 */
