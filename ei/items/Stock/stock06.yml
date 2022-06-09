@@ -1,0 +1,253 @@
+name: '&7[#CBAACB&l ★ &7] #D4F0F0&l소야냥제약 #FFC8A2&l주식증서'
+lore:
+  - '&7'
+  - '&7아이템 종류: &6주식증서'
+  - '&7주식명: &3%javascript_stock_store_stockName,0,stock06%'
+  - '&7----------------------------'
+  - '&7[ &c&l내 주식정보 &7]'
+  - '&7 > 소유자: %player_name%'
+  - '&7 > 보유수량: &d%javascript_stock_store_playerStockCount,0,stock06%&f주 &7(지분: %javascript_stock_store_playerStockCount,3,stock06%%)'
+  - '&7 > 평균단가: &e%javascript_stock_store_averagePrice,0,stock06%&fE'
+  - '&7 > 평가손익: %javascript_stock_store_estimatedProfit,3,stock06%%javascript_stock_store_estimatedProfit,0,stock06%&fE &7(%javascript_stock_store_estimatedProfit,3,stock06%%javascript_stock_store_estimatedProfit,4,stock06%%&7)'
+  - '&7----------------------------'
+  - '&7[ &c&l주식정보 &7]'
+  - '&7 > 총 발행량: &6%javascript_stock_store_totalShares,0,stock06%&f주'
+  - '&7 > 현재가격: &a%javascript_stock_store_currentPrice,0,stock06%&fE &7(%javascript_stock_store_stockFluct,4,stock06% %javascript_stock_store_priceFluctPercent,0,stock06%%&7)'
+  - '&7 > 매수량: &b%javascript_stock_store_slotBuy,0,stock06%&f주 &7(%javascript_stock_store_totalBuy,0,stock06%주)'
+  - '&7 > 매도량: &b%javascript_stock_store_slotSell,0,stock06%&f주 &7(%javascript_stock_store_totalSell,0,stock06%주)'
+  - '&7 > 매수금액: &e%javascript_stock_store_slotBuyBal,0,stock06%&fE &7(%javascript_stock_store_totalBuyBal,0,stock06%E)'
+  - '&7 > 매도금액: &e%javascript_stock_store_slotSellBal,0,stock06%&fE &7(%javascript_stock_store_totalSellBal,0,stock06%E)'
+  - '&7 > 주가변동 추이: %javascript_stock_store_stockFluct,3,stock06%'
+  - '&7 > 다음 슬롯까지: %javascript_stock_store_nextUpdateETA,0%'
+  - '&7 (단위, 1E = 1exp)'
+  - '&5 * 이번 &n&l슬롯&5에 대한 정보입니다. *'
+  - '&7----------------------------'
+  - '&7< &c&l사용방법 &7>'
+  - '&7 [&6좌클릭&7] &f- &b1&f주 &a매수'
+  - '&7 [&6우클릭&7] &f- &b1&f주 &c매도'
+  - '&7 [&e쉬프트 &7+ &6좌클릭&7] &f- &b10&f주 &a매수'
+  - '&7 [&e쉬프트 &7+ &6우클릭&7] &f- &b10&f주 &c매도'
+  - '&7 재사용 대기시간: &e10&f초'
+material: PAPER
+glow: true
+glowDrop: false
+glowDropColor: WHITE
+displayNameOnDrop: false
+disableStack: false
+keepItemOnDeath: true
+give-first-join: false
+give-slot: 0
+usage: 0
+usePerDay: -1
+usageLimit: -1
+disable-world: []
+unbreakable: true
+canBeUsedOnlyByTheOwner: false
+storeItemInfos: true
+config_4_2: true
+config_update: true
+headDBID: ''
+cancel-item-drop: false
+cancel-item-place: false
+cancel-tool-interactions: true
+cancel-item-craft-no-custom: true
+cancel-item-craft: true
+cancel-deposit-in-chest: false
+cancel-deposit-in-furnace: true
+cancel-item-burn: true
+cancel-item-delete-by-cactus: true
+cancel-item-delete-by-lightning: true
+cancel-stone-cutter: true
+cancel-enchant: true
+cancel-brewing: false
+cancel-anvil: true
+cancel-rename-anvil: true
+cancel-enchant-anvil: true
+cancel-beacon: true
+cancel-cartography: true
+cancel-composter: true
+cancel-dispenser: true
+cancel-dropper: true
+cancel-hopper: true
+cancel-lectern: true
+cancel-loom: true
+cancel-merchant: false
+cancel-grind-stone: true
+cancel-item-frame: true
+cancel-smithing-table: true
+cancel-consumption: false
+cancel-swap-hand: false
+locked-in-inventory: false
+cancelEventIfNoPerm: false
+cancelEventIfNotOwner: false
+hideEnchantments: true
+hideUnbreakable: true
+hideAttributes: false
+hidePotionEffects: false
+hideUsage: true
+activators:
+  activator1:
+    activator: PLAYER_LEFT_CLICK
+    displayName: '&e좌클릭'
+    usageModification: 0
+    usePerDay: -1
+    cancelEventIfMaxUsePerDay: false
+    commands:
+      - 'LOOP START: %javascript_stock_store_buyStock,1,stock06,1%'
+      - 'SENDMESSAGE &7[#CBAACB주식&7] &3%javascript_stock_store_stockName,0,stock06% &f주식의 &e1&f주 &6매수 &a성공! &7(매수액: %javascript_stock_store_buyPrice,1,stock06,1%E)'
+      - LOOP END
+    blockCommands: []
+    detailedBlocks: []
+    cancelEventIfNotDetailedBlocks: false
+    onlyAirClick: true
+    onlyBlockClick: false
+    cancelEventIfInvalidRequiredExecutableItems: false
+    mustBeAProjectileLaunchWithTheSameEI: false
+    cancelEvent: true
+    autoUpdateItem: true
+    silenceOutput: false
+    cooldown: 10
+    displayCooldownMessage: true
+    cancelEventIfInCooldown: true
+    isCooldownInTicks: false
+    cooldownMsg: '&6>> 재사용 대기중... &7(%time_S%초)'
+    conditions:
+      playerConditions:
+        ifNotSneaking: true
+        ifNotSneakingMsg: ''
+        ifNotSneakingCE: true
+      placeholdersConditions:
+        plchC1:
+          type: PLAYER_STRING
+          part1: '%javascript_stock_store_checkBalance,1,stock06,1%'
+          comparator: EQUALS
+          part2: 'true'
+          messageIfNotValid: '&6>> 경험치가 부족합니다. &7(필요 경험치: %javascript_stock_store_buyPrice,1,stock06,1%E)'
+          cancelEventIfNotValid: false
+  activator2:
+    activator: PLAYER_RIGHT_CLICK
+    displayName: '&e우클릭'
+    usageModification: 0
+    usePerDay: -1
+    cancelEventIfMaxUsePerDay: false
+    commands:
+      - 'LOOP START: %javascript_stock_store_sellStock,0,stock06,1%'
+      - 'SENDMESSAGE &7[#CBAACB주식&7] &3%javascript_stock_store_stockName,0,stock06% &f주식의 &e1&f주 &6매도 &a성공! &7(매도액: %javascript_stock_store_sellPrice,1,stock06,1%E)'
+      - LOOP END
+    blockCommands: []
+    detailedBlocks: []
+    cancelEventIfNotDetailedBlocks: false
+    onlyAirClick: true
+    onlyBlockClick: false
+    cancelEventIfInvalidRequiredExecutableItems: false
+    mustBeAProjectileLaunchWithTheSameEI: false
+    cancelEvent: true
+    autoUpdateItem: true
+    silenceOutput: false
+    cooldown: 10
+    displayCooldownMessage: true
+    cancelEventIfInCooldown: true
+    isCooldownInTicks: false
+    cooldownMsg: '&6>> 재사용 대기중... &7(%time_S%초)'
+    conditions:
+      playerConditions:
+        ifNotSneaking: true
+        ifNotSneakingMsg: ''
+        ifNotSneakingCE: true
+      placeholdersConditions:
+        plchC1:
+          type: PLAYER_STRING
+          part1: '%javascript_stock_store_playerStockCount,4,stock06,1%'
+          comparator: EQUALS
+          part2: 'true'
+          messageIfNotValid: '&6>> 보유중인 주식 수가 부족합니다. &7(현재 보유량: %javascript_stock_store_playerStockCount,0,stock06%주)'
+          cancelEventIfNotValid: false
+  activator3:
+    activator: PLAYER_LEFT_CLICK
+    displayName: '&e쉬프트좌클릭'
+    usageModification: 0
+    usePerDay: -1
+    cancelEventIfMaxUsePerDay: false
+    commands:
+      - 'LOOP START: %javascript_stock_store_buyStock,1,stock06,10%'
+      - 'SENDMESSAGE &7[#CBAACB주식&7] &3%javascript_stock_store_stockName,0,stock06% &f주식의 &e10&f주 &6매수 &a성공! &7(매수액: %javascript_stock_store_buyPrice,1,stock06,10%E)'
+      - LOOP END
+    blockCommands: []
+    detailedBlocks: []
+    cancelEventIfNotDetailedBlocks: false
+    onlyAirClick: false
+    onlyBlockClick: false
+    cancelEventIfInvalidRequiredExecutableItems: false
+    mustBeAProjectileLaunchWithTheSameEI: false
+    cancelEvent: true
+    autoUpdateItem: true
+    silenceOutput: false
+    cooldown: 10
+    displayCooldownMessage: true
+    cancelEventIfInCooldown: true
+    isCooldownInTicks: false
+    cooldownMsg: '&6>> 재사용 대기중... &7(%time_S%초)'
+    conditions:
+      playerConditions:
+        ifSneaking: true
+        ifSneakingMsg: ''
+        ifSneakingCE: true
+      placeholdersConditions:
+        plchC1:
+          type: PLAYER_STRING
+          part1: '%javascript_stock_store_checkBalance,1,stock06,10%'
+          comparator: EQUALS
+          part2: 'true'
+          messageIfNotValid: '&6>> 경험치가 부족합니다. &7(필요 경험치: %javascript_stock_store_buyPrice,1,stock06,1%E)'
+          cancelEventIfNotValid: false
+  activator4:
+    activator: PLAYER_RIGHT_CLICK
+    displayName: '&e쉬프트우클릭'
+    usageModification: 0
+    usePerDay: -1
+    cancelEventIfMaxUsePerDay: false
+    commands:
+      - 'LOOP START: %javascript_stock_store_sellStock,0,stock06,10%'
+      - 'SENDMESSAGE &7[#CBAACB주식&7] &3%javascript_stock_store_stockName,0,stock06% &f주식의 &e10&f주 &6매도 &a성공! &7(매도액: %javascript_stock_store_sellPrice,1,stock06,10%E)'
+      - LOOP END
+    blockCommands: []
+    detailedBlocks: []
+    cancelEventIfNotDetailedBlocks: false
+    onlyAirClick: true
+    onlyBlockClick: false
+    cancelEventIfInvalidRequiredExecutableItems: false
+    mustBeAProjectileLaunchWithTheSameEI: false
+    cancelEvent: true
+    autoUpdateItem: true
+    silenceOutput: false
+    cooldown: 10
+    displayCooldownMessage: true
+    cancelEventIfInCooldown: true
+    isCooldownInTicks: false
+    cooldownMsg: '&6>> 재사용 대기중... &7(%time_S%초)'
+    conditions:
+      playerConditions:
+        ifSneaking: true
+        ifSneakingMsg: ''
+        ifSneakingCE: true
+      placeholdersConditions:
+        plchC1:
+          type: PLAYER_STRING
+          part1: '%javascript_stock_store_playerStockCount,4,stock06,10%'
+          comparator: EQUALS
+          part2: 'true'
+          messageIfNotValid: '&6>> 보유중인 주식 수가 부족합니다. &7(현재 보유량: %javascript_stock_store_playerStockCount,0,stock06%주)'
+          cancelEventIfNotValid: false
+  activator5:
+    activator: PLAYER_SELECT_THE_EI
+    displayName: '&e아이템선택'
+    usageModification: 0
+    usePerDay: -1
+    cancelEventIfMaxUsePerDay: false
+    commands:
+      - SENDMESSAGE &7[#CBAACB주식&7] &3%javascript_stock_store_stockName,0,stock06% &f주식정보 &e업데이트 &a완료. &7(주식증서)
+    cancelEventIfInvalidRequiredExecutableItems: false
+    mustBeAProjectileLaunchWithTheSameEI: false
+    cancelEvent: false
+    autoUpdateItem: false
+    silenceOutput: false
