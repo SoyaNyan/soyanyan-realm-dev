@@ -9,155 +9,54 @@
  * JSX: None
  * Module: ESNext
  */
-
-/**
-  [ global objects ] 
-*/
-const Data: any = new Object()
-const PlaceholderAPI: any = new Object()
-const Placeholder: any = new Object()
-const BukkitServer: any = new Object()
-const BukkitPlayer: any = new Object()
-const args: string[] = []
-
-/**
-  [ type definition ] 
-*/
-// for polyfills
-declare global {
-	interface String {
-		includes(search: string, start?: number): boolean
+var __assign =
+	(this && this.__assign) ||
+	function () {
+		__assign =
+			Object.assign ||
+			function (t) {
+				for (var s, i = 1, n = arguments.length; i < n; i++) {
+					s = arguments[i]
+					for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p]
+				}
+				return t
+			}
+		return __assign.apply(this, arguments)
 	}
-	interface Array<T> {
-		includes(searchElement: T, fromIndex?: number): boolean
-	}
-}
-
-// available stored data types
-type DataType = number | string | boolean
-
-type CommandObjectType = {
-	argLen: Array<number>
-	callback: (args: string[]) => DataType
-}
-
-type ValidEnchantType = {
-	suffixes: Array<string>
-	items: Array<string>
-	krName: string
-}
-
-type EnchantChanceSettingType = {
-	chance: EnchantChanceType
-	rarityWeight: { [index: string]: number }
-}
-
-type EnchantChanceType = {
-	normal: EnchantChanceDetailType
-	plus: EnchantChanceDetailType
-}
-
-type EnchantChanceDetailType = {
-	success: Array<number>
-	fail: Array<number>
-}
-
-type ItemEnchantDataType = {
-	[index: string]: number
-}
-
-type ItemIntNBTDataType = {
-	[index: string]: number
-	Damage: number
-	RepairCost: number
-}
-
-type ItemInfoType = {
-	name: string
-	placeholder: string
-	code: string
-	eiCode: string
-	mat: string
-	amount?: number
-}
-
-type StrictItemInfoType = {
-	name: string
-	placeholder: string
-	code: string
-	eiCode: string
-	mat: string
-	amount: number
-}
-
-type TitleType = {
-	text: string
-	color?: string
-	italic?: boolean
-	bold?: boolean
-}
-
-type NBTStringType = {
-	text: string
-	color?: string
-	italic?: boolean
-	bold?: boolean
-}
-
-type DisplayDataType = {
-	Name: Array<NBTStringType>
-	Lore: Array<Array<NBTStringType>>
-}
-
-type ConvertedDisplayDataType = {
-	Name: string
-	Lore: Array<string>
-}
-
 /**
-[ polyfill ] 
+[ polyfill ]
 */
 // String.prototype.includes
 if (!String.prototype.includes) {
-	String.prototype.includes = function (search: string, start?: number): boolean {
+	String.prototype.includes = function (search, start) {
 		if (typeof start !== 'number') start = 0
-
 		if (start + search.length > this.length) return false
-
 		return this.indexOf(search, start) !== -1
 	}
 }
-
 // Array.prototype.includes
 if (!Array.prototype.includes) {
-	Array.prototype.includes = function <T>(searchElement: T, fromIndex?: number) {
-		function sameValueZero(x: T, y: T): boolean {
+	Array.prototype.includes = function (searchElement, fromIndex) {
+		function sameValueZero(x, y) {
 			return x === y
 		}
-
-		const arr = Object(this)
-
+		var arr = Object(this)
 		if (typeof fromIndex !== 'number') fromIndex = 0
-
 		if (arr.length === 0) return false
-
-		let start = Math.max(fromIndex >= 0 ? fromIndex : arr.length - Math.abs(fromIndex), 0)
+		var start = Math.max(fromIndex >= 0 ? fromIndex : arr.length - Math.abs(fromIndex), 0)
 		while (start < arr.length) {
 			if (sameValueZero(arr[start], searchElement)) return true
 			start++
 		}
-
 		return false
 	}
 }
-
 /**
-  [ constants ] 
+[ constants ]
 */
 // player name
-const PLAYER_NAME = '%player_name%'
-
-const VALID_ENCHANTS: { [index: string]: ValidEnchantType } = {
+var PLAYER_NAME = '%player_name%'
+var VALID_ENCHANTS = {
 	unbreaking: {
 		suffixes: [
 			'_PICKAXE',
@@ -334,12 +233,7 @@ const VALID_ENCHANTS: { [index: string]: ValidEnchantType } = {
 		krName: '관통',
 	},
 }
-
-const ITEMS_LOCALE_KR: {
-	item: { [index: string]: string }
-	material: { [index: string]: string }
-	suffix: { [index: string]: string }
-} = {
+var ITEMS_LOCALE_KR = {
 	item: {
 		BOW: '활',
 		FISHING_ROD: '낚싯대',
@@ -373,8 +267,7 @@ const ITEMS_LOCALE_KR: {
 		BOOTS: '부츠(장화)',
 	},
 }
-
-const ENCHANT_BLAKLIST: Array<string> = [
+var ENCHANT_BLAKLIST = [
 	'mending',
 	'silk_touch',
 	'aqua_affinity',
@@ -383,8 +276,7 @@ const ENCHANT_BLAKLIST: Array<string> = [
 	'channeling',
 	'multishot',
 ]
-
-const ENCHANT_LIMIT: { [index: string]: Array<number> } = {
+var ENCHANT_LIMIT = {
 	// [enchantments]: [min, max]
 	// if plus scroll, max = max - 1
 	mending: [1, 1],
@@ -426,12 +318,7 @@ const ENCHANT_LIMIT: { [index: string]: Array<number> } = {
 	piercing: [4, 10],
 	multishot: [1, 1],
 }
-
-const REPAIR_COST_LIMIT: {
-	material: { [index: string]: number }
-	base: { [index: string]: number }
-	other: { [index: string]: number }
-} = {
+var REPAIR_COST_LIMIT = {
 	// material of the item
 	material: {
 		NETHERITE: 10,
@@ -468,8 +355,7 @@ const REPAIR_COST_LIMIT: {
 		CARROT_ON_A_STICK: 30,
 	},
 }
-
-const ENCHANT_PANALTY: { [index: string]: number } = {
+var ENCHANT_PANALTY = {
 	unbreaking: 2,
 	efficiency: 1,
 	fortune: 3,
@@ -502,8 +388,7 @@ const ENCHANT_PANALTY: { [index: string]: number } = {
 	piercing: 1,
 	random: 3,
 }
-
-const ENCHANT_CHANCE: EnchantChanceSettingType = {
+var ENCHANT_CHANCE = {
 	chance: {
 		normal: {
 			success: [1, 0.8, 0.7, 0.6, 0.55, 0.5, 0.3, 0.1, 0.01, 0.001],
@@ -555,19 +440,15 @@ const ENCHANT_CHANCE: EnchantChanceSettingType = {
 		multishot: 1,
 	},
 }
-
-const RANDOM_ENCHANT_CHANCE: { normal: number; plus: number } = {
+var RANDOM_ENCHANT_CHANCE = {
 	normal: 0.5,
 	plus: 0.6,
 }
-
 // event settins
-const EVENT_DAYS: Array<number> = [0, 6]
-
-const EVENT_CHANCE_MULTIPLIER: number = 2
-
+var EVENT_DAYS = [0, 6]
+var EVENT_CHANCE_MULTIPLIER = 2
 // item settings
-const ITEM_SETTINGS: { [index: string]: ItemInfoType } = {
+var ITEM_SETTINGS = {
 	protectScroll: {
 		name: '&7[#55CBCD ★★★ &7] #ECD5E3&l아이템 #FFFFB5&l프로텍트 #ECEAE4&l스크롤',
 		placeholder: 'checkitem_amount_lorecontains:ES-PS001',
@@ -597,11 +478,8 @@ const ITEM_SETTINGS: { [index: string]: ItemInfoType } = {
 		mat: 'DIAMOND',
 	},
 }
-
 // title & subtitle settings
-const TITLE_SETTINGS: {
-	[index: string]: { title: TitleType | Array<TitleType>; subtitle: TitleType | Array<TitleType> }
-} = {
+var TITLE_SETTINGS = {
 	success: {
 		title: [
 			{ text: '강', color: '#50fb00', bold: true },
@@ -653,13 +531,11 @@ const TITLE_SETTINGS: {
 		subtitle: { 'text': '아이템이 파괴 되었습니다.', 'color': 'gray', 'bold': true },
 	},
 }
-
-const DESTROYED_NBT_DATA: ItemIntNBTDataType = {
+var DESTROYED_NBT_DATA = {
 	Damage: 99999,
 	RepairCost: 5,
 }
-
-const DESTROYED_DISPLAY_DATA: DisplayDataType = {
+var DESTROYED_DISPLAY_DATA = {
 	Name: [
 		{ 'text': '파괴된', 'italic': false, 'bold': true, 'color': 'red' },
 		{ 'text': ' %javascript_item_kr_name%', 'italic': false, 'bold': true, 'color': 'aqua' },
@@ -675,25 +551,21 @@ const DESTROYED_DISPLAY_DATA: DisplayDataType = {
 		],
 	],
 }
-
 /**
-  [ data utilities ] 
+[ data utilities ]
 */
 // check if data(key) exists in global store
-function exists(path: string): boolean {
+function exists(path) {
 	// returns true if a key exists; else false. (Placeholder API)
 	return Data.exists(path)
 }
-
 // get data from global store
-function get(path: string): DataType {
-	let result: DataType
-
+function get(path) {
+	var result
 	// check data exists
 	if (path.length > 0) {
 		// check data exists
 		if (!exists(path)) return false
-
 		// returns the value stored under key. (Placeholder API)
 		// type of data value => number | string | boolean
 		result = Data.get(path)
@@ -701,194 +573,157 @@ function get(path: string): DataType {
 		// returns a Map<String, Object> of the entire placeholder script's data. (Placeholder API)
 		result = Data.getData()
 	}
-
 	return result
 }
-
 // set data in global store
-function set(path: string, payload: DataType): boolean {
+function set(path, payload) {
 	// check data exists
 	if (exists(path)) {
 		return update(path, payload)
 	}
-
 	// stores a value under key. (Placeholder API)
 	Data.set(path, payload)
 	save()
-
 	return true
 }
-
 // update data in global store
-function update(path: string, payload: DataType): boolean {
+function update(path, payload) {
 	// check data exists
 	if (!exists(path)) {
 		return set(path, payload)
 	}
-
 	// stores a value under key. (Placeholder API)
 	Data.set(path, payload)
 	save()
-
 	return true
 }
-
 // remove data from global store
-function remove(path: string): boolean {
+function remove(path) {
 	// check data exists
 	if (!exists(path)) return false
-
 	// removes a key from the data. (Placeholder API)
 	Data.remove(path)
 	save()
-
 	return true
 }
-
 // remove all data from global store
-function clear(): boolean {
+function clear() {
 	// removes all data. (Placeholder API)
 	Data.clear()
 	save()
-
 	return true
 }
-
 // saves current state
-function save(): void {
+function save() {
 	// saves the current data state to the data file. (Placeholder API)
 	Placeholder.saveData()
 }
-
 /**
-  [ general utilities ] 
+[ general utilities ]
 */
 // stringify data for placeholder return
-function stringify(data: DataType): string {
-	return `${data}`
+function stringify(data) {
+	return ''.concat(data)
 }
-
 // encode boolean as '1' or '0'
-function encodeBoolean(data: boolean): string {
+function encodeBoolean(data) {
 	return data ? '1' : '0'
 }
-
 // EssentialsX:: convert colored string (#55CBCD -> &#55CBCD)
-function essentialsColorString(targetStr: string): string {
+function essentialsColorString(targetStr) {
 	// translate color codes
-	const converted = translateHexCodes(targetStr, false)
-
+	var converted = translateHexCodes(targetStr, false)
 	// return converted string
 	return converted
 }
-
 // Console:: convert colored string (#55CBCD -> §x§5§5§C§B§C§D, &7 -> §7)
-function consoleColorString(targetStr: string): string {
+function consoleColorString(targetStr) {
 	// translate color codes
-	const converted = translateHexCodes(targetStr.replace(/&/g, '§'), true)
-
+	var converted = translateHexCodes(targetStr.replace(/&/g, '§'), true)
 	// return converted string
 	return converted
 }
-
 // translate mincraft color codes include hex (above mc v1.16)
-function translateHexCodes(targetStr: string, isConsole: boolean): string {
+function translateHexCodes(targetStr, isConsole) {
 	// set hex color code regex
-	const regex = /#[a-f0-9]{6}/gi
-
+	var regex = /#[a-f0-9]{6}/gi
 	// check hex color codes
-	const matches = targetStr.match(regex)
-
+	var matches = targetStr.match(regex)
 	// check nothing matches
 	if (matches === null) return targetStr
-
 	// init string
-	let converted = targetStr
-
+	var converted = targetStr
 	// replace color codes
-	for (const match of matches) {
+	for (var _i = 0, matches_1 = matches; _i < matches_1.length; _i++) {
+		var match = matches_1[_i]
 		// match string(color)
-		const color = match
-
+		var color = match
 		// for console commands
 		if (isConsole) {
 			// split characters
-			const hexCodeArray = color.split('')
-
+			var hexCodeArray = color.split('')
 			// replace each character
-			for (let i = 0; i < hexCodeArray.length; i++) {
-				hexCodeArray[i] = `§${hexCodeArray[i]}`
+			for (var i = 0; i < hexCodeArray.length; i++) {
+				hexCodeArray[i] = '\u00A7'.concat(hexCodeArray[i])
 			}
-
 			// converted hex code
-			const hexCode = `§x${hexCodeArray.join('')}`
-
+			var hexCode = '\u00A7x'.concat(hexCodeArray.join(''))
 			// apply converted color code
 			converted = converted.replace(color, hexCode)
 		}
-
 		// for EssentialsX commands
 		if (!isConsole) {
-			converted = converted.replace(color, `&${color}`)
+			converted = converted.replace(color, '&'.concat(color))
 		}
 	}
-
 	return converted
 }
-
 // stringify lore NBT object
-function convertLore(lore: Array<string>): string {
+function convertLore(lore) {
 	// stringify line by line
-	const lines: Array<string> = []
-	for (const line of lore) {
-		lines.push(`'${line}'`)
+	var lines = []
+	for (var _i = 0, lore_1 = lore; _i < lore_1.length; _i++) {
+		var line = lore_1[_i]
+		lines.push("'".concat(line, "'"))
 	}
-
 	// join every lines
-	const joined = lines.join(',')
-
+	var joined = lines.join(',')
 	// return result
-	return `[${joined}]`
+	return '['.concat(joined, ']')
 }
-
 // stringify enchant object
-function convertEnchantData(enchantData: ItemEnchantDataType): string {
+function convertEnchantData(enchantData) {
 	/*
-		{
-			id: "minecraft:" + enchantId,
-			lvl: enchantLevel,
-		}
-	*/
-
+      {
+          id: "minecraft:" + enchantId,
+          lvl: enchantLevel,
+      }
+  */
 	// convert each enchants
-	const enchants: { id: string; lvl: number }[] = []
-	for (const enchant in enchantData) {
+	var enchants = []
+	for (var enchant in enchantData) {
 		enchants.push({
-			id: `minecraft:${enchant}`,
+			id: 'minecraft:'.concat(enchant),
 			lvl: enchantData[enchant],
 		})
 	}
-
 	// return result
 	return JSON.stringify(enchants)
 }
-
 /**
-  [ Placeholder API utilities ]
+[ Placeholder API utilities ]
 */
 // parse external placeholders
-function parsePlaceholder(placeholder: string): string {
-	return PlaceholderAPI.static.setPlaceholders(BukkitPlayer, `%${placeholder}%`)
+function parsePlaceholder(placeholder) {
+	return PlaceholderAPI.static.setPlaceholders(BukkitPlayer, '%'.concat(placeholder, '%'))
 }
-
 /**
-	[ Spigot API utilities ]
+  [ Spigot API utilities ]
 */
 // get server bukkit version
-function getVersion(): number {
+function getVersion() {
 	// get version string
-	const version = BukkitServer.getVersion()
-
+	var version = BukkitServer.getVersion()
 	// check each version
 	if (version.includes('1.8')) return 8
 	if (version.includes('1.9')) return 9
@@ -903,49 +738,40 @@ function getVersion(): number {
 	if (version.includes('1.17')) return 17
 	if (version.includes('1.18')) return 18
 	if (version.includes('1.19')) return 19
-
 	// unknown(unsupported) version
 	return -1
 }
-
 // check server bukkit version is above 1.16
-function checkPlus16(): boolean {
+function checkPlus16() {
 	// get version
-	const version = getVersion()
-
+	var version = getVersion()
 	// check version is above 1.16
-	const checkVersion = version >= 16
-
+	var checkVersion = version >= 16
 	// return result
 	return checkVersion
 }
-
 // execute command on server console
-function execConsoleCommand(command: string): boolean {
+function execConsoleCommand(command) {
 	if (command === undefined || command.length === 0) return false
 	return BukkitServer.dispatchCommand(BukkitServer.getConsoleSender(), command)
 }
-
 // execute command as player
-function execCommand(command: string): boolean {
+function execCommand(command) {
 	if (command === undefined || command.length === 0) return false
 	return BukkitPlayer.performCommand(command)
 }
-
 // send message to player
-function sendMessage(message: string | Array<string>): boolean {
+function sendMessage(message) {
 	if (message === undefined || message.length === 0) return false
 	return BukkitPlayer.sendMessage(message)
 }
-
 // send message(log) to console
-function logConsole(message: string | Array<string>): boolean {
+function logConsole(message) {
 	if (message === undefined || message.length === 0) return false
 	return BukkitServer.getConsoleSender().sendMessage(message)
 }
-
 // get item display name in player's off-hand
-function getDisplayName(): string {
+function getDisplayName() {
 	// return display name
 	return BukkitPlayer.getInventory()
 		.getItemInOffHand()
@@ -953,468 +779,387 @@ function getDisplayName(): string {
 		.serialize()
 		.get('display-name')
 }
-
 // get item lore in player's off-hand
-function getLore(): Array<string> {
+function getLore() {
 	// return lore
 	return BukkitPlayer.getInventory().getItemInOffHand().getItemMeta().serialize().get('lore')
 }
-
 /**
-  [ command utilities ] 
+[ command utilities ]
 */
 // show title to player
-function showTitle(title: TitleType | Array<TitleType>, playerName: string): boolean {
+function showTitle(title, playerName) {
 	// set command
-	const command = `title ${playerName} title ${JSON.stringify(title)}`
-
+	var command = 'title '.concat(playerName, ' title ').concat(JSON.stringify(title))
 	// execute command
 	return execConsoleCommand(command)
 }
-
 // show subtitle to player
-function showSubtitle(subtitle: TitleType | Array<TitleType>, playerName: string): boolean {
+function showSubtitle(subtitle, playerName) {
 	// set command
-	const command = `title ${playerName} subtitle ${JSON.stringify(subtitle)}`
-
+	var command = 'title '.concat(playerName, ' subtitle ').concat(JSON.stringify(subtitle))
 	// execute command
 	return execConsoleCommand(command)
 }
-
 // show title and subtitle to player
-function playTitle(
-	title: TitleType | Array<TitleType>,
-	subtitle: TitleType | Array<TitleType>,
-	playerName: string
-): boolean {
+function playTitle(title, subtitle, playerName) {
 	// set title
 	showTitle(title, playerName)
-
 	// set subtitle and show both to player
 	return showSubtitle(subtitle, playerName)
 }
-
 // play sound effect to player (sound => entity.villager.yes (without minecraft:))
-function playSound(sound: string, playerName: string): boolean {
+function playSound(sound, playerName) {
 	// set command
-	const command = `execute at ${playerName} run playsound minecraft:${sound} voice ${playerName}`
-
+	var command = 'execute at '
+		.concat(playerName, ' run playsound minecraft:')
+		.concat(sound, ' voice ')
+		.concat(playerName)
 	// execute command
 	return execConsoleCommand(command)
 }
-
 // broadcast message to all players
-function broadcastMessage(message: string): boolean {
+function broadcastMessage(message) {
 	// set command
-	const command = `broadcast ${message}`
-
+	var command = 'broadcast '.concat(message)
 	// exec command
 	return execConsoleCommand(command)
 }
-
 // replace target item (in player's off-hand)
-function replaceItem(
-	playerName: string,
-	nbtData: ItemIntNBTDataType,
-	displayData: ConvertedDisplayDataType,
-	enchantData?: ItemEnchantDataType
-): boolean {
+function replaceItem(playerName, nbtData, displayData, enchantData) {
 	// get integer nbt data
-	const { Damage, RepairCost } = nbtData
-
+	var Damage = nbtData.Damage,
+		RepairCost = nbtData.RepairCost
 	// get display data
-	const { Name, Lore } = displayData
-
+	var Name = displayData.Name,
+		Lore = displayData.Lore
 	// get enchants after scroll applied
-	const enchants =
-		typeof enchantData !== 'undefined' ? `,Enchantments:${convertEnchantData(enchantData)}` : ''
-
+	var enchants =
+		typeof enchantData !== 'undefined'
+			? ',Enchantments:'.concat(convertEnchantData(enchantData))
+			: ''
 	// get target item (in player's off hand)
-	const targetItem = parsePlaceholder('player_item_in_offhand').toLowerCase()
-
+	var targetItem = parsePlaceholder('player_item_in_offhand').toLowerCase()
 	// set command
-	const command = `minecraft:item replace entity ${playerName} weapon.offhand with ${targetItem}{Damage:${Damage},RepairCost:${RepairCost},display:{Name:'${Name}',Lore:${convertLore(
-		Lore
-	)}}${enchants}}`
-
+	var command = 'minecraft:item replace entity '
+		.concat(playerName, ' weapon.offhand with ')
+		.concat(targetItem, '{Damage:')
+		.concat(Damage, ',RepairCost:')
+		.concat(RepairCost, ",display:{Name:'")
+		.concat(Name, "',Lore:")
+		.concat(convertLore(Lore), '}')
+		.concat(enchants, '}')
 	// exec command
 	return execConsoleCommand(command)
 }
-
 // destory item (when fails enchant)
-function destroyItem(playerName: string) {
+function destroyItem(playerName) {
 	// get target item (in player's off hand)
-	const targetItem = parsePlaceholder('player_item_in_offhand').toLowerCase()
-
+	var targetItem = parsePlaceholder('player_item_in_offhand').toLowerCase()
 	// get kr name of item
-	const krName = getKrName(40)
-
+	var krName = getKrName(40)
 	// set command
-	const command = `minecraft:item replace entity ${playerName} weapon.offhand with ${targetItem}{Damage:99999,display:{Name:'[{"text":"파괴된","italic":false,"bold":true,"color":"red"},{"text":" ${krName}","italic":false,"bold":true,"color":"aqua"},{"text":"의 흔적","color":"gray"}]',Lore:['[{"text":"강화에 실패해 파괴된 아이템의 흔적이다.","italic":false,"color":"gray"}]','[{"text":"복구할 수 없을 것 같다.","italic":false,"color":"gray"}]','[{"text":""}]','[{"text":"아이템 소유자:","italic":false,"color":"gray"},{"text":" ${playerName}","italic":false,"color":"red"}]']}}`
-
+	var command = 'minecraft:item replace entity '
+		.concat(playerName, ' weapon.offhand with ')
+		.concat(
+			targetItem,
+			'{Damage:99999,display:{Name:\'[{"text":"\uD30C\uAD34\uB41C","italic":false,"bold":true,"color":"red"},{"text":" '
+		)
+		.concat(
+			krName,
+			'","italic":false,"bold":true,"color":"aqua"},{"text":"\uC758 \uD754\uC801","color":"gray"}]\',Lore:[\'[{"text":"\uAC15\uD654\uC5D0 \uC2E4\uD328\uD574 \uD30C\uAD34\uB41C \uC544\uC774\uD15C\uC758 \uD754\uC801\uC774\uB2E4.","italic":false,"color":"gray"}]\',\'[{"text":"\uBCF5\uAD6C\uD560 \uC218 \uC5C6\uC744 \uAC83 \uAC19\uB2E4.","italic":false,"color":"gray"}]\',\'[{"text":""}]\',\'[{"text":"\uC544\uC774\uD15C \uC18C\uC720\uC790:","italic":false,"color":"gray"},{"text":" '
+		)
+		.concat(playerName, '","italic":false,"color":"red"}]\']}}')
 	// exec command
 	return execConsoleCommand(command)
 }
-
 /**
-  [ checkitem utilities ]
+[ checkitem utilities ]
 */
 // check any item exists (in specific slot)
-function checkSlot(slot: number): boolean {
+function checkSlot(slot) {
 	// set placeholder
-	const placeholder = `checkitem_inslot:${slot}`
-
+	var placeholder = 'checkitem_inslot:'.concat(slot)
 	// return result
 	return parsePlaceholder(placeholder) === 'yes'
 }
-
 // get item KR name (in specific slot)
-function getKrName(slot: number): string {
+function getKrName(slot) {
 	// get settings
-	const { item, material, suffix } = ITEMS_LOCALE_KR
-
+	var item = ITEMS_LOCALE_KR.item,
+		material = ITEMS_LOCALE_KR.material,
+		suffix = ITEMS_LOCALE_KR.suffix
 	// set placeholder
-	const placeholder = `checkitem_getinfo:${slot}_mat:material`
-
+	var placeholder = 'checkitem_getinfo:'.concat(slot, '_mat:material')
 	// get item name(mat)
-	const targetItem = parsePlaceholder(placeholder)
-
+	var targetItem = parsePlaceholder(placeholder)
 	// check item with no material info
 	if (targetItem in item) return item[targetItem]
-
 	// check material and suffix
-	const [mat, suff] = targetItem.split('_')
-
+	var _a = targetItem.split('_'),
+		mat = _a[0],
+		suff = _a[1]
 	// return material and suffix
-	return `${material[mat]} ${suffix[suff]}`
+	return ''.concat(material[mat], ' ').concat(suffix[suff])
 }
-
 // check item is enchanted or not (in specific slot)
-function isEnchanted(slot: number): boolean {
+function isEnchanted(slot) {
 	// check enchanted
-	const enchanted = parsePlaceholder(`checkitem_getinfo:${slot}_enchanted`)
-
+	var enchanted = parsePlaceholder('checkitem_getinfo:'.concat(slot, '_enchanted'))
 	// return result
 	return enchanted === 'true'
 }
-
 // get enchant data of target item (in specific slot)
-function getEnchantData(slot: number): ItemEnchantDataType {
+function getEnchantData(slot) {
 	// get raw enchant data
-	const rawData = parsePlaceholder(`checkitem_getinfo:${slot}_enchantments:enchantment`).split('|')
-
+	var rawData = parsePlaceholder(
+		'checkitem_getinfo:'.concat(slot, '_enchantments:enchantment')
+	).split('|')
 	// parse enchant data from raw data string
-	const enchantData: ItemEnchantDataType = {}
-	rawData.forEach((enchantStr) => {
+	var enchantData = {}
+	rawData.forEach(function (enchantStr) {
 		// split enchantments & level
-		const [enchant, level] = enchantStr.split(':')
-
+		var _a = enchantStr.split(':'),
+			enchant = _a[0],
+			level = _a[1]
 		// store data
 		enchantData[enchant] = parseInt(level)
 	})
-
 	// return enchant data
 	return enchantData
 }
-
 // get integer nbt data of target item (in specific slot)
-function getIntegerNBTData(slot: number): ItemIntNBTDataType {
+function getIntegerNBTData(slot) {
 	// get raw repair nbt data
-	const rawData = parsePlaceholder(`checkitem_getinfo:${slot}_nbtints:nbt`)
-
+	var rawData = parsePlaceholder('checkitem_getinfo:'.concat(slot, '_nbtints:nbt'))
 	// default nbt data
-	const nbtData: ItemIntNBTDataType = {
+	var nbtData = {
 		Damage: 0,
 		RepairCost: 0,
 	}
-
 	// split every single lines of nbt data
-	const nbtDataArr = rawData.replace(/INTEGER:/g, '').split('|')
-	nbtDataArr.forEach((nbtTag) => {
+	var nbtDataArr = rawData.replace(/INTEGER:/g, '').split('|')
+	nbtDataArr.forEach(function (nbtTag) {
 		// split label and value
-		const [label, value] = nbtTag.split(':')
-
+		var _a = nbtTag.split(':'),
+			label = _a[0],
+			value = _a[1]
 		// store data
 		nbtData[label] = parseInt(value)
 	})
-
 	// return nbt data object
 	return nbtData
 }
-
 // get damage of target item (in specific slot)
-function getDamage(slot: number): number {
+function getDamage(slot) {
 	// get integer nbt data
-	const { Damage } = getIntegerNBTData(slot)
-
+	var Damage = getIntegerNBTData(slot).Damage
 	// return repair cost
 	return Damage
 }
-
 // get repair cost of target item (in specific slot)
-function getRepairCost(slot: number): number {
+function getRepairCost(slot) {
 	// get integer nbt data
-	const { RepairCost } = getIntegerNBTData(slot)
-
+	var RepairCost = getIntegerNBTData(slot).RepairCost
 	// return repair cost
 	return RepairCost
 }
-
 // get settings of items
-function getItemInfo(itemCode: string): ItemInfoType {
+function getItemInfo(itemCode) {
 	// return info object
 	return ITEM_SETTINGS[itemCode]
 }
-
 // get amount of specific item in player's inventory
-function getInventoryItemAmount(itemCode: string): number {
+function getInventoryItemAmount(itemCode) {
 	// get placeholder
-	const { placeholder } = getItemInfo(itemCode)
-
+	var placeholder = getItemInfo(itemCode).placeholder
 	// get item amount
-	const amount = parsePlaceholder(placeholder)
-
+	var amount = parsePlaceholder(placeholder)
 	// return amount as number
 	return parseInt(amount)
 }
-
 /**
-  [ enchant scroll utilities ]
+[ enchant scroll utilities ]
 */
 // get enchant KR name
-function getKrEnchantName(enchant: string): string {
+function getKrEnchantName(enchant) {
 	// get settings
-	const { krName } = VALID_ENCHANTS[enchant]
-
+	var krName = VALID_ENCHANTS[enchant].krName
 	return krName
 }
-
 // check if in event day
-function isEventDay(): boolean {
+function isEventDay() {
 	// check day of today
-	const today = new Date()
-	const day = today.getDay()
-
+	var today = new Date()
+	var day = today.getDay()
 	// if today is event day
 	return EVENT_DAYS.includes(day)
 }
-
 // get event chance multiplier if today is event day
-function getEventMultiplier(): number {
+function getEventMultiplier() {
 	// check today is event day
 	if (isEventDay()) return EVENT_CHANCE_MULTIPLIER
 	return 1
 }
-
 // check specific enchant's level limit
-function checkEnchantLevelLimit(
-	enchantData: ItemEnchantDataType,
-	enchant: string,
-	isPlus: boolean
-): boolean {
+function checkEnchantLevelLimit(enchantData, enchant, isPlus) {
 	// get specific enchant's data
-	const level = enchantData[enchant]
-
+	var level = enchantData[enchant]
 	// get limit of the enchant
-	const [min, max] = ENCHANT_LIMIT[enchant]
-
+	var _a = ENCHANT_LIMIT[enchant],
+		min = _a[0],
+		max = _a[1]
 	// check plus offset
-	const offset = isPlus ? -1 : 0
-
+	var offset = isPlus ? -1 : 0
 	// check valid range of enchant level
-	const cond = level >= min && level < max + offset
-
+	var cond = level >= min && level < max + offset
 	// return result
 	return cond
 }
-
 // get repair cost limit of target item
-function getItemCostLimit(targetItem: string): number {
+function getItemCostLimit(targetItem) {
 	// get repair cost limit settings
-	const { base, material, other } = REPAIR_COST_LIMIT
-
+	var base = REPAIR_COST_LIMIT.base,
+		material = REPAIR_COST_LIMIT.material,
+		other = REPAIR_COST_LIMIT.other
 	// check other limit first
 	if (targetItem in other) return other[targetItem]
-
 	// check base & material limit
-	const [mat, item] = targetItem.split('_')
-
+	var _a = targetItem.split('_'),
+		mat = _a[0],
+		item = _a[1]
 	// calc limit
-	const limit = base[item] + material[mat]
-
+	var limit = base[item] + material[mat]
 	// return repair cost limit
 	return limit
 }
-
 // get repair cost after enchant scroll applied
-function getNextRepairCost(repairCost: number, enchant: string, isPlus: boolean): number {
+function getNextRepairCost(repairCost, enchant, isPlus) {
 	// get panalty setting
-	const panalty = ENCHANT_PANALTY[enchant]
-
+	var panalty = ENCHANT_PANALTY[enchant]
 	// check enchant failed
 	if (enchant === 'fail') return repairCost + 1
-
 	// calc repair cost
-	const nextRepairCost = isPlus ? repairCost + panalty * 2 : repairCost + panalty
-
+	var nextRepairCost = isPlus ? repairCost + panalty * 2 : repairCost + panalty
 	// normal return
 	return nextRepairCost
 }
-
 // check which essence exists in slot
-function getEssenceInfo(slot: number): ItemInfoType | boolean {
+function getEssenceInfo(slot) {
 	// get enchant essence settings
-	const enchantEssence: { [index: string]: ItemInfoType } = {
+	var enchantEssence = {
 		enchantEssenceLow: ITEM_SETTINGS['enchantEssenceLow'],
 		enchantEssenceMedium: ITEM_SETTINGS['enchantEssenceMedium'],
 		enchantEssenceHigh: ITEM_SETTINGS['enchantEssenceHigh'],
 	}
-
 	// check kinds of essence
-	for (const essence in enchantEssence) {
+	for (var essence in enchantEssence) {
 		// get code
-		const { code } = enchantEssence[essence]
-
+		var code = enchantEssence[essence].code
 		// set placeholder
-		const placeholder = `checkitem_amount_inslot:${slot},lorecontains:${code}`
-
+		var placeholder = 'checkitem_amount_inslot:'.concat(slot, ',lorecontains:').concat(code)
 		// checkitem result
-		const checkEssence = parseInt(parsePlaceholder(placeholder)) > 0
-
+		var checkEssence = parseInt(parsePlaceholder(placeholder)) > 0
 		// return current essence's info if match
 		if (checkEssence)
-			return {
-				...enchantEssence[essence],
+			return __assign(__assign({}, enchantEssence[essence]), {
 				amount: parseInt(parsePlaceholder(placeholder)),
-			}
+			})
 	}
-
 	// no match
 	return false
 }
-
 // check random enchant scroll chance
-function randomEnchantChance(isPlus: boolean): boolean {
+function randomEnchantChance(isPlus) {
 	// get chance setting
-	const chance = isPlus ? RANDOM_ENCHANT_CHANCE.plus : RANDOM_ENCHANT_CHANCE.normal
-
+	var chance = isPlus ? RANDOM_ENCHANT_CHANCE.plus : RANDOM_ENCHANT_CHANCE.normal
 	// calc success chance
-	const successChance = 100 * chance
-
+	var successChance = 100 * chance
 	// random number
-	const rand = Math.floor(Math.random() * 100)
-
+	var rand = Math.floor(Math.random() * 100)
 	// success
 	return rand < successChance
 }
-
 // get boosted chance
-function getBoostedChance(): number {
+function getBoostedChance() {
 	// enchant essence setting
-	const enchantEssence: { [index: string]: number } = {
+	var enchantEssence = {
 		enchantEssenceLow: 0.001,
 		enchantEssenceMedium: 0.005,
 		enchantEssenceHigh: 0.01,
 	}
-
 	// enchant essence placeholder
-	const niddle = 'ES-ES'
-
+	var niddle = 'ES-ES'
 	// init slot
-	let slot: number = -1
-
+	var slot = -1
 	// check player's quick slots (1 ~ 8)
-	for (let i = 1; i <= 8; i++) {
+	for (var i = 1; i <= 8; i++) {
 		// set placeholder
-		const placeholder = `checkitem_amount_inslot:${i},lorecontains:${niddle}`
-
+		var placeholder = 'checkitem_amount_inslot:'.concat(i, ',lorecontains:').concat(niddle)
 		// check essence item exists
-		const essenceExists = parsePlaceholder(placeholder) === 'yes'
-
+		var essenceExists = parsePlaceholder(placeholder) === 'yes'
 		// save slot if essence item found
 		if (essenceExists) {
 			slot = i
 			break
 		}
 	}
-
 	// check if no essence
 	if (slot === -1) return 0
-
 	// get essence info
-	const essence = getEssenceInfo(slot)
-
+	var essence = getEssenceInfo(slot)
 	// if invalid essence info
 	if (!essence) return 0
-
 	// calc boosted chance
-	const { eiCode, amount } = essence as StrictItemInfoType
-	const boost = enchantEssence[eiCode] * amount
-
+	var _a = essence,
+		eiCode = _a.eiCode,
+		amount = _a.amount
+	var boost = enchantEssence[eiCode] * amount
 	// return boosted chance
 	return boost
 }
-
 // calc enchant scroll success chance
-function getSuccessChance(enchant: string, level: number, isPlus: boolean): number {
+function getSuccessChance(enchant, level, isPlus) {
 	// get enchant settings
-	const { chance, rarityWeight } = ENCHANT_CHANCE
-
+	var chance = ENCHANT_CHANCE.chance,
+		rarityWeight = ENCHANT_CHANCE.rarityWeight
 	// get success, fail chance
-	const { success } = isPlus ? chance.plus : chance.normal
-
+	var success = (isPlus ? chance.plus : chance.normal).success
 	// set next enchant level
-	const nextLevel = isPlus ? level + 1 : level
-
+	var nextLevel = isPlus ? level + 1 : level
 	// get boosted chance by enchant essences
-	const boosted = getBoostedChance()
-
+	var boosted = getBoostedChance()
 	// calc success chance
-	const successChance =
+	var successChance =
 		1000 * (success[nextLevel] * getEventMultiplier() + boosted) * rarityWeight[enchant]
-
 	// return success chance
 	return successChance
 }
-
 // calc enchant scroll fail(side effect) chance
-function getFailChance(enchant: string, level: number, isPlus: boolean): number {
+function getFailChance(enchant, level, isPlus) {
 	// get enchant settings
-	const { chance } = ENCHANT_CHANCE
-
+	var chance = ENCHANT_CHANCE.chance
 	// get success, fail chance
-	const { fail } = isPlus ? chance.plus : chance.normal
-
+	var fail = (isPlus ? chance.plus : chance.normal).fail
 	// set next enchant level
-	const nextLevel = isPlus ? level + 1 : level
-
+	var nextLevel = isPlus ? level + 1 : level
 	// calc fail chance
-	const failChance = 100 * fail[nextLevel]
-
+	var failChance = 100 * fail[nextLevel]
 	// return fail chance
 	return failChance
 }
-
 // get enchant scroll result
-function getEnchantResult(
-	enchantData: ItemEnchantDataType,
-	enchant: string,
-	isPlus: boolean
-): { success: boolean; sideEffect: boolean; enchantData: ItemEnchantDataType } {
+function getEnchantResult(enchantData, enchant, isPlus) {
 	// get enchant level
-	const level = enchantData[enchant]
-
+	var level = enchantData[enchant]
 	// calc success chance
-	const successChance = getSuccessChance(enchant, level, isPlus)
-
+	var successChance = getSuccessChance(enchant, level, isPlus)
 	// random number
-	const rand = Math.floor(Math.random() * 1000)
-
+	var rand = Math.floor(Math.random() * 1000)
 	// success
 	if (rand < successChance) {
 		// get enchant data after scroll applied
-		const successEnchantData = getNextEnchantData(true, enchantData, enchant, isPlus)
-
+		var successEnchantData = getNextEnchantData(true, enchantData, enchant, isPlus)
 		// return result (upgraded)
 		return {
 			success: true,
@@ -1422,13 +1167,10 @@ function getEnchantResult(
 			enchantData: successEnchantData,
 		}
 	}
-
 	// random number
-	const sideRand = Math.floor(Math.random() * 100)
-
+	var sideRand = Math.floor(Math.random() * 100)
 	// calc side effect chance
-	const sideEffectChance = getFailChance(enchant, level, isPlus)
-
+	var sideEffectChance = getFailChance(enchant, level, isPlus)
 	// side effect
 	if (sideRand < sideEffectChance) {
 		// return result (destroyed)
@@ -1436,12 +1178,10 @@ function getEnchantResult(
 			return {
 				success: false,
 				sideEffect: true,
-				enchantData,
+				enchantData: enchantData,
 			}
-
 		// get enchant data after scroll applied
-		const failEnchantData = getNextEnchantData(false, enchantData, enchant, isPlus)
-
+		var failEnchantData = getNextEnchantData(false, enchantData, enchant, isPlus)
 		// return result (downgraded)
 		return {
 			success: false,
@@ -1449,530 +1189,417 @@ function getEnchantResult(
 			enchantData: failEnchantData,
 		}
 	}
-
 	// fail (no chance)
 	return {
 		success: false,
 		sideEffect: false,
-		enchantData,
+		enchantData: enchantData,
 	}
 }
-
 // get random enchant scroll result
-function getRandomEnchantResult(enchantData: ItemEnchantDataType): {
-	enchantData: ItemEnchantDataType
-	result: {
-		[index: string]: Array<string>
-		upgraded: Array<string>
-		downgraded: Array<string>
-	}
-} {
+function getRandomEnchantResult(enchantData) {
 	// init enchant data
-	const nextEnchantData = enchantData
-
+	var nextEnchantData = enchantData
 	// result object
-	const result: {
-		[index: string]: Array<string>
-		upgraded: Array<string>
-		downgraded: Array<string>
-	} = {
+	var result = {
 		upgraded: [],
 		downgraded: [],
 	}
-
 	// check every available enchants
-	for (const enchant in enchantData) {
+	for (var enchant in enchantData) {
 		// check invalid enchants
 		if (ENCHANT_BLAKLIST.includes(enchant)) continue
-
 		// random number
-		const rand = Math.floor(Math.random() * 1000)
-
+		var rand = Math.floor(Math.random() * 1000)
 		// get enchant level
-		const level = enchantData[enchant]
-
+		var level = enchantData[enchant]
 		// calc success chance
-		const successChance = getSuccessChance(enchant, level, false)
-
+		var successChance = getSuccessChance(enchant, level, false)
 		// success
 		if (rand < successChance) {
 			// upgrade enchant
 			nextEnchantData[enchant] + 1
-
 			// save result
 			result.upgraded.push(enchant)
 		}
-
 		// random number
-		const sideRand = Math.floor(Math.random() * 100)
-
+		var sideRand = Math.floor(Math.random() * 100)
 		// calc side effect chance
-		const sideEffectChance = getFailChance(enchant, level, false)
-
+		var sideEffectChance = getFailChance(enchant, level, false)
 		// side effect
 		if (sideRand < sideEffectChance) {
 			// downgrade enchant
 			nextEnchantData[enchant] - 1
-
 			// save result
 			result.downgraded.push(enchant)
 		}
 	}
-
 	// return result
 	return {
 		enchantData: nextEnchantData,
-		result,
+		result: result,
 	}
 }
-
 // get enchant data after scroll applied
-function getNextEnchantData(
-	result: boolean,
-	enchantData: ItemEnchantDataType,
-	enchant: string,
-	isPlus: boolean
-): ItemEnchantDataType {
+function getNextEnchantData(result, enchantData, enchant, isPlus) {
+	var _a, _b
 	// success
 	if (result)
-		return {
-			...enchantData,
-			[enchant]: isPlus ? enchantData[enchant] + 2 : enchantData[enchant] + 1,
-		}
-
+		return __assign(
+			__assign({}, enchantData),
+			((_a = {}), (_a[enchant] = isPlus ? enchantData[enchant] + 2 : enchantData[enchant] + 1), _a)
+		)
 	// fail
-	return {
-		...enchantData,
-		[enchant]: enchantData[enchant] - 1,
-	}
+	return __assign(
+		__assign({}, enchantData),
+		((_b = {}), (_b[enchant] = enchantData[enchant] - 1), _b)
+	)
 }
-
 // broadcast success message
-function broadcastSuccess(playerName: string, enchant: string, nextLevel: number): boolean {
+function broadcastSuccess(playerName, enchant, nextLevel) {
 	// get kr name of target item
-	const krName = getKrName(40)
-
+	var krName = getKrName(40)
 	// get kr name of enchant
-	const krEnchant = getKrEnchantName(enchant)
-
+	var krEnchant = getKrEnchantName(enchant)
 	// set message
-	const message = `&b&l${playerName}&f님이 &7&l${krName}&f의 &#FFFFB5&l${krEnchant} 인챈트 &6&l+${nextLevel} &f강화에 &a&l성공&f했습니다.`
-
+	var message = '&b&l'
+		.concat(playerName, '&f\uB2D8\uC774 &7&l')
+		.concat(krName, '&f\uC758 &#FFFFB5&l')
+		.concat(krEnchant, ' \uC778\uCC48\uD2B8 &6&l+')
+		.concat(nextLevel, ' &f\uAC15\uD654\uC5D0 &a&l\uC131\uACF5&f\uD588\uC2B5\uB2C8\uB2E4.')
 	// broadcast message
 	return broadcastMessage(message)
 }
-
 // broadcast fail message
-function broadcastFail(playerName: string, enchant: string, nextLevel: number): boolean {
+function broadcastFail(playerName, enchant, nextLevel) {
 	// get kr name of target item
-	const krName = getKrName(40)
-
+	var krName = getKrName(40)
 	// get kr name of enchant
-	const krEnchant = getKrEnchantName(enchant)
-
+	var krEnchant = getKrEnchantName(enchant)
 	// set message
-	const message = `&b&l${playerName}&f님이 &7&l${krName}&f의 &#FFFFB5&l${krEnchant} 인챈트 &6&l+${nextLevel} &f강화에 &c&l실패&f했습니다.`
-
+	var message = '&b&l'
+		.concat(playerName, '&f\uB2D8\uC774 &7&l')
+		.concat(krName, '&f\uC758 &#FFFFB5&l')
+		.concat(krEnchant, ' \uC778\uCC48\uD2B8 &6&l+')
+		.concat(nextLevel, ' &f\uAC15\uD654\uC5D0 &c&l\uC2E4\uD328&f\uD588\uC2B5\uB2C8\uB2E4.')
 	// broadcast message
 	return broadcastMessage(message)
 }
-
 // broadcast success message
-function broadcastRandomSuccess(playerName: string): boolean {
+function broadcastRandomSuccess(playerName) {
 	// get kr name of target item
-	const krName = getKrName(40)
-
+	var krName = getKrName(40)
 	// set message
-	const message = `&b&l${playerName}&f님이 &7&l${krName}&f의 &#FFFFB5&l인챈트 &6&l랜덤 &f강화에 &a&l성공&f했습니다.`
-
+	var message = '&b&l'
+		.concat(playerName, '&f\uB2D8\uC774 &7&l')
+		.concat(
+			krName,
+			'&f\uC758 &#FFFFB5&l\uC778\uCC48\uD2B8 &6&l\uB79C\uB364 &f\uAC15\uD654\uC5D0 &a&l\uC131\uACF5&f\uD588\uC2B5\uB2C8\uB2E4.'
+		)
 	// broadcast message
 	return broadcastMessage(message)
 }
-
 // broadcast fail message
-function broadcastRandomFail(playerName: string): boolean {
+function broadcastRandomFail(playerName) {
 	// get kr name of target item
-	const krName = getKrName(40)
-
+	var krName = getKrName(40)
 	// set message
-	const message = `&b&l${playerName}&f님이 &7&l${krName}&f의 &#FFFFB5&l인챈트 &6&l랜덤 &f강화에 &c&l실패&f했습니다.`
-
+	var message = '&b&l'
+		.concat(playerName, '&f\uB2D8\uC774 &7&l')
+		.concat(
+			krName,
+			'&f\uC758 &#FFFFB5&l\uC778\uCC48\uD2B8 &6&l\uB79C\uB364 &f\uAC15\uD654\uC5D0 &c&l\uC2E4\uD328&f\uD588\uC2B5\uB2C8\uB2E4.'
+		)
 	// broadcast message
 	return broadcastMessage(message)
 }
-
 // apply normal enchant scroll
-function applyNormalEnchant(
-	enchantData: ItemEnchantDataType,
-	enchant: string,
-	displayData: ConvertedDisplayDataType,
-	nbtData: ItemIntNBTDataType,
-	isPlus: boolean
-): string {
+function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) {
 	// get result after scroll applied
-	const {
-		success,
-		sideEffect,
-		enchantData: nextEnchantData,
-	} = getEnchantResult(enchantData, enchant, isPlus)
-
+	var _a = getEnchantResult(enchantData, enchant, isPlus),
+		success = _a.success,
+		sideEffect = _a.sideEffect,
+		nextEnchantData = _a.enchantData
 	// success
 	if (success) {
 		// play sound effect
 		playSound('block.anvil.use', PLAYER_NAME)
-
 		// get title setting
-		const {
-			success: { title },
-		} = TITLE_SETTINGS
-
+		var title_1 = TITLE_SETTINGS.success.title
 		// show title & subtitle
-		playTitle(title, [], PLAYER_NAME)
-
+		playTitle(title_1, [], PLAYER_NAME)
 		// broadcast success message
 		broadcastSuccess(PLAYER_NAME, enchant, nextEnchantData[enchant])
-
 		// replace target item
 		replaceItem(PLAYER_NAME, nbtData, displayData, nextEnchantData)
-
 		// return result
 		return 'success'
 	}
-
 	// side effect
 	if (sideEffect) {
 		// play sound effect
 		playSound('entity.item.break', PLAYER_NAME)
-
 		// get title setting
-		const { title, subtitle } = isPlus ? TITLE_SETTINGS.destroy : TITLE_SETTINGS.downgrade
-
+		var _b = isPlus ? TITLE_SETTINGS.destroy : TITLE_SETTINGS.downgrade,
+			title_2 = _b.title,
+			subtitle_1 = _b.subtitle
 		// show title & subtitle
-		playTitle(title, subtitle, PLAYER_NAME)
-
+		playTitle(title_2, subtitle_1, PLAYER_NAME)
 		// broadcast success message
 		broadcastFail(PLAYER_NAME, enchant, nextEnchantData[enchant])
-
 		// replace target item
 		replaceItem(PLAYER_NAME, nbtData, displayData, nextEnchantData)
-
 		// return result
 		return 'sideeffect'
 	}
-
 	// fail
 	// play sound effect
 	playSound('entity.villager.no', PLAYER_NAME)
-
 	// get title setting
-	const {
-		fail: { title, subtitle },
-	} = TITLE_SETTINGS
-
+	var _c = TITLE_SETTINGS.fail,
+		title = _c.title,
+		subtitle = _c.subtitle
 	// show title & subtitle
 	playTitle(title, subtitle, PLAYER_NAME)
-
 	// broadcast success message
 	broadcastFail(PLAYER_NAME, enchant, nextEnchantData[enchant])
-
 	// replace target item
 	replaceItem(PLAYER_NAME, nbtData, displayData, nextEnchantData)
-
 	// return result
 	return 'fail'
 }
-
 // apply random enchant scroll
-function applyRandomEnchant(
-	enchantData: ItemEnchantDataType,
-	displayData: ConvertedDisplayDataType,
-	nbtData: ItemIntNBTDataType,
-	isPlus: boolean
-): string {
+function applyRandomEnchant(enchantData, displayData, nbtData, isPlus) {
 	// check random result
 	if (!randomEnchantChance(isPlus)) {
 		// play sound effect
 		playSound('entity.item.break', PLAYER_NAME)
-
 		// get title setting
-		const {
-			destroy: { title, subtitle },
-		} = TITLE_SETTINGS
-
+		var _a = TITLE_SETTINGS.destroy,
+			title_3 = _a.title,
+			subtitle_2 = _a.subtitle
 		// show title & subtitle
-		playTitle(title, subtitle, PLAYER_NAME)
-
+		playTitle(title_3, subtitle_2, PLAYER_NAME)
 		// broadcast fail message
 		broadcastRandomFail(PLAYER_NAME)
-
 		// replace target item
 		destroyItem(PLAYER_NAME)
-
 		// return result
 		return 'fail'
 	}
-
 	// get result after scroll applied
-	const {
-		enchantData: nextEnchantData,
-		result: { upgraded, downgraded },
-	} = getRandomEnchantResult(enchantData)
-
+	var _b = getRandomEnchantResult(enchantData),
+		nextEnchantData = _b.enchantData,
+		_c = _b.result,
+		upgraded = _c.upgraded,
+		downgraded = _c.downgraded
 	// play sound effect
 	playSound('block.anvil.use', PLAYER_NAME)
 	// get title setting
-	const {
-		success: { title, subtitle },
-	} = TITLE_SETTINGS
-
+	var _d = TITLE_SETTINGS.success,
+		title = _d.title,
+		subtitle = _d.subtitle
 	// show title & subtitle
 	playTitle(title, subtitle, PLAYER_NAME)
-
 	// broadcast success message
 	broadcastRandomSuccess(PLAYER_NAME)
-
 	// replace target item
 	replaceItem(PLAYER_NAME, nbtData, displayData, nextEnchantData)
-
 	// return result
 	return 'success'
 }
-
 /**
-  [ action handler ] 
+[ action handler ]
 */
 // get item names (color coded)
-function itemNames(args: string[]): DataType {
+function itemNames(args) {
 	// get args
-	const [, returnType, itemCode] = args
-
+	var returnType = args[1],
+		itemCode = args[2]
 	// get item name
-	const { name } = getItemInfo(itemCode)
-
+	var name = getItemInfo(itemCode).name
 	// normal return
 	return name
 }
-
 // check target enchant or item is valid
-function checkEnchant(args: string[]): DataType {
+function checkEnchant(args) {
 	// get args
-	const [, returnType, enchant] = args
-
+	var returnType = args[1],
+		enchant = args[2]
 	// get target enchantment's info
-	const { suffixes, items } = VALID_ENCHANTS[enchant]
-
+	var _a = VALID_ENCHANTS[enchant],
+		suffixes = _a.suffixes,
+		items = _a.items
 	// get target item (in player's off hand)
-	const targetItem = parsePlaceholder('player_item_in_offhand')
-
+	var targetItem = parsePlaceholder('player_item_in_offhand')
 	// check suffix matches
-	const checkSuffix = suffixes.some((suffix) => targetItem.includes(suffix))
-
+	var checkSuffix = suffixes.some(function (suffix) {
+		return targetItem.includes(suffix)
+	})
 	// check item material matches
-	const checkItem = items.some((item) => targetItem.includes(item))
-
+	var checkItem = items.some(function (item) {
+		return targetItem.includes(item)
+	})
 	// normal return
 	return checkSuffix || checkItem
 }
-
 // check target enchant of item is upgradable
-function checkUpgradable(args: string[]): DataType {
+function checkUpgradable(args) {
 	// get args
-	const [, returnType, enchant, isPlus] = args
-
+	var returnType = args[1],
+		enchant = args[2],
+		isPlus = args[3]
 	// parse args
-	const checkPlus = isPlus === '1'
-
+	var checkPlus = isPlus === '1'
 	// get enchant data from target item
-	const enchantData = getEnchantData(40)
-
+	var enchantData = getEnchantData(40)
 	// check enchant level exceeds limit
-	const cond = checkEnchantLevelLimit(enchantData, enchant, checkPlus)
-
+	var cond = checkEnchantLevelLimit(enchantData, enchant, checkPlus)
 	// normal return
 	return cond
 }
-
 // check every enchants meets valid enchant settings (for random enchant scroll)
-function checkValidItem(args: string[]): DataType {
+function checkValidItem(args) {
 	// get args
-	const [, returnType, isPlus] = args
-
+	var returnType = args[1],
+		isPlus = args[2]
 	// parse args
-	const checkPlus = isPlus === '1'
-
+	var checkPlus = isPlus === '1'
 	// check item is enchanted
 	if (!isEnchanted(40)) return false
-
 	// get enchant data from target item
-	const enchantData = getEnchantData(40)
-
+	var enchantData = getEnchantData(40)
 	// count upgradable enchants
-	let count = 0
-	for (const enchant in enchantData) {
+	var count = 0
+	for (var enchant in enchantData) {
 		// check unupgradable enchants
 		if (ENCHANT_BLAKLIST.includes(enchant)) continue
-
 		// check enchant level exceeds limit
 		if (!checkEnchantLevelLimit(enchantData, enchant, checkPlus)) return false
-
 		// enchant upgradable
 		count++
 	}
-
 	// normal return
 	return count > 0
 }
-
 // check limit of target item's repair cost
-function checkRepairCostLimit(args: string[]): DataType {
+function checkRepairCostLimit(args) {
 	// get args
-	const [, returnType, enchant, isPlus] = args
-
+	var returnType = args[1],
+		enchant = args[2],
+		isPlus = args[3]
 	// parse args
-	const checkPlus = isPlus === '1'
-
+	var checkPlus = isPlus === '1'
 	// get target item (in player's off hand)
-	const targetItem = parsePlaceholder('player_item_in_offhand')
-
+	var targetItem = parsePlaceholder('player_item_in_offhand')
 	// get repair cost limit
-	const limit = getItemCostLimit(targetItem)
-
+	var limit = getItemCostLimit(targetItem)
 	// get current repair cost
-	const cost = getRepairCost(40)
-
+	var cost = getRepairCost(40)
 	// get next repair cost (after panalty applied)
-	const nextCost = getNextRepairCost(cost, enchant, checkPlus)
-
+	var nextCost = getNextRepairCost(cost, enchant, checkPlus)
 	// check next repair cost exceeds limit
-	const checkLimit = limit >= nextCost
-
+	var checkLimit = limit >= nextCost
 	// normal return
 	return checkLimit
 }
-
 // get repair cost limit of target item
-function repairCostLimit(args: string[]): DataType {
+function repairCostLimit(args) {
 	// get args
-	const [, returnType] = args
-
+	var returnType = args[1]
 	// get target item (in player's off hand)
-	const targetItem = parsePlaceholder('player_item_in_offhand')
-
+	var targetItem = parsePlaceholder('player_item_in_offhand')
 	// get repair cost limit
-	const limit = getItemCostLimit(targetItem)
-
+	var limit = getItemCostLimit(targetItem)
 	// normal return
 	return limit
 }
-
 // check if in event
-function checkEvent(args: string[]): DataType {
+function checkEvent(args) {
 	// get args
-	const [, returnType] = args
-
+	var returnType = args[1]
 	// check return type (condition: if today is event day)
-	const cond = isEventDay()
+	var cond = isEventDay()
 	if (returnType === '1') return encodeBoolean(cond)
-
 	// normal return
 	return cond
 }
-
 // get event chance multiplier
-function eventMultiplier(agrs: string[]): DataType {
+function eventMultiplier(agrs) {
 	// get args
-	const [, returnType] = args
-
+	var returnType = args[1]
 	// normal return
 	return getEventMultiplier()
 }
-
 // check player has protect scroll
-function checkProtectScroll(args: string[]): DataType {
+function checkProtectScroll(args) {
 	// get args
-	const [, returnType] = args
-
+	var returnType = args[1]
 	// get amount of protect scroll
-	const amount = getInventoryItemAmount('protectScroll')
-
+	var amount = getInventoryItemAmount('protectScroll')
 	// check return type (condition: amount of protect scroll > 0)
-	const cond = amount > 0
+	var cond = amount > 0
 	if (returnType === '1') encodeBoolean(cond)
-
 	// normal return
 	return cond
 }
-
 // get repair cost of target item
-function repairCost(args: string[]): DataType {
+function repairCost(args) {
 	// get args
-	const [, returnType] = args
-
+	var returnType = args[1]
 	// get current repair cost
-	const cost = getRepairCost(40)
-
+	var cost = getRepairCost(40)
 	// normal return
 	return cost
 }
-
 // get repair cost of target item after scroll applied
-function nextRepairCost(args: string[]): DataType {
+function nextRepairCost(args) {
 	// get args
-	const [, returnType, enchant, isPlus] = args
-
+	var returnType = args[1],
+		enchant = args[2],
+		isPlus = args[3]
 	// parse args
-	const checkPlus = isPlus === '1'
-
+	var checkPlus = isPlus === '1'
 	// get current repair cost
-	const cost = getRepairCost(40)
-
+	var cost = getRepairCost(40)
 	// get next repair cost
-	const nextCost = getNextRepairCost(cost, enchant, checkPlus)
-
+	var nextCost = getNextRepairCost(cost, enchant, checkPlus)
 	// normal return
 	return nextCost
 }
-
 // apply enchant scroll to target item
-function applyEnchant(args: string[]): DataType {
+function applyEnchant(args) {
 	// get args
-	const [, returnType, enchant, isPlus] = args
-
+	var returnType = args[1],
+		enchant = args[2],
+		isPlus = args[3]
 	// parse args
-	const checkPlus = isPlus === '1'
-
+	var checkPlus = isPlus === '1'
 	// get enchant data
-	const enchantData = getEnchantData(40)
-
+	var enchantData = getEnchantData(40)
 	// get nbt data after scroll applied
-	const nbtData: ItemIntNBTDataType = {
+	var nbtData = {
 		Damage: getDamage(40),
 		RepairCost: getNextRepairCost(getRepairCost(40), enchant, checkPlus),
 	}
-
 	// get display data
-	const displayData: ConvertedDisplayDataType = {
+	var displayData = {
 		Name: getDisplayName(),
 		Lore: getLore(),
 	}
-
 	// check random enchant scroll
 	if (enchant === 'random') return applyRandomEnchant(enchantData, displayData, nbtData, checkPlus)
-
 	// check normal enchant scroll
 	return applyNormalEnchant(enchantData, enchant, displayData, nbtData, checkPlus)
 }
-
 // placeholder controller
-function enchantScrollCore(): string {
+function enchantScrollCore() {
 	// action result
-	let result: any = false
-
+	var result = false
 	// get args
-	const [action] = args
-
+	var action = args[0]
 	// command(placeholder) settings
-	const VALID_COMMANDS: { [index: string]: CommandObjectType } = {
+	var VALID_COMMANDS = {
 		itemNames: {
 			argLen: [2],
 			callback: itemNames,
@@ -2022,22 +1649,19 @@ function enchantScrollCore(): string {
 			callback: applyEnchant,
 		},
 	}
-
 	// check action
 	if (!(action in VALID_COMMANDS)) return 'false'
-
 	// check args
-	const { argLen, callback } = VALID_COMMANDS[action]
-	const isValidArgs = argLen.some((len) => args.length === len)
+	var _a = VALID_COMMANDS[action],
+		argLen = _a.argLen,
+		callback = _a.callback
+	var isValidArgs = argLen.some(function (len) {
+		return args.length === len
+	})
 	if (!isValidArgs) return 'false'
-
 	// execute callback
 	result = callback(args)
-
 	// return action result
 	return stringify(result)
 }
-
 enchantScrollCore()
-
-export {}
