@@ -654,28 +654,6 @@ const TITLE_SETTINGS: {
 	},
 }
 
-const DESTROYED_NBT_DATA: ItemIntNBTDataType = {
-	Damage: 99999,
-	RepairCost: 5,
-}
-
-const DESTROYED_DISPLAY_DATA: DisplayDataType = {
-	Name: [
-		{ 'text': '파괴된', 'italic': false, 'bold': true, 'color': 'red' },
-		{ 'text': ' %javascript_item_kr_name%', 'italic': false, 'bold': true, 'color': 'aqua' },
-		{ 'text': '의 흔적', 'color': 'gray' },
-	],
-	Lore: [
-		[{ 'text': '강화에 실패해 파괴된 아이템의 흔적이다.', 'italic': false, 'color': 'gray' }],
-		[{ 'text': '복구할 수 없을 것 같다.', 'italic': false, 'color': 'gray' }],
-		[{ 'text': '' }],
-		[
-			{ 'text': '아이템 소유자:', 'italic': false, 'color': 'gray' },
-			{ 'text': ' %player_name%', 'italic': false, 'color': 'red' },
-		],
-	],
-}
-
 /**
   [ data utilities ] 
 */
