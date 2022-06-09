@@ -946,6 +946,9 @@ function logConsole(message: string | Array<string>): boolean {
 
 // get item display name in player's off-hand
 function getDisplayName(): string {
+	// check slot
+	if (checkSlot(40)) return ''
+
 	// return display name
 	return BukkitPlayer.getInventory()
 		.getItemInOffHand()
@@ -956,6 +959,9 @@ function getDisplayName(): string {
 
 // get item lore in player's off-hand
 function getLore(): Array<string> {
+	// check slot
+	if (checkSlot(40)) return []
+
 	// return lore
 	return BukkitPlayer.getInventory().getItemInOffHand().getItemMeta().serialize().get('lore')
 }
