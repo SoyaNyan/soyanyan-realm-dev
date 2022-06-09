@@ -24,11 +24,11 @@ var ENCHANT_SCROLL_NAMES = {
 	enchantScrollBlastProtection:
 		'&7[#FFC8A2 ★★ &7] #55CBCD&l방어구 #FFFFB5&l폭발보호 #ECEAE4&l강화 주문서',
 	enchantScrollFeatherFalling:
-		'&7[#FFC8A2 ★★ &7] #55CBCD&l방어구 #FFFFB5&l가착 #ECEAE4&l강화 주문서',
+		'&7[#FFC8A2 ★★ &7] #55CBCD&l방어구 #FFFFB5&l가벼운착지 #ECEAE4&l강화 주문서',
 	enchantScrollFireProtection:
 		'&7[#FFC8A2 ★★ &7] #55CBCD&l방어구 #FFFFB5&l화염보호 #ECEAE4&l강화 주문서',
 	enchantScrollProjectileProtection:
-		'&7[#FFC8A2 ★★ &7] #55CBCD&l방어구 #FFFFB5&l투사체보호 #ECEAE4&l강화 주문서',
+		'&7[#FFC8A2 ★★ &7] #55CBCD&l방어구 #FFFFB5&l발사체보호 #ECEAE4&l강화 주문서',
 	enchantScrollProtection: '&7[#FFC8A2 ★★ &7] #55CBCD&l방어구 #FFFFB5&l보호 #ECEAE4&l강화 주문서',
 	enchantScrollUnbreaking: '&7[#FFC8A2 ★★ &7] #55CBCD&l아이템 #FFFFB5&l내구 #ECEAE4&l강화 주문서',
 	enchantScrollEfficiency: '&7[#FFC8A2 ★★ &7] #55CBCD&l도구 #FFFFB5&l효율 #ECEAE4&l강화 주문서',
@@ -42,7 +42,7 @@ var ENCHANT_SCROLL_NAMES = {
 	enchantScrollLooting: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l약탈 #ECEAE4&l강화 주문서',
 	enchantScrollPower: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l힘 #ECEAE4&l강화 주문서',
 	enchantScrollRiptide: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l집전 #ECEAE4&l강화 주문서',
-	enchantScrollRoyalty: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l충성 #ECEAE4&l강화 주문서',
+	enchantScrollLoyalty: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l충성 #ECEAE4&l강화 주문서',
 	enchantScrollSharpness: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l날카로움 #ECEAE4&l강화 주문서',
 	enchantScrollSmite: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l강타 #ECEAE4&l강화 주문서',
 	enchantScrollSweeping: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l휩쓸기 #ECEAE4&l강화 주문서',
