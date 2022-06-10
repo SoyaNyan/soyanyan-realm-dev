@@ -1352,7 +1352,17 @@ function broadcastRandomFail(playerName) {
 		)
 	return broadcastMessage(message)
 }
+function sendScrollMessage(scrollName, repairCost, nextRepairCost) {
+	var message = '&7[&6\uAC15\uD654&7] '
+		.concat(scrollName, '&f\uB97C \uC0AC\uC6A9\uD588\uC2B5\uB2C8\uB2E4. &7(\uD328\uB110\uD2F0: ')
+		.concat(repairCost, ' -> ')
+		.concat(nextRepairCost, ')')
+	sendMessage(consoleColorString(message))
+}
 function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) {
+	var Damage = nbtData.Damage,
+		RepairCost = nbtData.RepairCost
+	var name = (isPlus ? ENCHANT_SCROLLS[enchant].plus : ENCHANT_SCROLLS[enchant].normal).name
 	var _a = getEnchantResult(enchantData, enchant, isPlus),
 		success = _a.success,
 		sideEffect = _a.sideEffect,
@@ -1376,21 +1386,18 @@ function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) 
 		var _c = TITLE_SETTINGS.success,
 			title_1 = _c.title,
 			subtitle_1 = _c.subtitle
-		var Damage_1 = nbtData.Damage,
-			RepairCost_1 = nbtData.RepairCost
-		var nextRepairCost_1 = getNextRepairCost(RepairCost_1, enchant, isPlus)
+		var nextRepairCost_1 = getNextRepairCost(RepairCost, enchant, isPlus)
+		sendScrollMessage(name, RepairCost, nextRepairCost_1)
 		playTitle(title_1, subtitle_1, PLAYER_NAME)
 		broadcastSuccess(PLAYER_NAME, enchant, nextEnchantData[enchant])
 		replaceItem(
 			PLAYER_NAME,
-			{ Damage: Damage_1, RepairCost: nextRepairCost_1 },
+			{ Damage: Damage, RepairCost: nextRepairCost_1 },
 			displayData,
 			nextEnchantData
 		)
 		return 'success'
 	}
-	var Damage = nbtData.Damage,
-		RepairCost = nbtData.RepairCost
 	var nextRepairCost = getNextRepairCost(RepairCost, 'fail', false)
 	var failNBTData = { Damage: Damage, RepairCost: nextRepairCost }
 	if (sideEffect && !isProtected) {
@@ -1399,6 +1406,9 @@ function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) 
 			title_2 = _d.title,
 			subtitle_2 = _d.subtitle
 		playTitle(title_2, subtitle_2, PLAYER_NAME)
+		isPlus
+			? sendScrollMessage(name, RepairCost, 5)
+			: sendScrollMessage(name, RepairCost, nextRepairCost)
 		broadcastFail(PLAYER_NAME, enchant, nextEnchantData[enchant])
 		isPlus
 			? destroyItem(PLAYER_NAME)
@@ -1409,12 +1419,16 @@ function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) 
 	var _e = TITLE_SETTINGS.fail,
 		title = _e.title,
 		subtitle = _e.subtitle
+	sendScrollMessage(name, RepairCost, nextRepairCost)
 	playTitle(title, subtitle, PLAYER_NAME)
 	broadcastFail(PLAYER_NAME, enchant, nextEnchantData[enchant])
 	replaceItem(PLAYER_NAME, failNBTData, displayData, nextEnchantData)
 	return 'fail'
 }
 function applyRandomEnchant(enchantData, displayData, nbtData, isPlus) {
+	var Damage = nbtData.Damage,
+		RepairCost = nbtData.RepairCost
+	var name = ENCHANT_SCROLLS['random'].normal.name
 	if (!randomEnchantChance(isPlus)) {
 		playSound('entity.item.break', PLAYER_NAME)
 		var _a = TITLE_SETTINGS.destroy,
@@ -1422,6 +1436,7 @@ function applyRandomEnchant(enchantData, displayData, nbtData, isPlus) {
 			subtitle_3 = _a.subtitle
 		playTitle(title_3, subtitle_3, PLAYER_NAME)
 		broadcastRandomFail(PLAYER_NAME)
+		sendScrollMessage(name, RepairCost, 5)
 		destroyItem(PLAYER_NAME)
 		return 'fail'
 	}
@@ -1430,9 +1445,8 @@ function applyRandomEnchant(enchantData, displayData, nbtData, isPlus) {
 		_c = _b.result,
 		upgraded = _c.upgraded,
 		downgraded = _c.downgraded
-	var Damage = nbtData.Damage,
-		RepairCost = nbtData.RepairCost
 	var nextRepairCost = getNextRepairCost(RepairCost, 'random', false)
+	sendScrollMessage(name, RepairCost, nextRepairCost)
 	playSound('block.anvil.use', PLAYER_NAME)
 	var _d = TITLE_SETTINGS.successRandom,
 		title = _d.title,
@@ -1537,19 +1551,13 @@ function applyEnchant(args) {
 	}
 	if (isEventDay()) {
 		var multiplier = getEventMultiplier()
-		var message_1 =
+		var message =
 			'&7[&6\uAC15\uD654&7] &c&l\uD56B\uD0C0\uC784 &e&l\uC774\uBCA4\uD2B8&f\uB85C &9&l\uAC15\uD654\uD655\uB960&f\uC774 &6&l'.concat(
 				multiplier,
 				'&7\uBC30 &f\uC99D\uAC00\uD588\uC2B5\uB2C8\uB2E4.'
 			)
-		sendMessage(consoleColorString(message_1))
+		sendMessage(consoleColorString(message))
 	}
-	var name = (checkPlus ? ENCHANT_SCROLLS[enchant].plus : ENCHANT_SCROLLS[enchant].normal).name
-	var message = '&7[&6\uAC15\uD654&7] '
-		.concat(name, '&f\uB97C \uC0AC\uC6A9\uD588\uC2B5\uB2C8\uB2E4. &7(\uD328\uB110\uD2F0: ')
-		.concat(repairCost, ' -> ')
-		.concat(nextRepairCost, ')')
-	sendMessage(consoleColorString(message))
 	if (enchant === 'random') return applyRandomEnchant(enchantData, displayData, nbtData, checkPlus)
 	return applyNormalEnchant(enchantData, enchant, displayData, nbtData, checkPlus)
 }

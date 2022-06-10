@@ -1961,6 +1961,15 @@ function broadcastRandomFail(playerName: string): boolean {
 	return broadcastMessage(message)
 }
 
+// send message about enchant scroll use
+function sendScrollMessage(scrollName: string, repairCost: number, nextRepairCost: number): void {
+	// set message about item use
+	const message = `&7[&6강화&7] ${scrollName}&f를 사용했습니다. &7(패널티: ${repairCost} -> ${nextRepairCost})`
+
+	// send message
+	sendMessage(consoleColorString(message))
+}
+
 // apply normal enchant scroll
 function applyNormalEnchant(
 	enchantData: ItemEnchantDataType,
@@ -1969,6 +1978,12 @@ function applyNormalEnchant(
 	nbtData: ItemIntNBTDataType,
 	isPlus: boolean
 ): string {
+	// get integer nbt data
+	const { Damage, RepairCost } = nbtData
+
+	// get scroll name
+	const { name } = isPlus ? ENCHANT_SCROLLS[enchant].plus : ENCHANT_SCROLLS[enchant].normal
+
 	// get result after scroll applied
 	const {
 		success,
@@ -2005,11 +2020,11 @@ function applyNormalEnchant(
 			success: { title, subtitle },
 		} = TITLE_SETTINGS
 
-		// get integer nbt data
-		const { Damage, RepairCost } = nbtData
-
 		// get item repair cost after scroll applied
 		const nextRepairCost = getNextRepairCost(RepairCost, enchant, isPlus)
+
+		// send scroll message
+		sendScrollMessage(name, RepairCost, nextRepairCost)
 
 		// show title & subtitle
 		playTitle(title, subtitle, PLAYER_NAME)
@@ -2023,9 +2038,6 @@ function applyNormalEnchant(
 		// return result
 		return 'success'
 	}
-
-	// get integer nbt data
-	const { Damage, RepairCost } = nbtData
 
 	// get item repair cost after scroll applied
 	const nextRepairCost = getNextRepairCost(RepairCost, 'fail', false)
@@ -2043,6 +2055,11 @@ function applyNormalEnchant(
 
 		// show title & subtitle
 		playTitle(title, subtitle, PLAYER_NAME)
+
+		// send scroll message
+		isPlus
+			? sendScrollMessage(name, RepairCost, 5)
+			: sendScrollMessage(name, RepairCost, nextRepairCost)
 
 		// broadcast fail message
 		broadcastFail(PLAYER_NAME, enchant, nextEnchantData[enchant])
@@ -2065,6 +2082,9 @@ function applyNormalEnchant(
 		fail: { title, subtitle },
 	} = TITLE_SETTINGS
 
+	// send scroll message
+	sendScrollMessage(name, RepairCost, nextRepairCost)
+
 	// show title & subtitle
 	playTitle(title, subtitle, PLAYER_NAME)
 
@@ -2085,6 +2105,12 @@ function applyRandomEnchant(
 	nbtData: ItemIntNBTDataType,
 	isPlus: boolean
 ): string {
+	// get integer nbt data
+	const { Damage, RepairCost } = nbtData
+
+	// get scroll name
+	const { name } = ENCHANT_SCROLLS['random'].normal
+
 	// check random result
 	if (!randomEnchantChance(isPlus)) {
 		// play sound effect
@@ -2101,6 +2127,9 @@ function applyRandomEnchant(
 		// broadcast fail message
 		broadcastRandomFail(PLAYER_NAME)
 
+		// send scroll message
+		sendScrollMessage(name, RepairCost, 5)
+
 		// replace target item
 		destroyItem(PLAYER_NAME)
 
@@ -2113,12 +2142,11 @@ function applyRandomEnchant(
 		enchantData: nextEnchantData,
 		result: { upgraded, downgraded },
 	} = getRandomEnchantResult(enchantData)
-
-	// get integer nbt data
-	const { Damage, RepairCost } = nbtData
-
 	// get item repair cost after scroll applied
 	const nextRepairCost = getNextRepairCost(RepairCost, 'random', false)
+
+	// send scroll message
+	sendScrollMessage(name, RepairCost, nextRepairCost)
 
 	// play sound effect
 	playSound('block.anvil.use', PLAYER_NAME)
@@ -2331,15 +2359,6 @@ function applyEnchant(args: string[]): DataType {
 		// send message
 		sendMessage(consoleColorString(message))
 	}
-
-	// get scroll name
-	const { name } = checkPlus ? ENCHANT_SCROLLS[enchant].plus : ENCHANT_SCROLLS[enchant].normal
-
-	// set message about item use
-	const message = `&7[&6강화&7] ${name}&f를 사용했습니다. &7(패널티: ${repairCost} -> ${nextRepairCost})`
-
-	// send message
-	sendMessage(consoleColorString(message))
 
 	// check random enchant scroll
 	if (enchant === 'random') return applyRandomEnchant(enchantData, displayData, nbtData, checkPlus)
