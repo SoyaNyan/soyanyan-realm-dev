@@ -914,6 +914,27 @@ const ITEM_SETTINGS: { [index: string]: ItemInfoType } = {
 		eiCode: 'enchantEssenceLow',
 		mat: 'DIAMOND',
 	},
+	costReducerHigh: {
+		name: '&7[#55CBCD ★★★ &7] #55CBCD&l반짝이는 #FFFFB5&l정화의 #ECEAE4&l가루',
+		placeholder: 'checkitem_amount_lorecontains:ES-CR001',
+		code: 'ES-CR001',
+		eiCode: 'costReducerHigh',
+		mat: 'SUGAR',
+	},
+	costReducerMedium: {
+		name: '&7[#55CBCD ★★ &7] #55CBCD&l선명한 #FFFFB5&l정화의 #ECEAE4&l가루',
+		placeholder: 'checkitem_amount_lorecontains:ES-CR002',
+		code: 'ES-CR002',
+		eiCode: 'costReducerMedium',
+		mat: 'SUGAR',
+	},
+	costReducerLow: {
+		name: '&7[#55CBCD ★ &7] #55CBCD&l희미한 #FFFFB5&l정화의 #ECEAE4&l가루',
+		placeholder: 'checkitem_amount_lorecontains:ES-CR003',
+		code: 'ES-CR003',
+		eiCode: 'costReducerLow',
+		mat: 'SUGAR',
+	},
 }
 
 // title & subtitle settings
@@ -1662,7 +1683,7 @@ function getBoostedChance(): number {
 	// check player's quick slots (1 ~ 8)
 	for (let i = 1; i <= 8; i++) {
 		// set placeholder
-		const placeholder = `checkitem_amount_inslot:${i},lorecontains:${niddle}`
+		const placeholder = `checkitem_inslot:${i},lorecontains:${niddle}`
 
 		// check essence item exists
 		const essenceExists = parsePlaceholder(placeholder) === 'yes'
