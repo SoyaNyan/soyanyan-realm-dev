@@ -1376,11 +1376,23 @@ function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) 
 		var _c = TITLE_SETTINGS.success,
 			title_1 = _c.title,
 			subtitle_1 = _c.subtitle
+		var Damage_1 = nbtData.Damage,
+			RepairCost_1 = nbtData.RepairCost
+		var nextRepairCost_1 = getNextRepairCost(RepairCost_1, enchant, isPlus)
 		playTitle(title_1, subtitle_1, PLAYER_NAME)
 		broadcastSuccess(PLAYER_NAME, enchant, nextEnchantData[enchant])
-		replaceItem(PLAYER_NAME, nbtData, displayData, nextEnchantData)
+		replaceItem(
+			PLAYER_NAME,
+			{ Damage: Damage_1, RepairCost: nextRepairCost_1 },
+			displayData,
+			nextEnchantData
+		)
 		return 'success'
 	}
+	var Damage = nbtData.Damage,
+		RepairCost = nbtData.RepairCost
+	var nextRepairCost = getNextRepairCost(RepairCost, 'fail', false)
+	var failNBTData = { Damage: Damage, RepairCost: nextRepairCost }
 	if (sideEffect && !isProtected) {
 		playSound('entity.item.break', PLAYER_NAME)
 		var _d = isPlus ? TITLE_SETTINGS.destroy : TITLE_SETTINGS.downgrade,
@@ -1390,7 +1402,7 @@ function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) 
 		broadcastFail(PLAYER_NAME, enchant, nextEnchantData[enchant])
 		isPlus
 			? destroyItem(PLAYER_NAME)
-			: replaceItem(PLAYER_NAME, nbtData, displayData, nextEnchantData)
+			: replaceItem(PLAYER_NAME, failNBTData, displayData, nextEnchantData)
 		return 'sideeffect'
 	}
 	playSound('entity.villager.no', PLAYER_NAME)
@@ -1399,7 +1411,7 @@ function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) 
 		subtitle = _e.subtitle
 	playTitle(title, subtitle, PLAYER_NAME)
 	broadcastFail(PLAYER_NAME, enchant, nextEnchantData[enchant])
-	replaceItem(PLAYER_NAME, nbtData, displayData, nextEnchantData)
+	replaceItem(PLAYER_NAME, failNBTData, displayData, nextEnchantData)
 	return 'fail'
 }
 function applyRandomEnchant(enchantData, displayData, nbtData, isPlus) {
@@ -1418,13 +1430,21 @@ function applyRandomEnchant(enchantData, displayData, nbtData, isPlus) {
 		_c = _b.result,
 		upgraded = _c.upgraded,
 		downgraded = _c.downgraded
+	var Damage = nbtData.Damage,
+		RepairCost = nbtData.RepairCost
+	var nextRepairCost = getNextRepairCost(RepairCost, 'random', false)
 	playSound('block.anvil.use', PLAYER_NAME)
 	var _d = TITLE_SETTINGS.successRandom,
 		title = _d.title,
 		subtitle = _d.subtitle
 	playTitle(title, subtitle, PLAYER_NAME)
 	broadcastRandomSuccess(PLAYER_NAME)
-	replaceItem(PLAYER_NAME, nbtData, displayData, nextEnchantData)
+	replaceItem(
+		PLAYER_NAME,
+		{ Damage: Damage, RepairCost: nextRepairCost },
+		displayData,
+		nextEnchantData
+	)
 	return 'success'
 }
 function checkEnchant(args) {
@@ -1505,12 +1525,11 @@ function applyEnchant(args) {
 	var enchantData = getEnchantData(40)
 	var damage = getDamage(40)
 	var repairCost = getRepairCost(40)
-	var nextRepairCost = getNextRepairCost(repairCost, enchant, checkPlus)
 	var displayName = getDisplayName()
 	var lore = getLore()
 	var nbtData = {
 		Damage: damage,
-		RepairCost: nextRepairCost,
+		RepairCost: repairCost,
 	}
 	var displayData = {
 		Name: displayName,

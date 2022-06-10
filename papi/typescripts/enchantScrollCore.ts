@@ -2005,6 +2005,12 @@ function applyNormalEnchant(
 			success: { title, subtitle },
 		} = TITLE_SETTINGS
 
+		// get integer nbt data
+		const { Damage, RepairCost } = nbtData
+
+		// get item repair cost after scroll applied
+		const nextRepairCost = getNextRepairCost(RepairCost, enchant, isPlus)
+
 		// show title & subtitle
 		playTitle(title, subtitle, PLAYER_NAME)
 
@@ -2012,11 +2018,20 @@ function applyNormalEnchant(
 		broadcastSuccess(PLAYER_NAME, enchant, nextEnchantData[enchant])
 
 		// replace target item
-		replaceItem(PLAYER_NAME, nbtData, displayData, nextEnchantData)
+		replaceItem(PLAYER_NAME, { Damage, RepairCost: nextRepairCost }, displayData, nextEnchantData)
 
 		// return result
 		return 'success'
 	}
+
+	// get integer nbt data
+	const { Damage, RepairCost } = nbtData
+
+	// get item repair cost after scroll applied
+	const nextRepairCost = getNextRepairCost(RepairCost, 'fail', false)
+
+	// set nbt data for failed result
+	const failNBTData: ItemIntNBTDataType = { Damage, RepairCost: nextRepairCost }
 
 	// side effect
 	if (sideEffect && !isProtected) {
@@ -2035,7 +2050,7 @@ function applyNormalEnchant(
 		// replace target item
 		isPlus
 			? destroyItem(PLAYER_NAME)
-			: replaceItem(PLAYER_NAME, nbtData, displayData, nextEnchantData)
+			: replaceItem(PLAYER_NAME, failNBTData, displayData, nextEnchantData)
 
 		// return result
 		return 'sideeffect'
@@ -2057,7 +2072,7 @@ function applyNormalEnchant(
 	broadcastFail(PLAYER_NAME, enchant, nextEnchantData[enchant])
 
 	// replace target item
-	replaceItem(PLAYER_NAME, nbtData, displayData, nextEnchantData)
+	replaceItem(PLAYER_NAME, failNBTData, displayData, nextEnchantData)
 
 	// return result
 	return 'fail'
@@ -2099,6 +2114,12 @@ function applyRandomEnchant(
 		result: { upgraded, downgraded },
 	} = getRandomEnchantResult(enchantData)
 
+	// get integer nbt data
+	const { Damage, RepairCost } = nbtData
+
+	// get item repair cost after scroll applied
+	const nextRepairCost = getNextRepairCost(RepairCost, 'random', false)
+
 	// play sound effect
 	playSound('block.anvil.use', PLAYER_NAME)
 	// get title setting
@@ -2113,7 +2134,7 @@ function applyRandomEnchant(
 	broadcastRandomSuccess(PLAYER_NAME)
 
 	// replace target item
-	replaceItem(PLAYER_NAME, nbtData, displayData, nextEnchantData)
+	replaceItem(PLAYER_NAME, { Damage, RepairCost: nextRepairCost }, displayData, nextEnchantData)
 
 	// return result
 	return 'success'
@@ -2281,9 +2302,6 @@ function applyEnchant(args: string[]): DataType {
 	// get item repair cost
 	const repairCost = getRepairCost(40)
 
-	// get item repair cost after scroll applied
-	const nextRepairCost = getNextRepairCost(repairCost, enchant, checkPlus)
-
 	// get item display name
 	const displayName = getDisplayName()
 
@@ -2293,7 +2311,7 @@ function applyEnchant(args: string[]): DataType {
 	// get nbt data after scroll applied
 	const nbtData: ItemIntNBTDataType = {
 		Damage: damage,
-		RepairCost: nextRepairCost,
+		RepairCost: repairCost,
 	}
 
 	// get display data
