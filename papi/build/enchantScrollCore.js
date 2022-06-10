@@ -772,6 +772,16 @@ var TITLE_SETTINGS = {
 			{ text: '공', color: '#cefd00', bold: true },
 			{ text: '!', color: '#f8fd00', bold: true },
 		],
+		subtitle: { 'text': '강화 단계가 상승했습니다.', 'color': 'gray', 'bold': true },
+	},
+	successRandom: {
+		title: [
+			{ text: '강', color: '#50fb00', bold: true },
+			{ text: '화', color: '#7afc00', bold: true },
+			{ text: '성', color: '#a4fc00', bold: true },
+			{ text: '공', color: '#cefd00', bold: true },
+			{ text: '!', color: '#f8fd00', bold: true },
+		],
 		subtitle: {
 			'text': '알 수 없는 힘이 아이템에 성공적으로 전해졌습니다.',
 			'color': 'gray',
@@ -1089,6 +1099,20 @@ function getInventoryItemAmount(itemCode) {
 	var amount = parsePlaceholder(placeholder)
 	return parseInt(amount)
 }
+function removeItem(itemCode, amount) {
+	var placeholder =
+		typeof amount === 'undefined'
+			? 'checkitem_remove_lorecontains:'.concat(itemCode)
+			: 'checkitem_remove_lorecontains:'.concat(itemCode, ',amt:').concat(amount)
+	return parsePlaceholder(placeholder) === 'yes'
+}
+function removeSlotItem(slot, amount) {
+	var placeholder =
+		typeof amount === 'undefined'
+			? 'checkitem_remove_inslot:'.concat(slot)
+			: 'checkitem_remove_inslot:'.concat(slot, ',amt:').concat(amount)
+	return parsePlaceholder(placeholder) === 'yes'
+}
 function getKrEnchantName(enchant) {
 	var krName = VALID_ENCHANTS[enchant].krName
 	return krName
@@ -1174,6 +1198,7 @@ function getBoostedChance() {
 		eiCode = _a.eiCode,
 		amount = _a.amount
 	var boost = enchantEssence[eiCode] * amount
+	if (!removeSlotItem(slot)) return 0
 	return boost
 }
 function getSuccessChance(enchant, level, isPlus) {
@@ -1181,7 +1206,7 @@ function getSuccessChance(enchant, level, isPlus) {
 		rarityWeight = ENCHANT_CHANCE.rarityWeight
 	var success = (isPlus ? chance.plus : chance.normal).success
 	var nextLevel = isPlus ? level + 1 : level
-	var boosted = getBoostedChance()
+	var boosted = enchant !== 'random' ? getBoostedChance() : 0
 	var successChance =
 		1000 * (success[nextLevel] * getEventMultiplier() + boosted) * rarityWeight[enchant]
 	return successChance
@@ -1271,7 +1296,7 @@ function broadcastSuccess(playerName, enchant, nextLevel) {
 	var krEnchant = getKrEnchantName(enchant)
 	var message = '&b&l'
 		.concat(playerName, '&f\uB2D8\uC774 &7&l')
-		.concat(krName, '&f\uC758 &#FFFFB5&l')
+		.concat(krName, '&f\uC758 #FFFFB5&l')
 		.concat(krEnchant, ' \uC778\uCC48\uD2B8 &6&l+')
 		.concat(nextLevel, ' &f\uAC15\uD654\uC5D0 &a&l\uC131\uACF5&f\uD588\uC2B5\uB2C8\uB2E4.')
 	return broadcastMessage(message)
@@ -1281,7 +1306,7 @@ function broadcastFail(playerName, enchant, nextLevel) {
 	var krEnchant = getKrEnchantName(enchant)
 	var message = '&b&l'
 		.concat(playerName, '&f\uB2D8\uC774 &7&l')
-		.concat(krName, '&f\uC758 &#FFFFB5&l')
+		.concat(krName, '&f\uC758 #FFFFB5&l')
 		.concat(krEnchant, ' \uC778\uCC48\uD2B8 &6&l+')
 		.concat(nextLevel, ' &f\uAC15\uD654\uC5D0 &c&l\uC2E4\uD328&f\uD588\uC2B5\uB2C8\uB2E4.')
 	return broadcastMessage(message)
@@ -1292,7 +1317,7 @@ function broadcastRandomSuccess(playerName) {
 		.concat(playerName, '&f\uB2D8\uC774 &7&l')
 		.concat(
 			krName,
-			'&f\uC758 &#FFFFB5&l\uC778\uCC48\uD2B8 &6&l\uB79C\uB364 &f\uAC15\uD654\uC5D0 &a&l\uC131\uACF5&f\uD588\uC2B5\uB2C8\uB2E4.'
+			'&f\uC758 #FFFFB5&l\uC778\uCC48\uD2B8 &6&l\uB79C\uB364 &f\uAC15\uD654\uC5D0 &a&l\uC131\uACF5&f\uD588\uC2B5\uB2C8\uB2E4.'
 		)
 	return broadcastMessage(message)
 }
@@ -1302,7 +1327,7 @@ function broadcastRandomFail(playerName) {
 		.concat(playerName, '&f\uB2D8\uC774 &7&l')
 		.concat(
 			krName,
-			'&f\uC758 &#FFFFB5&l\uC778\uCC48\uD2B8 &6&l\uB79C\uB364 &f\uAC15\uD654\uC5D0 &c&l\uC2E4\uD328&f\uD588\uC2B5\uB2C8\uB2E4.'
+			'&f\uC758 #FFFFB5&l\uC778\uCC48\uD2B8 &6&l\uB79C\uB364 &f\uAC15\uD654\uC5D0 &c&l\uC2E4\uD328&f\uD588\uC2B5\uB2C8\uB2E4.'
 		)
 	return broadcastMessage(message)
 }
@@ -1311,28 +1336,46 @@ function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) 
 		success = _a.success,
 		sideEffect = _a.sideEffect,
 		nextEnchantData = _a.enchantData
+	var isProtected = false
+	if (isPlus) {
+		var _b = getItemInfo('protectScroll'),
+			name_1 = _b.name,
+			code = _b.code
+		if (removeItem(code, 1)) {
+			isProtected = true
+			var message = '&7[&6\uAC15\uD654&7] '.concat(
+				name_1,
+				'&f\uC758 &a&l\uC2E0\uBE44\uB85C\uC6B4 \uD798\uC774 &f\uC544\uC774\uD15C\uC5D0 \uC804\uD574\uC84C\uC2B5\uB2C8\uB2E4.'
+			)
+			sendMessage(consoleColorString(message))
+		}
+	}
 	if (success) {
 		playSound('block.anvil.use', PLAYER_NAME)
-		var title_1 = TITLE_SETTINGS.success.title
-		playTitle(title_1, [], PLAYER_NAME)
+		var _c = TITLE_SETTINGS.success,
+			title_1 = _c.title,
+			subtitle_1 = _c.subtitle
+		playTitle(title_1, subtitle_1, PLAYER_NAME)
 		broadcastSuccess(PLAYER_NAME, enchant, nextEnchantData[enchant])
 		replaceItem(PLAYER_NAME, nbtData, displayData, nextEnchantData)
 		return 'success'
 	}
-	if (sideEffect) {
+	if (sideEffect && !isProtected) {
 		playSound('entity.item.break', PLAYER_NAME)
-		var _b = isPlus ? TITLE_SETTINGS.destroy : TITLE_SETTINGS.downgrade,
-			title_2 = _b.title,
-			subtitle_1 = _b.subtitle
-		playTitle(title_2, subtitle_1, PLAYER_NAME)
+		var _d = isPlus ? TITLE_SETTINGS.destroy : TITLE_SETTINGS.downgrade,
+			title_2 = _d.title,
+			subtitle_2 = _d.subtitle
+		playTitle(title_2, subtitle_2, PLAYER_NAME)
 		broadcastFail(PLAYER_NAME, enchant, nextEnchantData[enchant])
-		replaceItem(PLAYER_NAME, nbtData, displayData, nextEnchantData)
+		isPlus
+			? destroyItem(PLAYER_NAME)
+			: replaceItem(PLAYER_NAME, nbtData, displayData, nextEnchantData)
 		return 'sideeffect'
 	}
 	playSound('entity.villager.no', PLAYER_NAME)
-	var _c = TITLE_SETTINGS.fail,
-		title = _c.title,
-		subtitle = _c.subtitle
+	var _e = TITLE_SETTINGS.fail,
+		title = _e.title,
+		subtitle = _e.subtitle
 	playTitle(title, subtitle, PLAYER_NAME)
 	broadcastFail(PLAYER_NAME, enchant, nextEnchantData[enchant])
 	replaceItem(PLAYER_NAME, nbtData, displayData, nextEnchantData)
@@ -1343,8 +1386,8 @@ function applyRandomEnchant(enchantData, displayData, nbtData, isPlus) {
 		playSound('entity.item.break', PLAYER_NAME)
 		var _a = TITLE_SETTINGS.destroy,
 			title_3 = _a.title,
-			subtitle_2 = _a.subtitle
-		playTitle(title_3, subtitle_2, PLAYER_NAME)
+			subtitle_3 = _a.subtitle
+		playTitle(title_3, subtitle_3, PLAYER_NAME)
 		broadcastRandomFail(PLAYER_NAME)
 		destroyItem(PLAYER_NAME)
 		return 'fail'
@@ -1355,7 +1398,7 @@ function applyRandomEnchant(enchantData, displayData, nbtData, isPlus) {
 		upgraded = _c.upgraded,
 		downgraded = _c.downgraded
 	playSound('block.anvil.use', PLAYER_NAME)
-	var _d = TITLE_SETTINGS.success,
+	var _d = TITLE_SETTINGS.successRandom,
 		title = _d.title,
 		subtitle = _d.subtitle
 	playTitle(title, subtitle, PLAYER_NAME)

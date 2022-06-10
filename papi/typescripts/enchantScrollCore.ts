@@ -928,6 +928,16 @@ const TITLE_SETTINGS: {
 			{ text: '공', color: '#cefd00', bold: true },
 			{ text: '!', color: '#f8fd00', bold: true },
 		],
+		subtitle: { 'text': '강화 단계가 상승했습니다.', 'color': 'gray', 'bold': true },
+	},
+	successRandom: {
+		title: [
+			{ text: '강', color: '#50fb00', bold: true },
+			{ text: '화', color: '#7afc00', bold: true },
+			{ text: '성', color: '#a4fc00', bold: true },
+			{ text: '공', color: '#cefd00', bold: true },
+			{ text: '!', color: '#f8fd00', bold: true },
+		],
 		subtitle: {
 			'text': '알 수 없는 힘이 아이템에 성공적으로 전해졌습니다.',
 			'color': 'gray',
@@ -1480,6 +1490,30 @@ function getInventoryItemAmount(itemCode: string): number {
 	return parseInt(amount)
 }
 
+// remove specific item
+function removeItem(itemCode: string, amount?: number): boolean {
+	// set placeholder
+	const placeholder =
+		typeof amount === 'undefined'
+			? `checkitem_remove_lorecontains:${itemCode}`
+			: `checkitem_remove_lorecontains:${itemCode},amt:${amount}`
+
+	// remove item
+	return parsePlaceholder(placeholder) === 'yes'
+}
+
+// remove items in specific slot
+function removeSlotItem(slot: number, amount?: number): boolean {
+	// set placeholder
+	const placeholder =
+		typeof amount === 'undefined'
+			? `checkitem_remove_inslot:${slot}`
+			: `checkitem_remove_inslot:${slot},amt:${amount}`
+
+	// remove item
+	return parsePlaceholder(placeholder) === 'yes'
+}
+
 /**
   [ enchant scroll utilities ]
 */
@@ -1653,6 +1687,9 @@ function getBoostedChance(): number {
 	const { eiCode, amount } = essence as StrictItemInfoType
 	const boost = enchantEssence[eiCode] * amount
 
+	// remove used essence
+	if (!removeSlotItem(slot)) return 0
+
 	// return boosted chance
 	return boost
 }
@@ -1669,7 +1706,7 @@ function getSuccessChance(enchant: string, level: number, isPlus: boolean): numb
 	const nextLevel = isPlus ? level + 1 : level
 
 	// get boosted chance by enchant essences
-	const boosted = getBoostedChance()
+	const boosted = enchant !== 'random' ? getBoostedChance() : 0
 
 	// calc success chance
 	const successChance =
@@ -1858,7 +1895,7 @@ function broadcastSuccess(playerName: string, enchant: string, nextLevel: number
 	const krEnchant = getKrEnchantName(enchant)
 
 	// set message
-	const message = `&b&l${playerName}&f님이 &7&l${krName}&f의 &#FFFFB5&l${krEnchant} 인챈트 &6&l+${nextLevel} &f강화에 &a&l성공&f했습니다.`
+	const message = `&b&l${playerName}&f님이 &7&l${krName}&f의 #FFFFB5&l${krEnchant} 인챈트 &6&l+${nextLevel} &f강화에 &a&l성공&f했습니다.`
 
 	// broadcast message
 	return broadcastMessage(message)
@@ -1873,7 +1910,7 @@ function broadcastFail(playerName: string, enchant: string, nextLevel: number): 
 	const krEnchant = getKrEnchantName(enchant)
 
 	// set message
-	const message = `&b&l${playerName}&f님이 &7&l${krName}&f의 &#FFFFB5&l${krEnchant} 인챈트 &6&l+${nextLevel} &f강화에 &c&l실패&f했습니다.`
+	const message = `&b&l${playerName}&f님이 &7&l${krName}&f의 #FFFFB5&l${krEnchant} 인챈트 &6&l+${nextLevel} &f강화에 &c&l실패&f했습니다.`
 
 	// broadcast message
 	return broadcastMessage(message)
@@ -1885,7 +1922,7 @@ function broadcastRandomSuccess(playerName: string): boolean {
 	const krName = getKrName(40)
 
 	// set message
-	const message = `&b&l${playerName}&f님이 &7&l${krName}&f의 &#FFFFB5&l인챈트 &6&l랜덤 &f강화에 &a&l성공&f했습니다.`
+	const message = `&b&l${playerName}&f님이 &7&l${krName}&f의 #FFFFB5&l인챈트 &6&l랜덤 &f강화에 &a&l성공&f했습니다.`
 
 	// broadcast message
 	return broadcastMessage(message)
@@ -1897,7 +1934,7 @@ function broadcastRandomFail(playerName: string): boolean {
 	const krName = getKrName(40)
 
 	// set message
-	const message = `&b&l${playerName}&f님이 &7&l${krName}&f의 &#FFFFB5&l인챈트 &6&l랜덤 &f강화에 &c&l실패&f했습니다.`
+	const message = `&b&l${playerName}&f님이 &7&l${krName}&f의 #FFFFB5&l인챈트 &6&l랜덤 &f강화에 &c&l실패&f했습니다.`
 
 	// broadcast message
 	return broadcastMessage(message)
@@ -1918,6 +1955,25 @@ function applyNormalEnchant(
 		enchantData: nextEnchantData,
 	} = getEnchantResult(enchantData, enchant, isPlus)
 
+	// check protect scroll
+	let isProtected: boolean = false
+	if (isPlus) {
+		// get item name
+		const { name, code } = getItemInfo('protectScroll')
+
+		// remove protect scroll
+		if (removeItem(code, 1)) {
+			// set as protected
+			isProtected = true
+
+			// set message
+			const message = `&7[&6강화&7] ${name}&f의 &a&l신비로운 힘이 &f아이템에 전해졌습니다.`
+
+			// send protect scroll applied message
+			sendMessage(consoleColorString(message))
+		}
+	}
+
 	// success
 	if (success) {
 		// play sound effect
@@ -1925,11 +1981,11 @@ function applyNormalEnchant(
 
 		// get title setting
 		const {
-			success: { title },
+			success: { title, subtitle },
 		} = TITLE_SETTINGS
 
 		// show title & subtitle
-		playTitle(title, [], PLAYER_NAME)
+		playTitle(title, subtitle, PLAYER_NAME)
 
 		// broadcast success message
 		broadcastSuccess(PLAYER_NAME, enchant, nextEnchantData[enchant])
@@ -1942,7 +1998,7 @@ function applyNormalEnchant(
 	}
 
 	// side effect
-	if (sideEffect) {
+	if (sideEffect && !isProtected) {
 		// play sound effect
 		playSound('entity.item.break', PLAYER_NAME)
 
@@ -1952,11 +2008,13 @@ function applyNormalEnchant(
 		// show title & subtitle
 		playTitle(title, subtitle, PLAYER_NAME)
 
-		// broadcast success message
+		// broadcast fail message
 		broadcastFail(PLAYER_NAME, enchant, nextEnchantData[enchant])
 
 		// replace target item
-		replaceItem(PLAYER_NAME, nbtData, displayData, nextEnchantData)
+		isPlus
+			? destroyItem(PLAYER_NAME)
+			: replaceItem(PLAYER_NAME, nbtData, displayData, nextEnchantData)
 
 		// return result
 		return 'sideeffect'
@@ -1974,7 +2032,7 @@ function applyNormalEnchant(
 	// show title & subtitle
 	playTitle(title, subtitle, PLAYER_NAME)
 
-	// broadcast success message
+	// broadcast fail message
 	broadcastFail(PLAYER_NAME, enchant, nextEnchantData[enchant])
 
 	// replace target item
@@ -2024,7 +2082,7 @@ function applyRandomEnchant(
 	playSound('block.anvil.use', PLAYER_NAME)
 	// get title setting
 	const {
-		success: { title, subtitle },
+		successRandom: { title, subtitle },
 	} = TITLE_SETTINGS
 
 	// show title & subtitle
