@@ -1409,7 +1409,7 @@ function getEnchantData(slot: number): ItemEnchantDataType {
 	const enchantData: ItemEnchantDataType = {}
 	rawData.forEach((enchantStr) => {
 		// split enchantments & level
-		const [enchant, level] = enchantStr.split(':')
+		const [enchant, level] = enchantStr.replace('minecraft:', '').split(':')
 
 		// store data
 		enchantData[enchant] = parseInt(level)

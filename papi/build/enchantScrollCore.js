@@ -1051,7 +1051,7 @@ function getEnchantData(slot) {
 	).split('|')
 	var enchantData = {}
 	rawData.forEach(function (enchantStr) {
-		var _a = enchantStr.split(':'),
+		var _a = enchantStr.replace('minecraft:', '').split(':'),
 			enchant = _a[0],
 			level = _a[1]
 		enchantData[enchant] = parseInt(level)
