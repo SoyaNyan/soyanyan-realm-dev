@@ -1,14 +1,3 @@
-/**
- * Author: SOYANYAN (소야냥)
- * Name: enchantScrollCore.ts
- * Version: v1.1.0
- * Last Update: 2022-06-09
- *
- * TypeScript Version: v4.7.2
- * Target: ES5
- * JSX: None
- * Module: ESNext
- */
 var __assign =
 	(this && this.__assign) ||
 	function () {
@@ -1489,7 +1478,7 @@ function applyEnchant(args) {
 	if (isEventDay()) {
 		var multiplier = getEventMultiplier()
 		var message_1 =
-			'&7[&6\uAC15\uD654&7] &c&l\uD56B\uD0C0\uC784 &e&l\uC774\uBCA4\uD2B8&f\uB85C &9&l\uAC15\uD654 \uD655\uB960&f\uC774 &6&l'.concat(
+			'&7[&6\uAC15\uD654&7] &c&l\uD56B\uD0C0\uC784 &e&l\uC774\uBCA4\uD2B8&f\uB85C &9&l\uAC15\uD654\uD655\uB960&f\uC774 &6&l'.concat(
 				multiplier,
 				'&7\uBC30 &f\uC99D\uAC00\uD588\uC2B5\uB2C8\uB2E4.'
 			)
@@ -1497,7 +1486,7 @@ function applyEnchant(args) {
 	}
 	var name = (checkPlus ? ENCHANT_SCROLLS[enchant].plus : ENCHANT_SCROLLS[enchant].normal).name
 	var message = '&7[&6\uAC15\uD654&7] '
-		.concat(name, '\uB97C \uC0AC\uC6A9\uD588\uC2B5\uB2C8\uB2E4. &7(\uD328\uB110\uD2F0: ')
+		.concat(name, '&f\uB97C \uC0AC\uC6A9\uD588\uC2B5\uB2C8\uB2E4. &7(\uD328\uB110\uD2F0: ')
 		.concat(repairCost, ' -> ')
 		.concat(nextRepairCost, ')')
 	sendMessage(consoleColorString(message))

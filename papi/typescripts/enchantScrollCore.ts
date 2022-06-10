@@ -2279,7 +2279,7 @@ function applyEnchant(args: string[]): DataType {
 		const multiplier = getEventMultiplier()
 
 		// set message
-		const message = `&7[&6강화&7] &c&l핫타임 &e&l이벤트&f로 &9&l강화 확률&f이 &6&l${multiplier}&7배 &f증가했습니다.`
+		const message = `&7[&6강화&7] &c&l핫타임 &e&l이벤트&f로 &9&l강화확률&f이 &6&l${multiplier}&7배 &f증가했습니다.`
 
 		// send message
 		sendMessage(consoleColorString(message))
@@ -2289,7 +2289,7 @@ function applyEnchant(args: string[]): DataType {
 	const { name } = checkPlus ? ENCHANT_SCROLLS[enchant].plus : ENCHANT_SCROLLS[enchant].normal
 
 	// set message about item use
-	const message = `&7[&6강화&7] ${name}를 사용했습니다. &7(패널티: ${repairCost} -> ${nextRepairCost})`
+	const message = `&7[&6강화&7] ${name}&f를 사용했습니다. &7(패널티: ${repairCost} -> ${nextRepairCost})`
 
 	// send message
 	sendMessage(consoleColorString(message))
