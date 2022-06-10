@@ -1026,7 +1026,7 @@ function destroyItem(playerName) {
 		.concat(playerName, ' weapon.offhand with ')
 		.concat(
 			targetItem,
-			'{Damage:99999,display:{Name:\'[{"text":"\uD30C\uAD34\uB41C","italic":false,"bold":true,"color":"red"},{"text":" '
+			'{Damage:99999,RepairCost:5,display:{Name:\'[{"text":"\uD30C\uAD34\uB41C","italic":false,"bold":true,"color":"red"},{"text":" '
 		)
 		.concat(
 			krName,
@@ -1094,8 +1094,8 @@ function getRepairCost(slot) {
 function getItemInfo(itemCode) {
 	return ITEM_SETTINGS[itemCode]
 }
-function getInventoryItemAmount(itemCode) {
-	var placeholder = getItemInfo(itemCode).placeholder
+function getInventoryItemAmount(item) {
+	var placeholder = getItemInfo(item).placeholder
 	var amount = parsePlaceholder(placeholder)
 	return parseInt(amount)
 }
@@ -1406,12 +1406,6 @@ function applyRandomEnchant(enchantData, displayData, nbtData, isPlus) {
 	replaceItem(PLAYER_NAME, nbtData, displayData, nextEnchantData)
 	return 'success'
 }
-function itemNames(args) {
-	var returnType = args[1],
-		itemCode = args[2]
-	var name = getItemInfo(itemCode).name
-	return name
-}
 function checkEnchant(args) {
 	var returnType = args[1],
 		enchant = args[2]
@@ -1468,23 +1462,6 @@ function repairCostLimit(args) {
 	var limit = getItemCostLimit(targetItem)
 	return limit
 }
-function checkEvent(args) {
-	var returnType = args[1]
-	var cond = isEventDay()
-	if (returnType === '1') return encodeBoolean(cond)
-	return cond
-}
-function eventMultiplier(agrs) {
-	var returnType = args[1]
-	return getEventMultiplier()
-}
-function checkProtectScroll(args) {
-	var returnType = args[1]
-	var amount = getInventoryItemAmount('protectScroll')
-	var cond = amount > 0
-	if (returnType === '1') encodeBoolean(cond)
-	return cond
-}
 function repairCost(args) {
 	var returnType = args[1]
 	var cost = getRepairCost(40)
@@ -1540,10 +1517,6 @@ function enchantScrollCore() {
 	var result = false
 	var action = args[0]
 	var VALID_COMMANDS = {
-		itemNames: {
-			argLen: [3],
-			callback: itemNames,
-		},
 		checkEnchant: {
 			argLen: [3],
 			callback: checkEnchant,
@@ -1563,18 +1536,6 @@ function enchantScrollCore() {
 		repairCostLimit: {
 			argLen: [2],
 			callback: repairCostLimit,
-		},
-		checkEvent: {
-			argLen: [2],
-			callback: checkEvent,
-		},
-		eventMultiplier: {
-			argLen: [2],
-			callback: eventMultiplier,
-		},
-		checkProtectScroll: {
-			argLen: [2],
-			callback: checkProtectScroll,
 		},
 		repairCost: {
 			argLen: [2],

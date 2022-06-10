@@ -1362,7 +1362,7 @@ function destroyItem(playerName: string) {
 	const krName = getKrName(40)
 
 	// set command
-	const command = `minecraft:item replace entity ${playerName} weapon.offhand with ${targetItem}{Damage:99999,display:{Name:'[{"text":"파괴된","italic":false,"bold":true,"color":"red"},{"text":" ${krName}","italic":false,"bold":true,"color":"aqua"},{"text":"의 흔적","color":"gray"}]',Lore:['[{"text":"강화에 실패해 파괴된 아이템의 흔적이다.","italic":false,"color":"gray"}]','[{"text":"복구할 수 없을 것 같다.","italic":false,"color":"gray"}]','[{"text":""}]','[{"text":"아이템 소유자:","italic":false,"color":"gray"},{"text":" ${playerName}","italic":false,"color":"red"}]']}}`
+	const command = `minecraft:item replace entity ${playerName} weapon.offhand with ${targetItem}{Damage:99999,RepairCost:5,display:{Name:'[{"text":"파괴된","italic":false,"bold":true,"color":"red"},{"text":" ${krName}","italic":false,"bold":true,"color":"aqua"},{"text":"의 흔적","color":"gray"}]',Lore:['[{"text":"강화에 실패해 파괴된 아이템의 흔적이다.","italic":false,"color":"gray"}]','[{"text":"복구할 수 없을 것 같다.","italic":false,"color":"gray"}]','[{"text":""}]','[{"text":"아이템 소유자:","italic":false,"color":"gray"},{"text":" ${playerName}","italic":false,"color":"red"}]']}}`
 
 	// exec command
 	return execConsoleCommand(command)
@@ -1479,9 +1479,9 @@ function getItemInfo(itemCode: string): ItemInfoType {
 }
 
 // get amount of specific item in player's inventory
-function getInventoryItemAmount(itemCode: string): number {
+function getInventoryItemAmount(item: string): number {
 	// get placeholder
-	const { placeholder } = getItemInfo(itemCode)
+	const { placeholder } = getItemInfo(item)
 
 	// get item amount
 	const amount = parsePlaceholder(placeholder)
@@ -2101,18 +2101,6 @@ function applyRandomEnchant(
 /**
   [ action handler ] 
 */
-// get item names (color coded)
-function itemNames(args: string[]): DataType {
-	// get args
-	const [, returnType, itemCode] = args
-
-	// get item name
-	const { name } = getItemInfo(itemCode)
-
-	// normal return
-	return name
-}
-
 // check target enchant or item is valid
 function checkEnchant(args: string[]): DataType {
 	// get args
@@ -2225,44 +2213,6 @@ function repairCostLimit(args: string[]): DataType {
 	return limit
 }
 
-// check if in event
-function checkEvent(args: string[]): DataType {
-	// get args
-	const [, returnType] = args
-
-	// check return type (condition: if today is event day)
-	const cond = isEventDay()
-	if (returnType === '1') return encodeBoolean(cond)
-
-	// normal return
-	return cond
-}
-
-// get event chance multiplier
-function eventMultiplier(agrs: string[]): DataType {
-	// get args
-	const [, returnType] = args
-
-	// normal return
-	return getEventMultiplier()
-}
-
-// check player has protect scroll
-function checkProtectScroll(args: string[]): DataType {
-	// get args
-	const [, returnType] = args
-
-	// get amount of protect scroll
-	const amount = getInventoryItemAmount('protectScroll')
-
-	// check return type (condition: amount of protect scroll > 0)
-	const cond = amount > 0
-	if (returnType === '1') encodeBoolean(cond)
-
-	// normal return
-	return cond
-}
-
 // get repair cost of target item
 function repairCost(args: string[]): DataType {
 	// get args
@@ -2369,10 +2319,6 @@ function enchantScrollCore(): string {
 
 	// command(placeholder) settings
 	const VALID_COMMANDS: { [index: string]: CommandObjectType } = {
-		itemNames: {
-			argLen: [3],
-			callback: itemNames,
-		},
 		checkEnchant: {
 			argLen: [3],
 			callback: checkEnchant,
@@ -2392,18 +2338,6 @@ function enchantScrollCore(): string {
 		repairCostLimit: {
 			argLen: [2],
 			callback: repairCostLimit,
-		},
-		checkEvent: {
-			argLen: [2],
-			callback: checkEvent,
-		},
-		eventMultiplier: {
-			argLen: [2],
-			callback: eventMultiplier,
-		},
-		checkProtectScroll: {
-			argLen: [2],
-			callback: checkProtectScroll,
 		},
 		repairCost: {
 			argLen: [2],
