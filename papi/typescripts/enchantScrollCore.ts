@@ -2312,7 +2312,7 @@ function enchantScrollCore(): string {
 	// command(placeholder) settings
 	const VALID_COMMANDS: { [index: string]: CommandObjectType } = {
 		itemNames: {
-			argLen: [2],
+			argLen: [3],
 			callback: itemNames,
 		},
 		checkEnchant: {
@@ -2324,7 +2324,7 @@ function enchantScrollCore(): string {
 			callback: checkUpgradable,
 		},
 		checkValidItem: {
-			argLen: [2],
+			argLen: [3],
 			callback: checkValidItem,
 		},
 		checkCostLimit: {

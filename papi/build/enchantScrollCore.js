@@ -1498,7 +1498,7 @@ function enchantScrollCore() {
 	var action = args[0]
 	var VALID_COMMANDS = {
 		itemNames: {
-			argLen: [2],
+			argLen: [3],
 			callback: itemNames,
 		},
 		checkEnchant: {
@@ -1510,7 +1510,7 @@ function enchantScrollCore() {
 			callback: checkUpgradable,
 		},
 		checkValidItem: {
-			argLen: [2],
+			argLen: [3],
 			callback: checkValidItem,
 		},
 		checkCostLimit: {
