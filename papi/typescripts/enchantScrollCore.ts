@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.ts
- * Version: v1.1.0
- * Last Update: 2022-06-09
+ * Version: v1.2.0
+ * Last Update: 2022-06-11
  *
  * TypeScript Version: v4.7.2
  * Target: ES5
@@ -2283,36 +2283,6 @@ function repairCostLimit(args: string[]): DataType {
 	return limit
 }
 
-// get repair cost of target item
-function repairCost(args: string[]): DataType {
-	// get args
-	const [, returnType] = args
-
-	// get current repair cost
-	const cost = getRepairCost(40)
-
-	// normal return
-	return cost
-}
-
-// get repair cost of target item after scroll applied
-function nextRepairCost(args: string[]): DataType {
-	// get args
-	const [, returnType, enchant, isPlus] = args
-
-	// parse args
-	const checkPlus = isPlus === '1'
-
-	// get current repair cost
-	const cost = getRepairCost(40)
-
-	// get next repair cost
-	const nextCost = getNextRepairCost(cost, enchant, checkPlus)
-
-	// normal return
-	return nextCost
-}
-
 // apply enchant scroll to target item
 function applyEnchant(args: string[]): DataType {
 	// get args
@@ -2367,6 +2337,97 @@ function applyEnchant(args: string[]): DataType {
 	return applyNormalEnchant(enchantData, enchant, displayData, nbtData, checkPlus)
 }
 
+// check target item has any enchants
+function hasEnchant(args: string[]): DataType {
+	// get args
+	const [, returnType] = args
+
+	// check if enchanted
+	const enchanted = isEnchanted(40)
+
+	// normal return
+	return enchanted
+}
+
+// check target item has repair cost or larger than 0
+function hasRepairCost(args: string[]): DataType {
+	// get args
+	const [, returnType] = args
+
+	// get current repair cost
+	const repairCost = getRepairCost(40)
+
+	// normal return
+	return repairCost > 0
+}
+
+// apply cost reducer to target item
+function applyReducer(args: string[]): DataType {
+	// get args
+	const [, returnType, reducer] = args
+
+	// cost reducer setting
+	const costReducer: { [index: string]: { itemCode: string; cost: number } } = {
+		low: {
+			itemCode: 'costReducerLow',
+			cost: 1,
+		},
+		medium: {
+			itemCode: 'costReducerMedium',
+			cost: 5,
+		},
+		high: {
+			itemCode: 'costReducerHigh',
+			cost: 10,
+		},
+	}
+
+	// get reducer setting
+	const { itemCode, cost } = costReducer[reducer]
+
+	// get damage
+	const damage = getDamage(40)
+
+	// get current repair cost
+	const repairCost = getRepairCost(40)
+
+	// calc next repair cost
+	const nextRepairCost = repairCost - cost
+
+	// set nbt data
+	const nbtData: ItemIntNBTDataType = {
+		Damage: damage,
+		RepairCost: nextRepairCost < 0 ? 0 : nextRepairCost,
+	}
+
+	// get display data
+	const displayData: ConvertedDisplayDataType = {
+		Name: getDisplayName(),
+		Lore: getLore(),
+	}
+
+	// get enchant data
+	const enchantData = getEnchantData(40)
+
+	// replace item (update repair cost)
+	replaceItem(PLAYER_NAME, nbtData, displayData, enchantData)
+
+	// get reducer name
+	const { name } = ITEM_SETTINGS[itemCode]
+
+	// set message
+	const message = `${name}&f를 사용해 &c&l패널티&f를 &6&l정화&f했습니다. &7(${repairCost} -> ${nbtData.RepairCost})`
+
+	// send message
+	sendMessage(consoleColorString(message))
+
+	// play sound effect
+	playSound('entity.player.levelup', PLAYER_NAME)
+
+	// return reduced repair cost
+	return nbtData.RepairCost
+}
+
 // placeholder controller
 function enchantScrollCore(): string {
 	// action result
@@ -2397,17 +2458,21 @@ function enchantScrollCore(): string {
 			argLen: [2],
 			callback: repairCostLimit,
 		},
-		repairCost: {
-			argLen: [2],
-			callback: repairCost,
-		},
-		nextRepairCost: {
-			argLen: [4],
-			callback: nextRepairCost,
-		},
 		applyEnchant: {
 			argLen: [4],
 			callback: applyEnchant,
+		},
+		hasEnchant: {
+			argLen: [2],
+			callback: hasEnchant,
+		},
+		hasRepairCost: {
+			argLen: [2],
+			callback: hasRepairCost,
+		},
+		applyReducer: {
+			argLen: [3],
+			callback: applyReducer,
 		},
 	}
 

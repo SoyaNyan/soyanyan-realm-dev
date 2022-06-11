@@ -1,3 +1,15 @@
+/**
+ * Author: SOYANYAN (소야냥)
+ * Name: enchantScrollCore.ts
+ * Version: v1.2.0
+ * Last Update: 2022-06-11
+ *
+ * TypeScript Version: v4.7.2
+ * Target: ES5
+ * JSX: None
+ * Module: ESNext
+ */
+
 var __assign =
 	(this && this.__assign) ||
 	function () {
@@ -1517,20 +1529,6 @@ function repairCostLimit(args) {
 	var limit = getItemCostLimit(targetItem)
 	return limit
 }
-function repairCost(args) {
-	var returnType = args[1]
-	var cost = getRepairCost(40)
-	return cost
-}
-function nextRepairCost(args) {
-	var returnType = args[1],
-		enchant = args[2],
-		isPlus = args[3]
-	var checkPlus = isPlus === '1'
-	var cost = getRepairCost(40)
-	var nextCost = getNextRepairCost(cost, enchant, checkPlus)
-	return nextCost
-}
 function applyEnchant(args) {
 	var returnType = args[1],
 		enchant = args[2],
@@ -1561,6 +1559,61 @@ function applyEnchant(args) {
 	if (enchant === 'random') return applyRandomEnchant(enchantData, displayData, nbtData, checkPlus)
 	return applyNormalEnchant(enchantData, enchant, displayData, nbtData, checkPlus)
 }
+function hasEnchant(args) {
+	var returnType = args[1]
+	var enchanted = isEnchanted(40)
+	return enchanted
+}
+function hasRepairCost(args) {
+	var returnType = args[1]
+	var repairCost = getRepairCost(40)
+	return repairCost > 0
+}
+function applyReducer(args) {
+	var returnType = args[1],
+		reducer = args[2]
+	var costReducer = {
+		low: {
+			itemCode: 'costReducerLow',
+			cost: 1,
+		},
+		medium: {
+			itemCode: 'costReducerMedium',
+			cost: 5,
+		},
+		high: {
+			itemCode: 'costReducerHigh',
+			cost: 10,
+		},
+	}
+	var _a = costReducer[reducer],
+		itemCode = _a.itemCode,
+		cost = _a.cost
+	var damage = getDamage(40)
+	var repairCost = getRepairCost(40)
+	var nextRepairCost = repairCost - cost
+	var nbtData = {
+		Damage: damage,
+		RepairCost: nextRepairCost < 0 ? 0 : nextRepairCost,
+	}
+	var displayData = {
+		Name: getDisplayName(),
+		Lore: getLore(),
+	}
+	var enchantData = getEnchantData(40)
+	replaceItem(PLAYER_NAME, nbtData, displayData, enchantData)
+	var name = ITEM_SETTINGS[itemCode].name
+	var message = ''
+		.concat(
+			name,
+			'&f\uB97C \uC0AC\uC6A9\uD574 &c&l\uD328\uB110\uD2F0&f\uB97C &6&l\uC815\uD654&f\uD588\uC2B5\uB2C8\uB2E4. &7('
+		)
+		.concat(repairCost, ' -> ')
+		.concat(nbtData.RepairCost, ')')
+	sendMessage(consoleColorString(message))
+	playSound('entity.player.levelup', PLAYER_NAME)
+	return nbtData.RepairCost
+}
 function enchantScrollCore() {
 	var result = false
 	var action = args[0]
@@ -1585,17 +1638,21 @@ function enchantScrollCore() {
 			argLen: [2],
 			callback: repairCostLimit,
 		},
-		repairCost: {
-			argLen: [2],
-			callback: repairCost,
-		},
-		nextRepairCost: {
-			argLen: [4],
-			callback: nextRepairCost,
-		},
 		applyEnchant: {
 			argLen: [4],
 			callback: applyEnchant,
+		},
+		hasEnchant: {
+			argLen: [2],
+			callback: hasEnchant,
+		},
+		hasRepairCost: {
+			argLen: [2],
+			callback: hasRepairCost,
+		},
+		applyReducer: {
+			argLen: [3],
+			callback: applyReducer,
 		},
 	}
 	if (!(action in VALID_COMMANDS)) return 'false'
