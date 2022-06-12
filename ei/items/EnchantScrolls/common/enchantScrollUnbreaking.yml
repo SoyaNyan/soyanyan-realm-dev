@@ -55,20 +55,7 @@ activators:
     cancelEventIfMaxUsePerDay: false
     autoUpdateItem: false
     commands:
-      - 'LOOP START: %javascript_is_weekend_event%'
-      - 'SENDMESSAGE &7[&6강화&7] &a&l주말 &c&l핫타임 &e&l이벤트&f로 &9&l강화 확률&f이 &6&l%javascript_weekend_event_chance%&7배 &f증가했습니다.'
-      - LOOP END
-      - 'RANDOM RUN: 1'
-      - 'LOOP START: %javascript_upgrade_success_chance_unbreaking%'
-      - 'SENDMESSAGE &7[&6강화&7] %item%를 사용했습니다. &7(패널티: %javascript_item_repair_cost% -> %javascript_item_repair_cost_unbreaking%) +++ minecraft:item replace entity %player% weapon.offhand with %formatter_text_lowercase_{player_item_in_offhand}%{display:{%javascript_item_display_data%},%javascript_item_nbt_data_unbreaking%,Enchantments:%javascript_upgraded_enchants_unbreaking%} +++ execute at %player% run playsound minecraft:block.anvil.use voice %player% +++ title %player% title %javascript_success_title% +++ title %player% subtitle {"text":"강화 단계가 상승했습니다.","color":"gray","bold":"true"} +++ broadcast &b&l%player_name% &f님이 &7&l%javascript_item_kr_name%&f의 &#FFFFB5&l내구 인챈트 &6&l+%javascript_next_enchant_level_unbreaking% &f강화에 &a&l성공&f했습니다.'
-      - LOOP END
-      - 'LOOP START: %javascript_upgrade_fail_chance_unbreaking%'
-      - 'SENDMESSAGE &7[&6강화&7] %item%를 사용했습니다. &7(패널티: %javascript_item_repair_cost% -> %javascript_item_repair_cost_fail%) +++ minecraft:item replace entity %player% weapon.offhand with %formatter_text_lowercase_{player_item_in_offhand}%{display:{%javascript_item_display_data%},%javascript_item_nbt_data_fail%,Enchantments:%javascript_item_enchants%} +++ execute at %player% run playsound minecraft:entity.villager.no voice %player% +++ title %player% title %javascript_fail_title% +++ title %player% subtitle {"text":"강화 단계는 유지됩니다.","color":"gray","bold":"true"} +++ broadcast &b&l%player_name% &f님이 &7&l%javascript_item_kr_name%&f의 &#FFFFB5&l내구 인챈트 &6&l+%javascript_next_enchant_level_unbreaking% &f강화에 &c&l실패&f했습니다.'
-      - LOOP END
-      - 'LOOP START: %javascript_downgrade_chance_unbreaking%'
-      - 'SENDMESSAGE &7[&6강화&7] %item%를 사용했습니다. &7(패널티: %javascript_item_repair_cost% -> %javascript_item_repair_cost_fail%) +++ minecraft:item replace entity %player% weapon.offhand with %formatter_text_lowercase_{player_item_in_offhand}%{display:{%javascript_item_display_data%},%javascript_item_nbt_data_fail%,Enchantments:%javascript_downgraded_enchants_unbreaking%} +++ execute at %player% run playsound minecraft:entity.item.break voice %player% +++ title %player% title %javascript_fail_title% +++ title %player% subtitle {"text":"강화 단계가 하락했습니다.","color":"gray","bold":"true"} +++ broadcast &b&l%player_name% &f님이 &7&l%javascript_item_kr_name%&f의 &#FFFFB5&l내구 인챈트 &6&l+%javascript_next_enchant_level_unbreaking% &f강화에 &c&l실패&f했습니다.'
-      - LOOP END
-      - RANDOM END
+      - 'NOTHING * %javascript_enchant_scroll_applyEnchant,0,unbreaking,0%'
     silenceOutput: false
     blockCommands: []
     detailedBlocks: []
@@ -83,24 +70,24 @@ activators:
       placeholdersConditions:
         plchC1:
           type: PLAYER_STRING
-          part1: '%javascript_is_valid_enchant_unbreaking%'
+          part1: '%javascript_enchant_scroll_checkEnchant,0,unbreaking%'
           comparator: EQUALS
           part2: 'true'
           messageIfNotValid: '&6>> 강화 주문서를 사용하려면 왼손에 유효한 아이템을 든 상태여야 합니다.'
           cancelEventIfNotValid: false
         plchC2:
           type: PLAYER_STRING
-          part1: '%javascript_is_upgradable_unbreaking%'
+          part1: '%javascript_enchant_scroll_checkUpgradable,0,unbreaking,0%'
           comparator: EQUALS
           part2: 'true'
           messageIfNotValid: '&6>> 강화 주문서 사용을 위한 인챈트 레벨 조건을 만족하지 않습니다.'
           cancelEventIfNotValid: false
         plchC3:
           type: PLAYER_STRING
-          part1: '%javascript_repair_cost_limit_unbreaking%'
+          part1: '%javascript_enchant_scroll_checkCostLimit,0,unbreaking,0%'
           comparator: EQUALS
           part2: 'true'
-          messageIfNotValid: '&6>> 강화 패널티가 %javascript_repair_cost_limit_unbreaking%를 초과할 수 없습니다.'
+          messageIfNotValid: '&6>> 강화 패널티가 %javascript_enchant_scroll_repairCostLimit,0%를 초과할 수 없습니다.'
           cancelEventIfNotValid: false
     cooldown: 5
     displayCooldownMessage: true

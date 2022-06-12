@@ -54,14 +54,7 @@ activators:
     cancelEventIfMaxUsePerDay: false
     autoUpdateItem: false
     commands:
-      - 'RANDOM RUN: 1'
-      - 'LOOP START: 5'
-      - 'SENDMESSAGE &7[&6강화&7] %item%를 사용했습니다. &7(패널티: %javascript_item_repair_cost% -> %javascript_item_repair_cost_random%) +++ minecraft:item replace entity %player% weapon.offhand with %formatter_text_lowercase_{player_item_in_offhand}%{display:{%javascript_item_display_data%},%javascript_item_nbt_data_random%,Enchantments:%javascript_random_enchants%} +++ execute at %player% run playsound minecraft:block.anvil.use voice %player% +++ title %player% title %javascript_success_title% +++ title %player% subtitle {"text":"알 수 없는 힘에 의해서 아이템에 성공적으로 전해졌습니다.","color":"gray","bold":"true"} +++ broadcast &b&l%player_name% &f님이 &7&l%javascript_item_kr_name%&f의 &#FFFFB5&l인챈트 &6&l랜덤 &f강화에 &a&l성공&f했습니다.'
-      - LOOP END
-      - 'LOOP START: 5'
-      - 'SENDMESSAGE &7[&6강화&7] %item%를 사용했습니다. &7(패널티: %javascript_item_repair_cost%) +++ execute at %player% run playsound minecraft:entity.villager.no voice %player% +++ title %player% title %javascript_fail_title% +++ title %player% subtitle {"text":"알 수 없는 힘이 아이템에 전해졌지만 변화가 없었습니다.","color":"gray","bold":"true"} +++ broadcast &b&l%player_name% &f님이 &7&l%javascript_item_kr_name%&f의 &#FFFFB5&l인챈트 &6&l랜덤 &f강화에 &c&l실패&f했습니다.'
-      - LOOP END
-      - RANDOM END
+      - 'NOTHING * %javascript_enchant_scroll_applyEnchant,0,random,0%'
     silenceOutput: false
     blockCommands: []
     detailedBlocks: []
@@ -76,17 +69,17 @@ activators:
       placeholdersConditions:
         plchC1:
           type: PLAYER_STRING
-          part1: '%javascript_is_valid_item%'
+          part1: '%javascript_enchant_scroll_checkValidItem,0,0%'
           comparator: EQUALS
           part2: 'true'
           messageIfNotValid: '&6>> 강화 주문서를 사용하려면 왼손에 사용 조건을 충족한 아이템을 든 상태여야 합니다.'
           cancelEventIfNotValid: false
         plchC2:
           type: PLAYER_STRING
-          part1: '%javascript_repair_cost_limit_random%'
+          part1: '%javascript_enchant_scroll_checkCostLimit,0,random,0%'
           comparator: EQUALS
           part2: 'true'
-          messageIfNotValid: '&6>> 강화 패널티가 %javascript_repair_cost_limit_random%를 초과할 수 없습니다.'
+          messageIfNotValid: '&6>> 강화 패널티가 %javascript_enchant_scroll_repairCostLimit,0%를 초과할 수 없습니다.'
           cancelEventIfNotValid: false
     cooldown: 5
     displayCooldownMessage: true
