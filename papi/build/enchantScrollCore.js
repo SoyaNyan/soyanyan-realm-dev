@@ -48,6 +48,48 @@ if (!Array.prototype.includes) {
 	}
 }
 var PLAYER_NAME = '%player_name%'
+var ENCHANT_NAME = {
+	aqua_affinity: '친수성',
+	bane_of_arthropods: '살충',
+	blast_protection: '폭발로부터 보호',
+	channeling: '집전',
+	cleaving: '쪼개기',
+	curse_of_binding: '귀속 저주',
+	curse_of_vanishing: '소실 저주',
+	depth_strider: '물갈퀴',
+	efficiency: '효율',
+	feather_falling: '가벼운 착지',
+	fire_aspect: '발화',
+	fire_protection: '화염으로부터 보호',
+	flame: '화염',
+	fortune: '행운',
+	frost_walker: '차가운 걸음',
+	impaling: '찌르기',
+	infinity: '무한',
+	knockback: '밀치기',
+	looting: '약탈',
+	loyalty: '충성',
+	luck_of_the_sea: '바다의 행운',
+	lure: '미끼',
+	mending: '수선',
+	multishot: '다중 발사',
+	piercing: '관통',
+	power: '힘',
+	projectile_protection: '발사체로부터 보호',
+	protection: '보호',
+	punch: '밀어내기',
+	quick_charge: '빠른 장전',
+	respiration: '호흡',
+	riptide: '급류',
+	sharpness: '날카로움',
+	silk_touch: '섬세한 손길',
+	smite: '강타',
+	soul_speed: '영혼 가속',
+	sweeping_edge: '휩쓸기',
+	swift_sneak: '신속한 잠행',
+	thorns: '가시',
+	unbreaking: '내구성',
+}
 var ENCHANT_LEVEL = [
 	'',
 	'I',
@@ -986,8 +1028,8 @@ function createEnchantmentLore(enchantData) {
 		enchantLore.push(
 			JSON.stringify([
 				{
-					text: ''.concat(VALID_ENCHANTS[enchant].krName, ' ').concat(levelStr),
-					color: 'gray',
+					text: ''.concat(ENCHANT_NAME[enchant], ' ').concat(levelStr),
+					color: enchant.includes('curse') ? 'red' : 'gray',
 				},
 			])
 		)
