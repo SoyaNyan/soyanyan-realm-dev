@@ -205,7 +205,7 @@ const VALID_ENCHANTS: { [index: string]: ValidEnchantType } = {
 			'FLINT_AND_STEEL',
 			'CARROT_ON_A_STICK',
 		],
-		krName: '내구',
+		krName: '내구성',
 	},
 	efficiency: {
 		suffixes: ['_PICKAXE', '_AXE', '_SHOVEL', '_HOE'],
