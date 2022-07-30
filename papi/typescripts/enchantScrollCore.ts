@@ -449,6 +449,8 @@ const ENCHANT_BLAKLIST: Array<string> = [
 	'infinity',
 	'channeling',
 	'multishot',
+	'binding_curse',
+	'vanishing_curse',
 ]
 
 const ENCHANT_LIMIT: { [index: string]: Array<number> } = {
@@ -1377,7 +1379,7 @@ function logConsole(message: string | Array<string>): boolean {
 // get item display name in player's off-hand
 function getDisplayName(): string {
 	// check slot
-	if (checkSlot(40)) return ''
+	if (!checkSlot(40)) return ''
 
 	// return display name
 	return BukkitPlayer.getInventory()
@@ -1390,7 +1392,7 @@ function getDisplayName(): string {
 // get item lore in player's off-hand
 function getLore(): Array<string> {
 	// check slot
-	if (checkSlot(40)) return []
+	if (!checkSlot(40)) return []
 
 	// return lore
 	return BukkitPlayer.getInventory().getItemInOffHand().getItemMeta().serialize().get('lore')
@@ -1461,9 +1463,13 @@ function replaceItem(
 	// get display data
 	const { Name, Lore } = displayData
 
+	// fix .concat() undefined error
+	let tmpLore: Array<string> = []
+	tmpLore = tmpLore.concat(Lore)
+
 	// create new lore with enchant data
 	const newLore =
-		typeof enchantData !== 'undefined' ? Lore.concat(createEnchantmentLore(enchantData)) : Lore
+		typeof enchantData !== 'undefined' ? tmpLore.concat(createEnchantmentLore(enchantData)) : Lore
 
 	// get enchants after scroll applied
 	const enchants =
@@ -1555,6 +1561,27 @@ function getEnchantData(slot: number): ItemEnchantDataType {
 
 	// return enchant data
 	return enchantData
+}
+
+// check if item has custom lore
+function checkCustomLore(slot: number): boolean {
+	// get raw nbt data
+	const rawData = parsePlaceholder(`checkitem_getinfo:${slot}_nbtstrings:nbt`)
+
+	const nbtData: { [index: string]: string } = {}
+
+	// split every single lines of nbt data
+	const nbtDataArr = rawData.replace(/STRING:/g, '').split('|')
+	nbtDataArr.forEach((nbtTag) => {
+		// split label and value
+		const [label, value] = nbtTag.split(':')
+
+		// store data
+		nbtData[label] = value
+	})
+
+	// return result
+	return typeof nbtData['customLore'] !== undefined && nbtData['customLore'] === 'true'
 }
 
 // get integer nbt data of target item (in specific slot)

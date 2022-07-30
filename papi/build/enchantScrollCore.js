@@ -332,6 +332,8 @@ var ENCHANT_BLAKLIST = [
 	'infinity',
 	'channeling',
 	'multishot',
+	'binding_curse',
+	'vanishing_curse',
 ]
 var ENCHANT_LIMIT = {
 	mending: [1, 1],
@@ -1079,7 +1081,7 @@ function logConsole(message) {
 	return BukkitServer.getConsoleSender().sendMessage(message)
 }
 function getDisplayName() {
-	if (checkSlot(40)) return ''
+	if (!checkSlot(40)) return ''
 	return BukkitPlayer.getInventory()
 		.getItemInOffHand()
 		.getItemMeta()
@@ -1087,7 +1089,7 @@ function getDisplayName() {
 		.get('display-name')
 }
 function getLore() {
-	if (checkSlot(40)) return []
+	if (!checkSlot(40)) return []
 	return BukkitPlayer.getInventory().getItemInOffHand().getItemMeta().serialize().get('lore')
 }
 function showTitle(title, playerName) {
@@ -1118,8 +1120,10 @@ function replaceItem(playerName, nbtData, displayData, enchantData) {
 		RepairCost = nbtData.RepairCost
 	var Name = displayData.Name,
 		Lore = displayData.Lore
+	var tmpLore = []
+	tmpLore = tmpLore.concat(Lore)
 	var newLore =
-		typeof enchantData !== 'undefined' ? Lore.concat(createEnchantmentLore(enchantData)) : Lore
+		typeof enchantData !== 'undefined' ? tmpLore.concat(createEnchantmentLore(enchantData)) : Lore
 	var enchants =
 		typeof enchantData !== 'undefined'
 			? ',Enchantments:'.concat(convertEnchantData(enchantData))
@@ -1183,6 +1187,18 @@ function getEnchantData(slot) {
 		enchantData[enchant] = parseInt(level)
 	})
 	return enchantData
+}
+function checkCustomLore(slot) {
+	var rawData = parsePlaceholder('checkitem_getinfo:'.concat(slot, '_nbtstrings:nbt'))
+	var nbtData = {}
+	var nbtDataArr = rawData.replace(/STRING:/g, '').split('|')
+	nbtDataArr.forEach(function (nbtTag) {
+		var _a = nbtTag.split(':'),
+			label = _a[0],
+			value = _a[1]
+		nbtData[label] = value
+	})
+	return typeof nbtData['customLore'] !== undefined && nbtData['customLore'] === 'true'
 }
 function getIntegerNBTData(slot) {
 	var rawData = parsePlaceholder('checkitem_getinfo:'.concat(slot, '_nbtints:nbt'))
