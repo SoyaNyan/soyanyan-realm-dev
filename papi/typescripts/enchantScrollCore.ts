@@ -1,10 +1,10 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.ts
- * Version: v1.2.0
- * Last Update: 2022-06-11
+ * Version: v1.3.0
+ * Last Update: 2022-07-30
  *
- * TypeScript Version: v4.7.2
+ * TypeScript Version: v4.7.4
  * Target: ES5
  * JSX: None
  * Module: ESNext
@@ -156,6 +156,30 @@ if (!Array.prototype.includes) {
 */
 // player name
 const PLAYER_NAME = '%player_name%'
+
+const ENCHANT_LEVEL: Array<string> = [
+	'',
+	'I',
+	'II',
+	'III',
+	'IV',
+	'V',
+	'VI',
+	'VII',
+	'VIII',
+	'IX',
+	'X',
+	'XI',
+	'XII',
+	'XIII',
+	'XIV',
+	'XV',
+	'XVI',
+	'XVII',
+	'XVIII',
+	'XIX',
+	'XX',
+]
 
 const VALID_ENCHANTS: { [index: string]: ValidEnchantType } = {
 	unbreaking: {
@@ -1200,6 +1224,41 @@ function convertEnchantData(enchantData: ItemEnchantDataType): string {
 	return JSON.stringify(enchants)
 }
 
+// create enchantment lore
+function createEnchantmentLore(enchantData: ItemEnchantDataType): string[] {
+	/* 
+		lore data format
+		[
+			[
+				{"text":"hello","italic":false,"color":"gray"}
+			],
+			[
+				{"text":"hello2","italic":false,"color":"gray"}
+			],
+			[
+				{"text":"hello3","italic":false,"color":"gray"}
+			]
+		]
+	*/
+
+	// create enchant lore string
+	const enchantLore: Array<string> = []
+	for (const enchant in enchantData) {
+		const levelStr = ENCHANT_BLAKLIST.includes(enchant) ? '' : ENCHANT_LEVEL[enchantData[enchant]]
+		enchantLore.push(
+			JSON.stringify([
+				{
+					text: `${VALID_ENCHANTS[enchant]} ${levelStr}`,
+					color: 'gray',
+				},
+			])
+		)
+	}
+
+	// return result
+	return enchantLore
+}
+
 /**
   [ Placeholder API utilities ]
 */
@@ -1230,6 +1289,7 @@ function getVersion(): number {
 	if (version.includes('1.17')) return 17
 	if (version.includes('1.18')) return 18
 	if (version.includes('1.19')) return 19
+	if (version.includes('1.19.1')) return 19.1
 
 	// unknown(unsupported) version
 	return -1
@@ -1358,6 +1418,10 @@ function replaceItem(
 	// get display data
 	const { Name, Lore } = displayData
 
+	// create new lore with enchant data
+	const newLore =
+		typeof enchantData !== 'undefined' ? Lore.concat(createEnchantmentLore(enchantData)) : Lore
+
 	// get enchants after scroll applied
 	const enchants =
 		typeof enchantData !== 'undefined' ? `,Enchantments:${convertEnchantData(enchantData)}` : ''
@@ -1367,8 +1431,8 @@ function replaceItem(
 
 	// set command
 	const command = `minecraft:item replace entity ${playerName} weapon.offhand with ${targetItem}{Damage:${Damage},RepairCost:${RepairCost},display:{Name:'${Name}',Lore:${convertLore(
-		Lore
-	)}}${enchants}}`
+		newLore
+	)}}${enchants},HideFlags:1}`
 
 	// exec command
 	return execConsoleCommand(command)

@@ -1,10 +1,10 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.ts
- * Version: v1.2.0
- * Last Update: 2022-06-11
+ * Version: v1.3.0
+ * Last Update: 2022-07-30
  *
- * TypeScript Version: v4.7.2
+ * TypeScript Version: v4.7.4
  * Target: ES5
  * JSX: None
  * Module: ESNext
@@ -48,6 +48,29 @@ if (!Array.prototype.includes) {
 	}
 }
 var PLAYER_NAME = '%player_name%'
+var ENCHANT_LEVEL = [
+	'',
+	'I',
+	'II',
+	'III',
+	'IV',
+	'V',
+	'VI',
+	'VII',
+	'VIII',
+	'IX',
+	'X',
+	'XI',
+	'XII',
+	'XIII',
+	'XIV',
+	'XV',
+	'XVI',
+	'XVII',
+	'XVIII',
+	'XIX',
+	'XX',
+]
 var VALID_ENCHANTS = {
 	unbreaking: {
 		suffixes: [
@@ -956,6 +979,21 @@ function convertEnchantData(enchantData) {
 	}
 	return JSON.stringify(enchants)
 }
+function createEnchantmentLore(enchantData) {
+	var enchantLore = []
+	for (var enchant in enchantData) {
+		var levelStr = ENCHANT_BLAKLIST.includes(enchant) ? '' : ENCHANT_LEVEL[enchantData[enchant]]
+		enchantLore.push(
+			JSON.stringify([
+				{
+					text: ''.concat(VALID_ENCHANTS[enchant], ' ').concat(levelStr),
+					color: 'gray',
+				},
+			])
+		)
+	}
+	return enchantLore
+}
 function parsePlaceholder(placeholder) {
 	return PlaceholderAPI.static.setPlaceholders(BukkitPlayer, '%'.concat(placeholder, '%'))
 }
@@ -974,6 +1012,7 @@ function getVersion() {
 	if (version.includes('1.17')) return 17
 	if (version.includes('1.18')) return 18
 	if (version.includes('1.19')) return 19
+	if (version.includes('1.19.1')) return 19.1
 	return -1
 }
 function checkPlus16() {
@@ -1037,6 +1076,8 @@ function replaceItem(playerName, nbtData, displayData, enchantData) {
 		RepairCost = nbtData.RepairCost
 	var Name = displayData.Name,
 		Lore = displayData.Lore
+	var newLore =
+		typeof enchantData !== 'undefined' ? Lore.concat(createEnchantmentLore(enchantData)) : Lore
 	var enchants =
 		typeof enchantData !== 'undefined'
 			? ',Enchantments:'.concat(convertEnchantData(enchantData))
@@ -1048,8 +1089,8 @@ function replaceItem(playerName, nbtData, displayData, enchantData) {
 		.concat(Damage, ',RepairCost:')
 		.concat(RepairCost, ",display:{Name:'")
 		.concat(Name, "',Lore:")
-		.concat(convertLore(Lore), '}')
-		.concat(enchants, '}')
+		.concat(convertLore(newLore), '}')
+		.concat(enchants, ',HideFlags:1}')
 	return execConsoleCommand(command)
 }
 function destroyItem(playerName) {
