@@ -1248,7 +1248,7 @@ function createEnchantmentLore(enchantData: ItemEnchantDataType): string[] {
 		enchantLore.push(
 			JSON.stringify([
 				{
-					text: `${VALID_ENCHANTS[enchant]} ${levelStr}`,
+					text: `${VALID_ENCHANTS[enchant].krName} ${levelStr}`,
 					color: 'gray',
 				},
 			])
