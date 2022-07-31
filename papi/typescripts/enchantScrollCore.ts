@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.ts
- * Version: v1.3.0
- * Last Update: 2022-07-30
+ * Version: v1.3.5
+ * Last Update: 2022-07-31
  *
  * TypeScript Version: v4.7.4
  * Target: ES5
@@ -1300,8 +1300,61 @@ function createEnchantmentLore(enchantData: ItemEnchantDataType): string[] {
 		)
 	}
 
+	// add a blank line
+	if (enchantLore.length > 0) {
+		enchantLore.push(
+			JSON.stringify([
+				{
+					text: '',
+				},
+			])
+		)
+	}
+
 	// return result
 	return enchantLore
+}
+
+// merge custom & enchant lores
+function mergeLores(
+	lore: Array<string>,
+	enchantData: ItemEnchantDataType
+): { lore: Array<string>; loreStarts: number } {
+	// fix lore.slice is not a function
+	let customLore: Array<string> = []
+	customLore = customLore.concat(lore)
+
+	// enchant lore
+	const enchantLore = createEnchantmentLore(enchantData)
+
+	// check item has custom lore
+	const loreStarts = checkCustomLore(40)
+	if (loreStarts === false) {
+		if (lore.length === 0) {
+			// no custom lore
+			return {
+				lore: enchantLore,
+				loreStarts: -1,
+			}
+		} else {
+			// has custom lore
+			return {
+				lore: enchantLore.concat(customLore),
+				loreStarts: enchantLore.length,
+			}
+		}
+	}
+
+	// custom lore
+	if (typeof loreStarts === 'number') {
+		customLore = customLore.slice(loreStarts)
+	}
+
+	// return merged lore
+	return {
+		lore: enchantLore.concat(customLore),
+		loreStarts: enchantLore.length,
+	}
 }
 
 /**
@@ -1463,13 +1516,22 @@ function replaceItem(
 	// get display data
 	const { Name, Lore } = displayData
 
-	// fix .concat() undefined error
-	let tmpLore: Array<string> = []
-	tmpLore = tmpLore.concat(Lore)
+	// create new lore & custom nbt
+	let newLore: Array<string> = []
+	let customLoreNBT = ''
+	if (typeof enchantData !== 'undefined') {
+		// create merged lore
+		const { lore: mergedLore, loreStarts } = mergeLores(Lore, enchantData)
 
-	// create new lore with enchant data
-	const newLore =
-		typeof enchantData !== 'undefined' ? tmpLore.concat(createEnchantmentLore(enchantData)) : Lore
+		// merged lore
+		newLore = mergedLore
+
+		// custom lore nbt data
+		customLoreNBT = `,customLore:${loreStarts}`
+	} else {
+		// only custom lore
+		newLore = newLore.concat(Lore)
+	}
 
 	// get enchants after scroll applied
 	const enchants =
@@ -1481,7 +1543,7 @@ function replaceItem(
 	// set command
 	const command = `minecraft:item replace entity ${playerName} weapon.offhand with ${targetItem}{Damage:${Damage},RepairCost:${RepairCost},display:{Name:'${Name}',Lore:${convertLore(
 		newLore
-	)}}${enchants},HideFlags:1}`
+	)}}${enchants}${customLoreNBT},HideFlags:1}`
 
 	// exec command
 	return execConsoleCommand(command)
@@ -1564,24 +1626,24 @@ function getEnchantData(slot: number): ItemEnchantDataType {
 }
 
 // check if item has custom lore
-function checkCustomLore(slot: number): boolean {
+function checkCustomLore(slot: number): number | boolean {
 	// get raw nbt data
-	const rawData = parsePlaceholder(`checkitem_getinfo:${slot}_nbtstrings:nbt`)
+	const rawData = parsePlaceholder(`checkitem_getinfo:${slot}_nbtints:nbt`)
 
-	const nbtData: { [index: string]: string } = {}
+	const nbtData: { [index: string]: number } = {}
 
 	// split every single lines of nbt data
-	const nbtDataArr = rawData.replace(/STRING:/g, '').split('|')
+	const nbtDataArr = rawData.replace(/INTEGER:/g, '').split('|')
 	nbtDataArr.forEach((nbtTag) => {
 		// split label and value
 		const [label, value] = nbtTag.split(':')
 
 		// store data
-		nbtData[label] = value
+		nbtData[label] = parseInt(value)
 	})
 
 	// return result
-	return typeof nbtData['customLore'] !== undefined && nbtData['customLore'] === 'true'
+	return typeof nbtData['customLore'] !== undefined ? nbtData['customLore'] : false
 }
 
 // get integer nbt data of target item (in specific slot)

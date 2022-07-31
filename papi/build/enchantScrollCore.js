@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.ts
- * Version: v1.3.0
- * Last Update: 2022-07-30
+ * Version: v1.3.5
+ * Last Update: 2022-07-31
  *
  * TypeScript Version: v4.7.4
  * Target: ES5
@@ -1036,7 +1036,42 @@ function createEnchantmentLore(enchantData) {
 			])
 		)
 	}
+	if (enchantLore.length > 0) {
+		enchantLore.push(
+			JSON.stringify([
+				{
+					text: '',
+				},
+			])
+		)
+	}
 	return enchantLore
+}
+function mergeLores(lore, enchantData) {
+	var customLore = []
+	customLore = customLore.concat(lore)
+	var enchantLore = createEnchantmentLore(enchantData)
+	var loreStarts = checkCustomLore(40)
+	if (loreStarts === false) {
+		if (lore.length === 0) {
+			return {
+				lore: enchantLore,
+				loreStarts: -1,
+			}
+		} else {
+			return {
+				lore: enchantLore.concat(customLore),
+				loreStarts: enchantLore.length,
+			}
+		}
+	}
+	if (typeof loreStarts === 'number') {
+		customLore = customLore.slice(loreStarts)
+	}
+	return {
+		lore: enchantLore.concat(customLore),
+		loreStarts: enchantLore.length,
+	}
 }
 function parsePlaceholder(placeholder) {
 	return PlaceholderAPI.static.setPlaceholders(BukkitPlayer, '%'.concat(placeholder, '%'))
@@ -1120,10 +1155,17 @@ function replaceItem(playerName, nbtData, displayData, enchantData) {
 		RepairCost = nbtData.RepairCost
 	var Name = displayData.Name,
 		Lore = displayData.Lore
-	var tmpLore = []
-	tmpLore = tmpLore.concat(Lore)
-	var newLore =
-		typeof enchantData !== 'undefined' ? tmpLore.concat(createEnchantmentLore(enchantData)) : Lore
+	var newLore = []
+	var customLoreNBT = ''
+	if (typeof enchantData !== 'undefined') {
+		var _a = mergeLores(Lore, enchantData),
+			mergedLore = _a.lore,
+			loreStarts = _a.loreStarts
+		newLore = mergedLore
+		customLoreNBT = ',customLore:'.concat(loreStarts)
+	} else {
+		newLore = newLore.concat(Lore)
+	}
 	var enchants =
 		typeof enchantData !== 'undefined'
 			? ',Enchantments:'.concat(convertEnchantData(enchantData))
@@ -1136,7 +1178,8 @@ function replaceItem(playerName, nbtData, displayData, enchantData) {
 		.concat(RepairCost, ",display:{Name:'")
 		.concat(Name, "',Lore:")
 		.concat(convertLore(newLore), '}')
-		.concat(enchants, ',HideFlags:1}')
+		.concat(enchants)
+		.concat(customLoreNBT, ',HideFlags:1}')
 	return execConsoleCommand(command)
 }
 function destroyItem(playerName) {
@@ -1189,16 +1232,16 @@ function getEnchantData(slot) {
 	return enchantData
 }
 function checkCustomLore(slot) {
-	var rawData = parsePlaceholder('checkitem_getinfo:'.concat(slot, '_nbtstrings:nbt'))
+	var rawData = parsePlaceholder('checkitem_getinfo:'.concat(slot, '_nbtints:nbt'))
 	var nbtData = {}
-	var nbtDataArr = rawData.replace(/STRING:/g, '').split('|')
+	var nbtDataArr = rawData.replace(/INTEGER:/g, '').split('|')
 	nbtDataArr.forEach(function (nbtTag) {
 		var _a = nbtTag.split(':'),
 			label = _a[0],
 			value = _a[1]
-		nbtData[label] = value
+		nbtData[label] = parseInt(value)
 	})
-	return typeof nbtData['customLore'] !== undefined && nbtData['customLore'] === 'true'
+	return typeof nbtData['customLore'] !== undefined ? nbtData['customLore'] : false
 }
 function getIntegerNBTData(slot) {
 	var rawData = parsePlaceholder('checkitem_getinfo:'.concat(slot, '_nbtints:nbt'))
