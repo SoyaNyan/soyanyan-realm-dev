@@ -24,12 +24,6 @@ var __assign =
 			}
 		return __assign.apply(this, arguments)
 	}
-var Data = new Object()
-var PlaceholderAPI = new Object()
-var Placeholder = new Object()
-var BukkitServer = new Object()
-var BukkitPlayer = new Object()
-var args = []
 var PLAYER_NAME = '%player_name%'
 var TRADING_FEE_RATE = 0.01
 var STOCKS = {
