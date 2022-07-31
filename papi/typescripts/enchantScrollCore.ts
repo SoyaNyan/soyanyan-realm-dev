@@ -1295,6 +1295,7 @@ function createEnchantmentLore(enchantData: ItemEnchantDataType): string[] {
 				{
 					text: `${ENCHANT_NAME[enchant]} ${levelStr}`,
 					color: enchant.includes('curse') ? 'red' : 'gray',
+					italic: false,
 				},
 			])
 		)

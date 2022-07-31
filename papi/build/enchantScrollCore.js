@@ -1032,6 +1032,7 @@ function createEnchantmentLore(enchantData) {
 				{
 					text: ''.concat(ENCHANT_NAME[enchant], ' ').concat(levelStr),
 					color: enchant.includes('curse') ? 'red' : 'gray',
+					italic: false,
 				},
 			])
 		)
