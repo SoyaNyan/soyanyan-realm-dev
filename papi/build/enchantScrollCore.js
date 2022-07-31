@@ -1746,7 +1746,7 @@ function applyReducer(args) {
 	var enchantData = getEnchantData(40)
 	replaceItem(PLAYER_NAME, nbtData, displayData, enchantData)
 	var name = ITEM_SETTINGS[itemCode].name
-	var message = ''
+	var message = '&7[&6\uAC15\uD654&7] '
 		.concat(
 			name,
 			'&f\uB97C \uC0AC\uC6A9\uD574 &c&l\uD328\uB110\uD2F0&f\uB97C &6&l\uC815\uD654&f\uD588\uC2B5\uB2C8\uB2E4. &7('
@@ -1756,6 +1756,26 @@ function applyReducer(args) {
 	sendMessage(consoleColorString(message))
 	playSound('entity.player.levelup', PLAYER_NAME)
 	return nbtData.RepairCost
+}
+function fixLore() {
+	var returnType = args[1]
+	var damage = getDamage(40)
+	var repairCost = getRepairCost(40)
+	var nbtData = {
+		Damage: damage,
+		RepairCost: repairCost,
+	}
+	var displayData = {
+		Name: getDisplayName(),
+		Lore: getLore(),
+	}
+	var enchantData = getEnchantData(40)
+	replaceItem(PLAYER_NAME, nbtData, displayData, enchantData)
+	var message =
+		'&7[&6\uAC15\uD654&7] &f\uC544\uC774\uD15C \uC815\uBCF4\uB97C &6&l\uC218\uC815&f\uD588\uC2B5\uB2C8\uB2E4. '
+	sendMessage(consoleColorString(message))
+	playSound('block.anvil.use', PLAYER_NAME)
+	return true
 }
 function enchantScrollCore() {
 	var result = false
@@ -1796,6 +1816,10 @@ function enchantScrollCore() {
 		applyReducer: {
 			argLen: [3],
 			callback: applyReducer,
+		},
+		fixLore: {
+			argLen: [2],
+			callback: fixLore,
 		},
 	}
 	if (!(action in VALID_COMMANDS)) return 'false'

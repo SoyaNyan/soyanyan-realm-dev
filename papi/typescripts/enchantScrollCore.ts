@@ -2613,7 +2613,7 @@ function applyReducer(args: string[]): DataType {
 	const { name } = ITEM_SETTINGS[itemCode]
 
 	// set message
-	const message = `${name}&f를 사용해 &c&l패널티&f를 &6&l정화&f했습니다. &7(${repairCost} -> ${nbtData.RepairCost})`
+	const message = `&7[&6강화&7] ${name}&f를 사용해 &c&l패널티&f를 &6&l정화&f했습니다. &7(${repairCost} -> ${nbtData.RepairCost})`
 
 	// send message
 	sendMessage(consoleColorString(message))
@@ -2623,6 +2623,48 @@ function applyReducer(args: string[]): DataType {
 
 	// return reduced repair cost
 	return nbtData.RepairCost
+}
+
+// fix custom lore (hidden enchants)
+function fixLore(): DataType {
+	// get args
+	const [, returnType] = args
+
+	// get damage
+	const damage = getDamage(40)
+
+	// get current repair cost
+	const repairCost = getRepairCost(40)
+
+	// set nbt data
+	const nbtData: ItemIntNBTDataType = {
+		Damage: damage,
+		RepairCost: repairCost,
+	}
+
+	// get display data
+	const displayData: ConvertedDisplayDataType = {
+		Name: getDisplayName(),
+		Lore: getLore(),
+	}
+
+	// get enchant data
+	const enchantData = getEnchantData(40)
+
+	// replace item (update repair cost)
+	replaceItem(PLAYER_NAME, nbtData, displayData, enchantData)
+
+	// set message
+	const message = `&7[&6강화&7] &f아이템 정보를 &6&l수정&f했습니다. `
+
+	// send message
+	sendMessage(consoleColorString(message))
+
+	// play sound effect
+	playSound('block.anvil.use', PLAYER_NAME)
+
+	// return result
+	return true
 }
 
 // placeholder controller
@@ -2670,6 +2712,10 @@ function enchantScrollCore(): string {
 		applyReducer: {
 			argLen: [3],
 			callback: applyReducer,
+		},
+		fixLore: {
+			argLen: [2],
+			callback: fixLore,
 		},
 	}
 
