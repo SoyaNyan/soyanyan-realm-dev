@@ -2655,7 +2655,7 @@ function fixLore(): DataType {
 	replaceItem(PLAYER_NAME, nbtData, displayData, enchantData)
 
 	// set message
-	const message = `&7[&6강화&7] &f아이템 정보를 &6&l수정&f했습니다. `
+	const message = `&7[&6강화&7] &7&l아이템 정보&f를 &6&l수정&f했습니다. `
 
 	// send message
 	sendMessage(consoleColorString(message))

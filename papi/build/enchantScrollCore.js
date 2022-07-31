@@ -1772,7 +1772,7 @@ function fixLore() {
 	var enchantData = getEnchantData(40)
 	replaceItem(PLAYER_NAME, nbtData, displayData, enchantData)
 	var message =
-		'&7[&6\uAC15\uD654&7] &f\uC544\uC774\uD15C \uC815\uBCF4\uB97C &6&l\uC218\uC815&f\uD588\uC2B5\uB2C8\uB2E4. '
+		'&7[&6\uAC15\uD654&7] &7&l\uC544\uC774\uD15C \uC815\uBCF4&f\uB97C &6&l\uC218\uC815&f\uD588\uC2B5\uB2C8\uB2E4. '
 	sendMessage(consoleColorString(message))
 	playSound('block.anvil.use', PLAYER_NAME)
 	return true
