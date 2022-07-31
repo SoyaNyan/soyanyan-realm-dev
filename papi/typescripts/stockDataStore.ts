@@ -1,10 +1,10 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: stockDataStore.ts
- * Version: v1.5.0
- * Last Update: 2022-06-09
+ * Version: v2.0.0
+ * Last Update: 2022-07-31
  *
- * TypeScript Version: v4.7.2
+ * TypeScript Version: v4.7.4
  * Target: ES5
  * JSX: None
  * Module: ESNext
@@ -730,13 +730,16 @@ function logCurrentPrice(): void {
 		checkStock(stock)
 
 		// get stock data
-		const { name, currentPrice, priceFluct } = getStockData(stock) as StrictStockDataType
+		const { name, currentPrice, lastPrice, priceFluct } = getStockData(stock) as StrictStockDataType
+
+		// calc percentage
+		const percentage = (Math.abs(currentPrice - lastPrice) / lastPrice) * 100
 
 		// get last fluct symbol
 		const lastFluct = formatFluct(getLastFluct(priceFluct))
 
 		// add message
-		const message = `${name}:${lastFluct} ${currentPrice}`
+		const message = `${name}:${lastFluct} ${currentPrice}|${percentage.toFixed(2)}`
 
 		// push price info
 		priceInfos.push(message)
