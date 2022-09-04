@@ -1157,11 +1157,11 @@ function getLore() {
 	return BukkitPlayer.getInventory().getItemInOffHand().getItemMeta().serialize().get('lore')
 }
 function showTitle(title, playerName) {
-	var command = 'title '.concat(playerName, ' title ').concat(JSON.stringify(title))
+	var command = 'minecraft:title '.concat(playerName, ' title ').concat(JSON.stringify(title))
 	return execConsoleCommand(command)
 }
 function showSubtitle(subtitle, playerName) {
-	var command = 'title '.concat(playerName, ' subtitle ').concat(JSON.stringify(subtitle))
+	var command = 'minecraft:title '.concat(playerName, ' subtitle ').concat(JSON.stringify(subtitle))
 	return execConsoleCommand(command)
 }
 function playTitle(title, subtitle, playerName) {
@@ -1169,7 +1169,7 @@ function playTitle(title, subtitle, playerName) {
 	return showSubtitle(subtitle, playerName)
 }
 function playSound(sound, playerName) {
-	var command = 'execute at '
+	var command = 'minecraft:execute at '
 		.concat(playerName, ' run playsound minecraft:')
 		.concat(sound, ' voice ')
 		.concat(playerName)
@@ -1583,6 +1583,7 @@ function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) 
 	}
 	var nextRepairCost = getNextRepairCost(RepairCost, 'fail', false)
 	var failNBTData = { Damage: Damage, RepairCost: nextRepairCost }
+	var nextLevel = isPlus ? nextEnchantData[enchant] + 2 : nextEnchantData[enchant] + 1
 	if (sideEffect && !isProtected) {
 		playSound('entity.item.break', PLAYER_NAME)
 		var _d = isPlus ? TITLE_SETTINGS.destroy : TITLE_SETTINGS.downgrade,
@@ -1592,7 +1593,7 @@ function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) 
 		isPlus
 			? sendScrollMessage(name, RepairCost, 5)
 			: sendScrollMessage(name, RepairCost, nextRepairCost)
-		broadcastFail(PLAYER_NAME, enchant, nextEnchantData[enchant])
+		broadcastFail(PLAYER_NAME, enchant, nextLevel)
 		isPlus
 			? destroyItem(PLAYER_NAME)
 			: replaceItem(PLAYER_NAME, failNBTData, displayData, nextEnchantData)
@@ -1604,7 +1605,7 @@ function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) 
 		subtitle = _e.subtitle
 	sendScrollMessage(name, RepairCost, nextRepairCost)
 	playTitle(title, subtitle, PLAYER_NAME)
-	broadcastFail(PLAYER_NAME, enchant, nextEnchantData[enchant])
+	broadcastFail(PLAYER_NAME, enchant, nextLevel)
 	replaceItem(PLAYER_NAME, failNBTData, displayData, nextEnchantData)
 	return 'fail'
 }

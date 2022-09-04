@@ -1486,7 +1486,7 @@ function getLore(): Array<string> {
 // show title to player
 function showTitle(title: TitleType | Array<TitleType>, playerName: string): boolean {
 	// set command
-	const command = `title ${playerName} title ${JSON.stringify(title)}`
+	const command = `minecraft:title ${playerName} title ${JSON.stringify(title)}`
 
 	// execute command
 	return execConsoleCommand(command)
@@ -1495,7 +1495,7 @@ function showTitle(title: TitleType | Array<TitleType>, playerName: string): boo
 // show subtitle to player
 function showSubtitle(subtitle: TitleType | Array<TitleType>, playerName: string): boolean {
 	// set command
-	const command = `title ${playerName} subtitle ${JSON.stringify(subtitle)}`
+	const command = `minecraft:title ${playerName} subtitle ${JSON.stringify(subtitle)}`
 
 	// execute command
 	return execConsoleCommand(command)
@@ -1517,7 +1517,7 @@ function playTitle(
 // play sound effect to player (sound => entity.villager.yes (without minecraft:))
 function playSound(sound: string, playerName: string): boolean {
 	// set command
-	const command = `execute at ${playerName} run playsound minecraft:${sound} voice ${playerName}`
+	const command = `minecraft:execute at ${playerName} run playsound minecraft:${sound} voice ${playerName}`
 
 	// execute command
 	return execConsoleCommand(command)
@@ -2270,6 +2270,9 @@ function applyNormalEnchant(
 	// set nbt data for failed result
 	const failNBTData: ItemIntNBTDataType = { Damage, RepairCost: nextRepairCost }
 
+	// get next enchant level
+	const nextLevel = isPlus ? nextEnchantData[enchant] + 2 : nextEnchantData[enchant] + 1
+
 	// side effect
 	if (sideEffect && !isProtected) {
 		// play sound effect
@@ -2287,7 +2290,7 @@ function applyNormalEnchant(
 			: sendScrollMessage(name, RepairCost, nextRepairCost)
 
 		// broadcast fail message
-		broadcastFail(PLAYER_NAME, enchant, nextEnchantData[enchant])
+		broadcastFail(PLAYER_NAME, enchant, nextLevel)
 
 		// replace target item
 		isPlus
@@ -2314,7 +2317,7 @@ function applyNormalEnchant(
 	playTitle(title, subtitle, PLAYER_NAME)
 
 	// broadcast fail message
-	broadcastFail(PLAYER_NAME, enchant, nextEnchantData[enchant])
+	broadcastFail(PLAYER_NAME, enchant, nextLevel)
 
 	// replace target item
 	replaceItem(PLAYER_NAME, failNBTData, displayData, nextEnchantData)
