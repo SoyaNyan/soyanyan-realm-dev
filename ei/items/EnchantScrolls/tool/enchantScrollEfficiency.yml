@@ -93,7 +93,9 @@ activators:
     detailedSlots:
       - -1
     commands:
+      - 'RANDOM RUN: 1'
       - 'NOTHING*%javascript_enchant_scroll_applyEnchant,0,efficiency,0%'
+      - 'RANDOM END'
     playerConditions: {}
     worldConditions: {}
     itemConditions: {}

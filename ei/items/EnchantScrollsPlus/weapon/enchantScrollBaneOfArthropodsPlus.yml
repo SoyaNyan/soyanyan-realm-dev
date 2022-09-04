@@ -92,7 +92,9 @@ activators:
     detailedSlots:
       - -1
     commands:
+      - 'RANDOM RUN: 1'
       - 'NOTHING*%javascript_enchant_scroll_applyEnchant,0,bane_of_arthropods,1%'
+      - 'RANDOM END'
     playerConditions: {}
     worldConditions: {}
     itemConditions: {}
