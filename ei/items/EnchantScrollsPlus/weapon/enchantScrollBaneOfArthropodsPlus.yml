@@ -92,7 +92,7 @@ activators:
     detailedSlots:
       - -1
     commands:
-      - 'NOTHING * %javascript_enchant_scroll_applyEnchant,0,bane_of_arthropods,1%'
+      - 'NOTHING*%javascript_enchant_scroll_applyEnchant,0,bane_of_arthropods,1%'
     playerConditions: {}
     worldConditions: {}
     itemConditions: {}

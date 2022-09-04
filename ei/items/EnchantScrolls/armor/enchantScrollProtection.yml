@@ -94,7 +94,7 @@ activators:
     detailedSlots:
       - -1
     commands:
-      - 'NOTHING * %javascript_enchant_scroll_applyEnchant,0,protection,0%'
+      - 'NOTHING*%javascript_enchant_scroll_applyEnchant,0,protection,0%'
     playerConditions: {}
     worldConditions: {}
     itemConditions: {}

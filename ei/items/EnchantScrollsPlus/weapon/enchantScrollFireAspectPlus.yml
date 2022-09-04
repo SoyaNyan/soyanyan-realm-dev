@@ -95,7 +95,7 @@ activators:
     detailedSlots:
       - -1
     commands:
-      - 'NOTHING * %javascript_enchant_scroll_applyEnchant,0,fire_aspect,1%'
+      - 'NOTHING*%javascript_enchant_scroll_applyEnchant,0,fire_aspect,1%'
     playerConditions: {}
     worldConditions: {}
     itemConditions: {}

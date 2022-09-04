@@ -93,7 +93,7 @@ activators:
     detailedSlots:
       - -1
     commands:
-      - 'NOTHING * %javascript_enchant_scroll_applyEnchant,0,feather_falling,1%'
+      - 'NOTHING*%javascript_enchant_scroll_applyEnchant,0,feather_falling,1%'
     playerConditions: {}
     worldConditions: {}
     itemConditions: {}
