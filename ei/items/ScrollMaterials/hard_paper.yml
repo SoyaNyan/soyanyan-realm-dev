@@ -4,49 +4,57 @@ lore:
 - '&7주문서 제작에 쓸 수 있다.'
 material: PAPER
 glow: true
-glowDrop: false
 disableStack: false
 keepItemOnDeath: false
-give-first-join: false
-give-slot: 0
-usage: 0
-usePerDay: -1
-usageLimit: -1
-disable-world: []
-unbreakable: false
 canBeUsedOnlyByTheOwner: false
-storeItemInfos: false
-config_4_2: true
-config_update: true
-headDBID: ''
-cancel-item-drop: false
-cancel-item-place: false
-cancel-tool-interactions: true
-cancel-item-craft-no-custom: true
-cancel-item-craft: true
-cancel-deposit-in-chest: false
-cancel-deposit-in-furnace: true
-cancel-item-burn: false
-cancel-stone-cutter: true
-cancel-enchant: true
-cancel-brewing: true
-cancel-anvil: true
-cancel-rename-anvil: true
-cancel-enchant-anvil: true
-cancel-beacon: true
-cancel-cartography: true
-cancel-composter: true
-cancel-dispenser: true
-cancel-dropper: true
-cancel-hopper: true
-cancel-lectern: true
-cancel-loom: true
-cancel-merchant: false
-cancel-grind-stone: true
-cancel-item-frame: true
-cancel-smithing-table: true
-cancel-consumption: true
-cancel-swap-hand: false
-locked-in-inventory: false
+storeItemInfo: false
+unbreakable: false
+usage: 0
+usageLimit: -1
+dropOptions:
+  glowDrop: false
+  glowDropColor: WHITE
+  displayNameDrop: false
+hiders:
+  hideEnchantments: false
+  hideUnbreakable: false
+  hideAttributes: false
+  hidePotionEffects: false
+  hideUsage: false
+enchantments: {}
+giveFirstJoin:
+  giveFirstJoin: false
+  giveFirstJoinAmount: 1
+  giveFirstJoinSlot: 0
+restrictions:
+  cancel-brewing: true
+  cancel-beacon: true
+  cancel-rename-anvil: true
+  cancel-anvil: true
+  cancel-dropper: true
+  cancel-dispenser: true
+  cancel-consumption: true
+  cancel-tool-interactions: true
+  cancel-enchant: true
+  cancel-item-craft-no-custom: true
+  cancel-lectern: true
+  cancel-enchant-anvil: true
+  cancel-item-craft: true
+  cancel-item-frame: true
+  cancel-grind-stone: true
+  cancel-hopper: true
+  cancel-deposit-in-furnace: true
+  cancel-stone-cutter: true
+  cancel-composter: true
+  cancel-smithing-table: true
+  cancel-cartography: true
+  cancel-loom: true
 cancelEventIfNoPerm: false
 cancelEventIfNotOwner: false
+disabledWorlds: []
+variables: {}
+activators: {}
+recognitions: []
+attributes: {}
+config_5: true
+config_update: true

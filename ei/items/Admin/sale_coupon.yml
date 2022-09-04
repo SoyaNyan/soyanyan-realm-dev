@@ -1,0 +1,76 @@
+name: '&e징징이마트 할인쿠폰 (10분)'
+lore:
+- '&f우클릭으로 사용하면 약 10분동안'
+- '&f주민거래에 엄청난 할인률이 적용된다.'
+material: PAPER
+glow: true
+disableStack: false
+keepItemOnDeath: true
+canBeUsedOnlyByTheOwner: false
+storeItemInfo: false
+unbreakable: false
+usage: 1
+usageLimit: -1
+dropOptions:
+  glowDrop: true
+  glowDropColor: WHITE
+  displayNameDrop: false
+hiders:
+  hideEnchantments: false
+  hideUnbreakable: false
+  hideAttributes: false
+  hidePotionEffects: false
+  hideUsage: false
+enchantments: {}
+giveFirstJoin:
+  giveFirstJoin: false
+  giveFirstJoinAmount: 1
+  giveFirstJoinSlot: 0
+restrictions: {}
+cancelEventIfNoPerm: false
+cancelEventIfNotOwner: false
+disabledWorlds: []
+variables: {}
+activators:
+  activator1:
+    name: '&eActivator'
+    option: PLAYER_RIGHT_CLICK
+    typeTarget: NO_TYPE_TARGET
+    usageModification: -1
+    cancelEvent: true
+    silenceOutput: false
+    autoUpdateItem: false
+    cooldownOptions:
+      cooldown: 0
+      isCooldownInTicks: false
+      cooldownMsg: '&cYou are in cooldown ! &7(&e%time_H%&6H &e%time_M%&6M &e%time_S%&6S&7)'
+      displayCooldownMessage: true
+      cancelEventIfInCooldown: false
+    globalCooldownOptions:
+      cooldown: 0
+      isCooldownInTicks: false
+      cooldownMsg: '&cYou are in cooldown ! &7(&e%time_H%&6H &e%time_M%&6M &e%time_S%&6S&7)'
+      displayCooldownMessage: true
+      cancelEventIfInCooldown: false
+    otherEICooldowns: {}
+    requiredItems:
+      errorMessage: ''
+    requiredExecutableItems:
+      requiredEI1:
+        executableItem: sale_coupon
+        amount: 1
+      errorMessage: ''
+    detailedSlots:
+    - -1
+    commands:
+    - effect give %player% minecraft:hero_of_the_village 600 99 true
+    playerConditions: {}
+    worldConditions: {}
+    itemConditions: {}
+    customConditions: {}
+    placeholdersConditions: {}
+    variablesModification: {}
+recognitions: []
+attributes: {}
+config_5: true
+config_update: true
