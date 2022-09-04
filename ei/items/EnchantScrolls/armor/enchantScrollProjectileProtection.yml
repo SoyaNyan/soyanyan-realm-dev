@@ -1,33 +1,33 @@
-name: '&7[#FFC8A2 ★★ &7] #55CBCD&l방어구 #FFFFB5&l투사체보호 #ECEAE4&l강화 주문서'
+name: '&7[#FFC8A2 ★★ &7] #55CBCD&l방어구 #FFFFB5&l발사체보호 #ECEAE4&l강화 주문서'
 lore:
-- '&7'
-- '&7주문서 종류: &6&l투사체보호 &e&l강화 주문서'
-- '&7주문서 적용대상: &d방어구'
-- '&7 + &b투구, 흉갑, 레깅스, 부츠'
-- '&7주문서 적용조건:'
-- '&7 - &9투사체보호IV &f~ &9투사체보호IX'
-- '&7---------------------'
-- '&b&l강화성공 &7| &c&l단계하락 &6&l확률&7:'
-- '&7성공확률 가중치 적용 - &fx&30.9'
-- '&7(강화 확률 = 기본확률 x 가중치)'
-- '&f +5 : &a55&7% | &c5&7%'
-- '&f +6 : &a50&7% | &c5&7%'
-- '&f +7 : &a30&7% | &c10&7%'
-- '&f +8 : &a10&7% | &c10&7%'
-- '&f +9 :  &a1&7%  | &c20&7%'
-- '&f +10: &a0.1&7% | &c30&7%'
-- '&5>> 강화 실패 시, 일정 확률로'
-- '&5강화 단계가 &5&n하락&5할 수 있다.'
-- '&7---------------------'
-- '&e&l좌클릭&7으로 사용하면 &f&n&l왼손&7에 든'
-- '&7도구의 &9&l투사체보호 &7인챈트 레벨을 &a1&7만큼'
-- '&7&c&l강화&7할 수 있다.'
-- '&7---------------------'
-- '&c&l<사용조건>'
-- '&7'
-- '&7사용가능 횟수: &b1&f&l회'
-- '&7재사용 대기시간: &e5&f초'
-- '&7사용방법: 공중에 좌클릭'
+  - '&7'
+  - '&7주문서 종류: &6&l발사체보호 &e&l강화 주문서'
+  - '&7주문서 적용조건: &9발사체보호IV &f~ &9발사체보호XIX'
+  - '&7--------------------------'
+  - '&7성공확률 가중치 - &fx&30.9'
+  - '&b&l강화성공 &7| &c&l단계하락 &6&l확률&7:'
+  - '&f  +5: &a75&7% | &c5&7%'
+  - '&f  +6: &a60&7% | &c10&7%'
+  - '&f  +7: &a50&7% | &c10&7%'
+  - '&f  +8: &a40&7% | &c15&7%'
+  - '&f  +9: &a30&7% | &c15&7%'
+  - '&f +10: &a25&7% | &c20&7%'
+  - '&f +11: &a20&7% | &c25&7%'
+  - '&f +12: &a15&7% | &c30&7%'
+  - '&f +13: &a15&7% | &c35&7%'
+  - '&f +14: &a10&7% | &c40&7%'
+  - '&f +15: &a10&7% | &c45&7%'
+  - '&f +16: &a5&7% | &c50&7%'
+  - '&f +17: &a5&7% | &c55&7%'
+  - '&f +18: &a1&7% | &c60&7%'
+  - '&f +19: &a0.1&7% | &c65&7%'
+  - '&f +20: &a0.01&7% | &c70&7%'
+  - '&7--------------------------'
+  - '&c&l<사용조건>'
+  - '&7'
+  - '&7사용가능 횟수: &b1&f&l회'
+  - '&7재사용 대기시간: &e5&f초'
+  - '&7사용방법: 공중에 좌클릭'
 material: MOJANG_BANNER_PATTERN
 glow: true
 disableStack: false
@@ -83,7 +83,7 @@ activators:
     globalCooldownOptions:
       cooldown: 0
       isCooldownInTicks: false
-      cooldownMsg: '&cYou are in cooldown ! &7(&e%time_H%&6H &e%time_M%&6M &e%time_S%&6S&7)'
+      cooldownMsg: '&6>> 전체 재사용 대기중... &7(%time_S%초)'
       displayCooldownMessage: true
       cancelEventIfInCooldown: false
     otherEICooldowns: {}
@@ -92,44 +92,9 @@ activators:
     requiredExecutableItems:
       errorMessage: ''
     detailedSlots:
-    - -1
+      - -1
     commands:
-    - 'LOOP START: %javascript_is_weekend_event%'
-    - SENDMESSAGE §7[§6강화§7] §a§l주말 §c§l핫타임 §e§l이벤트§f로 §9§l강화 확률§f이 §6§l%javascript_weekend_event_chance%§7배
-      §f증가했습니다.
-    - LOOP END
-    - 'RANDOM RUN: 1'
-    - 'LOOP START: %javascript_upgrade_success_chance_projectile_protection%'
-    - 'SENDMESSAGE §7[§6강화§7] %item%를 사용했습니다. §7(패널티: %javascript_item_repair_cost%
-      -> %javascript_item_repair_cost_projectile_protection%) +++ minecraft:item replace
-      entity %player% weapon.offhand with %formatter_text_lowercase_{player_item_in_offhand}%{display:{%javascript_item_display_data%},%javascript_item_nbt_data_projectile_protection%,Enchantments:%javascript_upgraded_enchants_projectile_protection%}
-      +++ execute at %player% run playsound minecraft:block.anvil.use voice %player%
-      +++ title %player% title %javascript_success_title% +++ title %player% subtitle
-      {"text":"강화 단계가 상승했습니다.","color":"gray","bold":"true"} +++ broadcast §b§l%player_name%
-      §f님이 §7§l%javascript_item_kr_name%§f의 §§x§F§F§F§F§B§5§l투사체보호 인챈트 §6§l+%javascript_next_enchant_level_projectile_protection%
-      §f강화에 §a§l성공§f했습니다.'
-    - LOOP END
-    - 'LOOP START: %javascript_upgrade_fail_chance_projectile_protection%'
-    - 'SENDMESSAGE §7[§6강화§7] %item%를 사용했습니다. §7(패널티: %javascript_item_repair_cost%
-      -> %javascript_item_repair_cost_fail%) +++ minecraft:item replace entity %player%
-      weapon.offhand with %formatter_text_lowercase_{player_item_in_offhand}%{display:{%javascript_item_display_data%},%javascript_item_nbt_data_fail%,Enchantments:%javascript_item_enchants%}
-      +++ execute at %player% run playsound minecraft:entity.villager.no voice %player%
-      +++ title %player% title %javascript_fail_title% +++ title %player% subtitle
-      {"text":"강화 단계는 유지됩니다.","color":"gray","bold":"true"} +++ broadcast §b§l%player_name%
-      §f님이 §7§l%javascript_item_kr_name%§f의 §§x§F§F§F§F§B§5§l투사체보호 인챈트 §6§l+%javascript_next_enchant_level_projectile_protection%
-      §f강화에 §c§l실패§f했습니다.'
-    - LOOP END
-    - 'LOOP START: %javascript_downgrade_chance_projectile_protection%'
-    - 'SENDMESSAGE §7[§6강화§7] %item%를 사용했습니다. §7(패널티: %javascript_item_repair_cost%
-      -> %javascript_item_repair_cost_fail%) +++ minecraft:item replace entity %player%
-      weapon.offhand with %formatter_text_lowercase_{player_item_in_offhand}%{display:{%javascript_item_display_data%},%javascript_item_nbt_data_fail%,Enchantments:%javascript_downgraded_enchants_projectile_protection%}
-      +++ execute at %player% run playsound minecraft:entity.item.break voice %player%
-      +++ title %player% title %javascript_fail_title% +++ title %player% subtitle
-      {"text":"강화 단계가 하락했습니다.","color":"gray","bold":"true"} +++ broadcast §b§l%player_name%
-      §f님이 §7§l%javascript_item_kr_name%§f의 §§x§F§F§F§F§B§5§l투사체보호 인챈트 §6§l+%javascript_next_enchant_level_projectile_protection%
-      §f강화에 §c§l실패§f했습니다.'
-    - LOOP END
-    - RANDOM END
+      - 'NOTHING * %javascript_enchant_scroll_applyEnchant,0,projectile_protection,0%'
     playerConditions: {}
     worldConditions: {}
     itemConditions: {}
@@ -138,25 +103,24 @@ activators:
       plchC1:
         type: PLAYER_STRING
         comparator: EQUALS
-        part1: '%javascript_is_valid_enchant_projectile_protection%'
+        part1: '%javascript_enchant_scroll_checkEnchant,0,projectile_protection%'
         part2: 'true'
         cancelEventIfNotValid: false
         messageIfNotValid: '&6>> 강화 주문서를 사용하려면 왼손에 유효한 아이템을 든 상태여야 합니다.'
-      plchC3:
-        type: PLAYER_STRING
-        comparator: EQUALS
-        part1: '%javascript_repair_cost_limit_projectile_protection%'
-        part2: 'true'
-        cancelEventIfNotValid: false
-        messageIfNotValid: '&6>> 강화 패널티가 %javascript_repair_cost_limit_projectile_protection%를
-          초과할 수 없습니다.'
       plchC2:
         type: PLAYER_STRING
         comparator: EQUALS
-        part1: '%javascript_is_upgradable_projectile_protection%'
+        part1: '%javascript_enchant_scroll_checkUpgradable,0,projectile_protection,0%'
         part2: 'true'
         cancelEventIfNotValid: false
         messageIfNotValid: '&6>> 강화 주문서 사용을 위한 인챈트 레벨 조건을 만족하지 않습니다.'
+      plchC3:
+        type: PLAYER_STRING
+        comparator: EQUALS
+        part1: '%javascript_enchant_scroll_checkCostLimit,0,projectile_protection,0%'
+        part2: 'true'
+        cancelEventIfNotValid: false
+        messageIfNotValid: '&6>> 강화 패널티가 %javascript_enchant_scroll_repairCostLimit,0%를 초과할 수 없습니다.'
     variablesModification: {}
 recognitions: []
 bannerSettings:

@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.ts
- * Version: v1.3.5
- * Last Update: 2022-07-31
+ * Version: v1.4.0
+ * Last Update: 2022-09-04
  *
  * TypeScript Version: v4.7.4
  * Target: ES5
@@ -504,11 +504,11 @@ const ENCHANT_SCROLLS: {
 } = {
 	unbreaking: {
 		normal: {
-			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l아이템 #FFFFB5&l내구 #ECEAE4&l강화 주문서',
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l아이템 #FFFFB5&l내구성 #ECEAE4&l강화 주문서',
 			eiCode: 'enchantScrollUnbreaking',
 		},
 		plus: {
-			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l아이템 #FFFFB5&l내구 #ECEAE4&l강화 주문서',
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l아이템 #FFFFB5&l내구성 #ECEAE4&l강화 주문서',
 			eiCode: 'enchantScrollUnbreakingPlus',
 		},
 	},
@@ -784,11 +784,11 @@ const ENCHANT_SCROLLS: {
 	},
 	riptide: {
 		normal: {
-			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l집전 #ECEAE4&l강화 주문서',
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l급류 #ECEAE4&l강화 주문서',
 			eiCode: 'enchantScrollRiptide',
 		},
 		plus: {
-			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l무기 #FFFFB5&l집전 #ECEAE4&l강화 주문서',
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l무기 #FFFFB5&l급류 #ECEAE4&l강화 주문서',
 			eiCode: 'enchantScrollRiptidePlus',
 		},
 	},

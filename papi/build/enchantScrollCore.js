@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
- * Name: enchantScrollCore.ts
- * Version: v1.3.5
- * Last Update: 2022-07-31
+ * Name: enchantScrollCore.js
+ * Version: v1.4.0
+ * Last Update: 2022-09-04
  *
  * TypeScript Version: v4.7.4
  * Target: ES5
@@ -338,51 +338,51 @@ var ENCHANT_BLAKLIST = [
 var ENCHANT_LIMIT = {
 	mending: [1, 1],
 	silk_touch: [1, 1],
-	unbreaking: [3, 10],
-	efficiency: [5, 10],
-	fortune: [3, 10],
+	unbreaking: [3, 15],
+	efficiency: [5, 15],
+	fortune: [3, 15],
 	aqua_affinity: [1, 1],
-	respiration: [3, 10],
-	thorns: [3, 10],
-	protection: [4, 10],
-	projectile_protection: [4, 10],
-	fire_protection: [4, 10],
-	blast_protection: [4, 10],
-	swift_sneak: [3, 10],
-	feather_falling: [4, 10],
-	soul_speed: [3, 10],
-	depth_strider: [3, 10],
-	frost_walker: [2, 10],
-	fire_aspect: [2, 10],
-	looting: [3, 10],
-	knockback: [2, 10],
-	sweeping: [3, 10],
-	sharpness: [5, 10],
-	smite: [5, 10],
-	bane_of_arthropods: [5, 10],
-	cleaving: [3, 10],
-	power: [5, 10],
-	punch: [2, 10],
+	respiration: [3, 15],
+	thorns: [3, 15],
+	protection: [4, 15],
+	projectile_protection: [4, 15],
+	fire_protection: [4, 15],
+	blast_protection: [4, 15],
+	swift_sneak: [3, 15],
+	feather_falling: [4, 15],
+	soul_speed: [3, 15],
+	depth_strider: [3, 15],
+	frost_walker: [2, 15],
+	fire_aspect: [2, 15],
+	looting: [3, 15],
+	knockback: [2, 15],
+	sweeping: [3, 15],
+	sharpness: [5, 15],
+	smite: [5, 15],
+	bane_of_arthropods: [5, 15],
+	cleaving: [3, 15],
+	power: [5, 15],
+	punch: [2, 15],
 	flame: [1, 1],
 	infinity: [1, 1],
-	lure: [3, 10],
-	luck_of_the_sea: [3, 10],
-	impaling: [5, 10],
-	channeling: [1, 10],
-	loyalty: [3, 10],
-	riptide: [3, 10],
-	quick_charge: [3, 10],
-	piercing: [4, 10],
+	lure: [3, 15],
+	luck_of_the_sea: [3, 15],
+	impaling: [5, 15],
+	channeling: [1, 1],
+	loyalty: [3, 15],
+	riptide: [3, 15],
+	quick_charge: [3, 15],
+	piercing: [4, 15],
 	multishot: [1, 1],
 }
 var ENCHANT_SCROLLS = {
 	unbreaking: {
 		normal: {
-			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l아이템 #FFFFB5&l내구 #ECEAE4&l강화 주문서',
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l아이템 #FFFFB5&l내구성 #ECEAE4&l강화 주문서',
 			eiCode: 'enchantScrollUnbreaking',
 		},
 		plus: {
-			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l아이템 #FFFFB5&l내구 #ECEAE4&l강화 주문서',
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l아이템 #FFFFB5&l내구성 #ECEAE4&l강화 주문서',
 			eiCode: 'enchantScrollUnbreakingPlus',
 		},
 	},
@@ -408,12 +408,12 @@ var ENCHANT_SCROLLS = {
 	},
 	respiration: {
 		normal: {
-			name: '',
-			eiCode: '',
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l방어구 #FFFFB5&l호흡 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollRespiration',
 		},
 		plus: {
-			name: '',
-			eiCode: '',
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l방어구 #FFFFB5&l호흡 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollRespirationPlus',
 		},
 	},
 	thorns: {
@@ -468,12 +468,12 @@ var ENCHANT_SCROLLS = {
 	},
 	swift_sneak: {
 		normal: {
-			name: '',
-			eiCode: '',
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l방어구 #FFFFB5&l신속한잠행 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollSwiftSneak',
 		},
 		plus: {
-			name: '',
-			eiCode: '',
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l방어구 #FFFFB5&l신속한잠행 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollSwiftSneakPlus',
 		},
 	},
 	feather_falling: {
@@ -488,42 +488,42 @@ var ENCHANT_SCROLLS = {
 	},
 	soul_speed: {
 		normal: {
-			name: '',
-			eiCode: '',
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l방어구 #FFFFB5&l영혼가속 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollSoulSpeed',
 		},
 		plus: {
-			name: '',
-			eiCode: '',
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l방어구 #FFFFB5&l영혼가속 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollSoulSpeedPlus',
 		},
 	},
 	depth_strider: {
 		normal: {
-			name: '',
-			eiCode: '',
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l방어구 #FFFFB5&l물갈퀴 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollDepthStrider',
 		},
 		plus: {
-			name: '',
-			eiCode: '',
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l방어구 #FFFFB5&l물갈퀴 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollDepthStriderPlus',
 		},
 	},
 	frost_walker: {
 		normal: {
-			name: '',
-			eiCode: '',
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l방어구 #FFFFB5&l차가운걸음 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollFrostWalker',
 		},
 		plus: {
-			name: '',
-			eiCode: '',
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l방어구 #FFFFB5&l차가운걸음 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollFrostWalkerPlus',
 		},
 	},
 	fire_aspect: {
 		normal: {
-			name: '',
-			eiCode: '',
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l발화 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollFireAspect',
 		},
 		plus: {
-			name: '',
-			eiCode: '',
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l무기 #FFFFB5&l발화 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollFireAspectPlus',
 		},
 	},
 	looting: {
@@ -538,12 +538,12 @@ var ENCHANT_SCROLLS = {
 	},
 	knockback: {
 		normal: {
-			name: '',
-			eiCode: '',
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l밀치기 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollKnockback',
 		},
 		plus: {
-			name: '',
-			eiCode: '',
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l무기 #FFFFB5&l밀치기 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollKnockbackPlus',
 		},
 	},
 	sweeping: {
@@ -588,12 +588,12 @@ var ENCHANT_SCROLLS = {
 	},
 	cleaving: {
 		normal: {
-			name: '',
-			eiCode: '',
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l쪼개기 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollCleaving',
 		},
 		plus: {
-			name: '',
-			eiCode: '',
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l무기 #FFFFB5&l쪼개기 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollCleavingPlus',
 		},
 	},
 	power: {
@@ -608,12 +608,12 @@ var ENCHANT_SCROLLS = {
 	},
 	punch: {
 		normal: {
-			name: '',
-			eiCode: '',
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l밀어내기 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollPunch',
 		},
 		plus: {
-			name: '',
-			eiCode: '',
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l무기 #FFFFB5&l밀어내기 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollPunchPlus',
 		},
 	},
 	lure: {
@@ -658,22 +658,22 @@ var ENCHANT_SCROLLS = {
 	},
 	riptide: {
 		normal: {
-			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l집전 #ECEAE4&l강화 주문서',
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l급류 #ECEAE4&l강화 주문서',
 			eiCode: 'enchantScrollRiptide',
 		},
 		plus: {
-			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l무기 #FFFFB5&l집전 #ECEAE4&l강화 주문서',
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l무기 #FFFFB5&l급류 #ECEAE4&l강화 주문서',
 			eiCode: 'enchantScrollRiptidePlus',
 		},
 	},
 	piercing: {
 		normal: {
-			name: '',
-			eiCode: '',
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l관통 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollPiercing',
 		},
 		plus: {
-			name: '',
-			eiCode: '',
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l무기 #FFFFB5&l관통 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollPiercingPlus',
 		},
 	},
 	random: {
@@ -757,12 +757,24 @@ var ENCHANT_PANALTY = {
 var ENCHANT_CHANCE = {
 	chance: {
 		normal: {
-			success: [1, 0.8, 0.7, 0.6, 0.55, 0.5, 0.3, 0.1, 0.01, 0.001],
-			fail: [0, 0, 0, 0.05, 0.05, 0.1, 0.1, 0.1, 0.2, 0.3],
+			success: [
+				1, 1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.25, 0.2, 0.15, 0.15, 0.1, 0.1, 0.05, 0.05, 0.01,
+				0.001, 0.0001,
+			],
+			fail: [
+				0, 0, 0, 0.05, 0.05, 0.1, 0.1, 0.15, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6,
+				0.65, 0.7,
+			],
 		},
 		plus: {
-			success: [1, 1, 0.5, 0.45, 0.4, 0.35, 0.3, 0.1, 0.01, 0.001],
-			fail: [0, 0, 0, 0.1, 0.1, 0.15, 0.15, 0.2, 0.25, 0.3],
+			success: [
+				1, 1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.25, 0.2, 0.15, 0.15, 0.1, 0.1, 0.05, 0.05, 0.01,
+				0.001, 0.0001,
+			],
+			fail: [
+				0, 0, 0, 0.05, 0.05, 0.1, 0.1, 0.15, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6,
+				0.65, 0.7,
+			],
 		},
 	},
 	rarityWeight: {

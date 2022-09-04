@@ -1,34 +1,36 @@
 name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l아이템 #FFFFB5&l인챈트 #ECEAE4&l혼돈의 주문서'
 lore:
-- '&7'
-- '&7주문서 종류: &6&l인챈트 &e&l혼돈의 주문서'
-- '&7주문서 적용대상: &d모든 도구, 무기, 방어구, 기타'
-- '&7주문서 적용조건:'
-- '&7 - 1레벨 인챈트는 적용 제외(ex. 수선 등)'
-- '&7 - 모든 인챈트는 바닐라 기준 최고레벨+ 부여'
-- '&7---------------------'
-- '&b&l인챈트 강화시도 &6&l확률&7: &d60&7%'
-- '&b&l강화성공 &7| &c&l단계하락 &6&l확률&7:'
-- '&f +2 : &a80&7% | &c0&7%'
-- '&f +3 : &a70&7% | &c0&7%'
-- '&f +4 : &a60&7% | &c5&7%'
-- '&f +5 : &a55&7% | &c5&7%'
-- '&f +6 : &a50&7% | &c5&7%'
-- '&f +7 : &a30&7% | &c10&7%'
-- '&f +8 : &a10&7% | &c10&7%'
-- '&f +9 :  &a1&7%  | &c20&7%'
-- '&f +10: &a0.1&7% | &c30&7%'
-- '&5>> 강화시도 실패 시, 100% &5&n파괴'
-- '&7---------------------'
-- '&e&l좌클릭&7으로 사용하면 &f&n&l왼손&7에 든'
-- '&7아이템의 &9&l랜덤 &7인챈트 레벨을 &a1&7만큼'
-- '&7&c&l변화&7시킬 수 있다.'
-- '&7---------------------'
-- '&c&l<사용조건>'
-- '&7'
-- '&7사용가능 횟수: &b1&f&l회'
-- '&7재사용 대기시간: &e5&f초'
-- '&7사용방법: 공중에 좌클릭'
+  - '&7'
+  - '&7주문서 종류: &6&l인챈트 &e&l혼돈의 주문서'
+  - '&7주문서 적용조건: 모든 인챈트 바닐라 기준 최고레벨 이상'
+  - '&7--------------------------'
+  - '&b&l인챈트 강화시도 &6&l성공확률&7: &d60&7%'
+  - '&b&l강화성공 &7| &c&l단계하락 &6&l확률&7:'
+  - '&f  +2: &a100&7% | &c0&7%'
+  - '&f  +3: &a90&7% | &c0&7%'
+  - '&f  +4: &a80&7% | &c5&7%'
+  - '&f  +5: &a75&7% | &c5&7%'
+  - '&f  +6: &a60&7% | &c10&7%'
+  - '&f  +7: &a50&7% | &c10&7%'
+  - '&f  +8: &a40&7% | &c15&7%'
+  - '&f  +9: &a30&7% | &c15&7%'
+  - '&f +10: &a25&7% | &c20&7%'
+  - '&f +11: &a20&7% | &c25&7%'
+  - '&f +12: &a15&7% | &c30&7%'
+  - '&f +13: &a15&7% | &c35&7%'
+  - '&f +14: &a10&7% | &c40&7%'
+  - '&f +15: &a10&7% | &c45&7%'
+  - '&f +16: &a5&7% | &c50&7%'
+  - '&f +17: &a5&7% | &c55&7%'
+  - '&f +18: &a1&7% | &c60&7%'
+  - '&f +19: &a0.1&7% | &c65&7%'
+  - '&f +20: &a0.01&7% | &c70&7%'
+  - '&7--------------------------'
+  - '&c&l<사용조건>'
+  - '&7'
+  - '&7사용가능 횟수: &b1&f&l회'
+  - '&7재사용 대기시간: &e5&f초'
+  - '&7사용방법: 공중에 좌클릭'
 material: MOJANG_BANNER_PATTERN
 glow: true
 disableStack: false
@@ -84,7 +86,7 @@ activators:
     globalCooldownOptions:
       cooldown: 0
       isCooldownInTicks: false
-      cooldownMsg: '&cYou are in cooldown ! &7(&e%time_H%&6H &e%time_M%&6M &e%time_S%&6S&7)'
+      cooldownMsg: '&6>> 전체 재사용 대기중... &7(%time_S%초)'
       displayCooldownMessage: true
       cancelEventIfInCooldown: false
     otherEICooldowns: {}
@@ -93,33 +95,9 @@ activators:
     requiredExecutableItems:
       errorMessage: ''
     detailedSlots:
-    - -1
+      - -1
     commands:
-    - 'RANDOM RUN: 1'
-    - 'LOOP START: 6'
-    - 'SENDMESSAGE §7[§6강화§7] %item%를 사용했습니다. §7(패널티: %javascript_item_repair_cost%
-      -> %javascript_item_repair_cost_random,plus%) +++ minecraft:item replace entity
-      %player% weapon.offhand with %formatter_text_lowercase_{player_item_in_offhand}%{display:{%javascript_item_display_data%},%javascript_item_nbt_data_random,plus%,Enchantments:%javascript_random_enchants%}
-      +++ execute at %player% run playsound minecraft:block.anvil.use voice %player%
-      +++ title %player% title %javascript_success_title% +++ title %player% subtitle
-      {"text":"알 수 없는 힘에 의해서 아이템에 성공적으로 전해졌습니다.","color":"gray","bold":"true"} +++
-      broadcast §b§l%player_name% §f님이 §7§l%javascript_item_kr_name%§f의 §§x§F§F§F§F§B§5§l인챈트
-      §6§l랜덤 §f강화에 §a§l성공§f했습니다.'
-    - LOOP END
-    - 'LOOP START: 4'
-    - SENDMESSAGE §7[§6강화§7] %item%를 사용했습니다. §7(패널티; %javascript_item_repair_cost%)
-      +++ minecraft:item replace entity %player% weapon.offhand with %formatter_text_lowercase_{player_item_in_offhand}%{Damage:99999,display:{Name:'[{"text":"파괴된","italic":false,"bold":true,"color":"red"},{"text":"
-      %javascript_item_kr_name%","italic":false,"bold":true,"color":"aqua"},{"text":"의
-      흔적","color":"gray"}]',Lore:['[{"text":"강화에 실패해 파괴된 아이템의 흔적이다.","italic":false,"color":"gray"}]','[{"text":"복구할
-      수 없을 것 같다.","italic":false,"color":"gray"}]','[{"text":""}]','[{"text":"아이템
-      소유자:","italic":false,"color":"gray"},{"text":" %player_name%","italic":false,"color":"red"}]']}}
-      +++ execute at %player% run playsound minecraft:entity.villager.no voice %player%
-      +++ title %player% title %javascript_fail_title% +++ title %player% subtitle
-      {"text":"알 수 없는 힘에 의해 아이템이 파괴 되었습니다.","color":"gray","bold":"true"} +++ broadcast
-      §b§l%player_name% §f님이 §7§l%javascript_item_kr_name%§f의 §§x§F§F§F§F§B§5§l인챈트
-      §6§l랜덤 §f강화에 §c§l실패§f했습니다.
-    - LOOP END
-    - RANDOM END
+      - 'NOTHING * %javascript_enchant_scroll_applyEnchant,0,random,0%'
     playerConditions: {}
     worldConditions: {}
     itemConditions: {}
@@ -128,14 +106,14 @@ activators:
       plchC1:
         type: PLAYER_STRING
         comparator: EQUALS
-        part1: '%javascript_is_valid_item%'
+        part1: '%javascript_enchant_scroll_checkValidItem,0,1%'
         part2: 'true'
         cancelEventIfNotValid: false
         messageIfNotValid: '&6>> 강화 주문서를 사용하려면 왼손에 사용 조건을 충족한 아이템을 든 상태여야 합니다.'
       plchC2:
         type: PLAYER_STRING
         comparator: EQUALS
-        part1: '%javascript_repair_cost_limit_random,plus%'
+        part1: '%javascript_enchant_scroll_checkCostLimit,0,random,1%'
         part2: 'true'
         cancelEventIfNotValid: false
         messageIfNotValid: '&6>> 강화 패널티가 %javascript_repair_cost_limit_random,plus%를

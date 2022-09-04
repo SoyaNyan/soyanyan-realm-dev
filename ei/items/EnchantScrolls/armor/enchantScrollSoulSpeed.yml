@@ -1,11 +1,13 @@
-name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l방어구 #FFFFB5&l발사체보호 #ECEAE4&l강화 주문서'
+name: '&7[#FFC8A2 ★★ &7] #55CBCD&l방어구 #FFFFB5&l영혼가속 #ECEAE4&l강화 주문서'
 lore:
   - '&7'
-  - '&7주문서 종류: &6&l발사체보호 &e&l강화 주문서'
-  - '&7주문서 적용조건: &9발사체보호IV &f~ &9발사체보호XIX'
+  - '&7주문서 종류: &6&l영혼가속 &e&l강화 주문서'
+  - '&7주문서 적용조건: &9영혼가속III &f~ &9영혼가속XIX'
   - '&7--------------------------'
-  - '&7성공확률 가중치 - &fx&30.9'
-  - '&b&l강화성공 &7| &c&l파괴 &6&l확률&7:'
+  - '&7성공확률 가중치 - &fx&30.8'
+  - '&b&l강화성공 &7| &c&l단계하락 &6&l확률&7:'
+  - '&f  +4: &a80&7% | &c5&7%'
+  - '&f  +5: &a75&7% | &c5&7%'
   - '&f  +6: &a60&7% | &c10&7%'
   - '&f  +7: &a50&7% | &c10&7%'
   - '&f  +8: &a40&7% | &c15&7%'
@@ -93,7 +95,7 @@ activators:
     detailedSlots:
       - -1
     commands:
-      - 'NOTHING * %javascript_enchant_scroll_applyEnchant,0,projectile_protection,1%'
+      - 'NOTHING * %javascript_enchant_scroll_applyEnchant,0,soul_speed,0%'
     playerConditions: {}
     worldConditions: {}
     itemConditions: {}
@@ -102,21 +104,21 @@ activators:
       plchC1:
         type: PLAYER_STRING
         comparator: EQUALS
-        part1: '%javascript_enchant_scroll_checkEnchant,0,projectile_protection%'
+        part1: '%javascript_enchant_scroll_checkEnchant,0,soul_speed%'
         part2: 'true'
         cancelEventIfNotValid: false
         messageIfNotValid: '&6>> 강화 주문서를 사용하려면 왼손에 유효한 아이템을 든 상태여야 합니다.'
       plchC2:
         type: PLAYER_STRING
         comparator: EQUALS
-        part1: '%javascript_enchant_scroll_checkUpgradable,0,projectile_protection,1%'
+        part1: '%javascript_enchant_scroll_checkUpgradable,0,soul_speed,0%'
         part2: 'true'
         cancelEventIfNotValid: false
         messageIfNotValid: '&6>> 강화 주문서 사용을 위한 인챈트 레벨 조건을 만족하지 않습니다.'
       plchC3:
         type: PLAYER_STRING
         comparator: EQUALS
-        part1: '%javascript_enchant_scroll_checkCostLimit,0,projectile_protection,1%'
+        part1: '%javascript_enchant_scroll_checkCostLimit,0,soul_speed,0%'
         part2: 'true'
         cancelEventIfNotValid: false
         messageIfNotValid: '&6>> 강화 패널티가 %javascript_enchant_scroll_repairCostLimit,0%를 초과할 수 없습니다.'
