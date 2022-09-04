@@ -1058,6 +1058,22 @@ const TITLE_SETTINGS: {
 		],
 		subtitle: { 'text': '강화 단계는 유지됩니다.', 'color': 'gray', 'bold': true },
 	},
+	failRandom: {
+		title: [
+			{ text: '강', color: '#fb004b', bold: true },
+			{ text: '화', color: '#fb1e3f', bold: true },
+			{ text: '실', color: '#fc3d32', bold: true },
+			{ text: '패', color: '#fc5b26', bold: true },
+			{ text: '.', color: '#fc7919', bold: true },
+			{ text: '.', color: '#fd980d', bold: true },
+			{ text: '.', color: '#fdb600', bold: true },
+		],
+		subtitle: {
+			'text': '알 수 없는 힘이 아이템에 전해졌지만 아무런 변화도 없었습니다.',
+			'color': 'gray',
+			'bold': true,
+		},
+	},
 	downgrade: {
 		title: [
 			{ text: '강', color: '#fb004b', bold: true },
@@ -2066,7 +2082,7 @@ function getRandomEnchantResult(enchantData: ItemEnchantDataType): {
 		// success
 		if (rand < successChance) {
 			// upgrade enchant
-			nextEnchantData[enchant] + 1
+			nextEnchantData[enchant] = nextEnchantData[enchant] + 1
 
 			// save result
 			result.upgraded.push(enchant)
@@ -2081,7 +2097,7 @@ function getRandomEnchantResult(enchantData: ItemEnchantDataType): {
 		// side effect
 		if (sideRand < sideEffectChance) {
 			// downgrade enchant
-			nextEnchantData[enchant] - 1
+			nextEnchantData[enchant] = nextEnchantData[enchant] - 1
 
 			// save result
 			result.downgraded.push(enchant)
@@ -2326,13 +2342,16 @@ function applyRandomEnchant(
 		playSound('entity.item.break', PLAYER_NAME)
 
 		// get title setting
-		const { title, subtitle } = isPlus ? TITLE_SETTINGS.destroy : TITLE_SETTINGS.downgrade
+		const { title, subtitle } = isPlus ? TITLE_SETTINGS.destroy : TITLE_SETTINGS.failRandom
 
 		// show title & subtitle
 		playTitle(title, subtitle, PLAYER_NAME)
 
 		// get item repair cost after scroll applied
 		const nextRepairCost = getNextRepairCost(RepairCost, 'random', isPlus)
+
+		// set nbt data for failed result
+		const failNBTData: ItemIntNBTDataType = { Damage, RepairCost: nextRepairCost }
 
 		// send scroll message
 		isPlus
@@ -2343,7 +2362,9 @@ function applyRandomEnchant(
 		broadcastRandomFail(PLAYER_NAME)
 
 		// replace target item
-		destroyItem(PLAYER_NAME)
+		isPlus
+			? destroyItem(PLAYER_NAME)
+			: replaceItem(PLAYER_NAME, failNBTData, displayData, enchantData)
 
 		// return result
 		return 'fail'

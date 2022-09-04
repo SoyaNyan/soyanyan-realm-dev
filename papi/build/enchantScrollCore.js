@@ -912,6 +912,22 @@ var TITLE_SETTINGS = {
 		],
 		subtitle: { 'text': '강화 단계는 유지됩니다.', 'color': 'gray', 'bold': true },
 	},
+	failRandom: {
+		title: [
+			{ text: '강', color: '#fb004b', bold: true },
+			{ text: '화', color: '#fb1e3f', bold: true },
+			{ text: '실', color: '#fc3d32', bold: true },
+			{ text: '패', color: '#fc5b26', bold: true },
+			{ text: '.', color: '#fc7919', bold: true },
+			{ text: '.', color: '#fd980d', bold: true },
+			{ text: '.', color: '#fdb600', bold: true },
+		],
+		subtitle: {
+			'text': '알 수 없는 힘이 아이템에 전해졌지만 아무런 변화도 없었습니다.',
+			'color': 'gray',
+			'bold': true,
+		},
+	},
 	downgrade: {
 		title: [
 			{ text: '강', color: '#fb004b', bold: true },
@@ -1452,13 +1468,13 @@ function getRandomEnchantResult(enchantData) {
 		var level = enchantData[enchant]
 		var successChance = getSuccessChance(enchant, level, false)
 		if (rand < successChance) {
-			nextEnchantData[enchant] + 1
+			nextEnchantData[enchant] = nextEnchantData[enchant] + 1
 			result.upgraded.push(enchant)
 		}
 		var sideRand = Math.floor(Math.random() * 100)
 		var sideEffectChance = getFailChance(enchant, level, false)
 		if (sideRand < sideEffectChance) {
-			nextEnchantData[enchant] - 1
+			nextEnchantData[enchant] = nextEnchantData[enchant] - 1
 			result.downgraded.push(enchant)
 		}
 	}
@@ -1598,16 +1614,19 @@ function applyRandomEnchant(enchantData, displayData, nbtData, isPlus) {
 	var name = ENCHANT_SCROLLS['random'].normal.name
 	if (!randomEnchantChance(isPlus)) {
 		playSound('entity.item.break', PLAYER_NAME)
-		var _a = isPlus ? TITLE_SETTINGS.destroy : TITLE_SETTINGS.downgrade,
+		var _a = isPlus ? TITLE_SETTINGS.destroy : TITLE_SETTINGS.failRandom,
 			title_3 = _a.title,
 			subtitle_3 = _a.subtitle
 		playTitle(title_3, subtitle_3, PLAYER_NAME)
 		var nextRepairCost_2 = getNextRepairCost(RepairCost, 'random', isPlus)
+		var failNBTData = { Damage: Damage, RepairCost: nextRepairCost_2 }
 		isPlus
 			? sendScrollMessage(name, RepairCost, 5)
 			: sendScrollMessage(name, RepairCost, nextRepairCost_2)
 		broadcastRandomFail(PLAYER_NAME)
-		destroyItem(PLAYER_NAME)
+		isPlus
+			? destroyItem(PLAYER_NAME)
+			: replaceItem(PLAYER_NAME, failNBTData, displayData, enchantData)
 		return 'fail'
 	}
 	var _b = getRandomEnchantResult(enchantData),
