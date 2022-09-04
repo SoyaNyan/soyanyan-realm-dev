@@ -2326,18 +2326,21 @@ function applyRandomEnchant(
 		playSound('entity.item.break', PLAYER_NAME)
 
 		// get title setting
-		const {
-			destroy: { title, subtitle },
-		} = TITLE_SETTINGS
+		const { title, subtitle } = isPlus ? TITLE_SETTINGS.destroy : TITLE_SETTINGS.downgrade
 
 		// show title & subtitle
 		playTitle(title, subtitle, PLAYER_NAME)
 
-		// broadcast fail message
-		broadcastRandomFail(PLAYER_NAME)
+		// get item repair cost after scroll applied
+		const nextRepairCost = getNextRepairCost(RepairCost, 'random', isPlus)
 
 		// send scroll message
-		sendScrollMessage(name, RepairCost, 5)
+		isPlus
+			? sendScrollMessage(name, RepairCost, 5)
+			: sendScrollMessage(name, RepairCost, nextRepairCost)
+
+		// broadcast fail message
+		broadcastRandomFail(PLAYER_NAME)
 
 		// replace target item
 		destroyItem(PLAYER_NAME)
@@ -2352,7 +2355,7 @@ function applyRandomEnchant(
 		result: { upgraded, downgraded },
 	} = getRandomEnchantResult(enchantData)
 	// get item repair cost after scroll applied
-	const nextRepairCost = getNextRepairCost(RepairCost, 'random', false)
+	const nextRepairCost = getNextRepairCost(RepairCost, 'random', isPlus)
 
 	// send scroll message
 	sendScrollMessage(name, RepairCost, nextRepairCost)

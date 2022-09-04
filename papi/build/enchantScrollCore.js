@@ -1598,12 +1598,15 @@ function applyRandomEnchant(enchantData, displayData, nbtData, isPlus) {
 	var name = ENCHANT_SCROLLS['random'].normal.name
 	if (!randomEnchantChance(isPlus)) {
 		playSound('entity.item.break', PLAYER_NAME)
-		var _a = TITLE_SETTINGS.destroy,
+		var _a = isPlus ? TITLE_SETTINGS.destroy : TITLE_SETTINGS.downgrade,
 			title_3 = _a.title,
 			subtitle_3 = _a.subtitle
 		playTitle(title_3, subtitle_3, PLAYER_NAME)
+		var nextRepairCost_2 = getNextRepairCost(RepairCost, 'random', isPlus)
+		isPlus
+			? sendScrollMessage(name, RepairCost, 5)
+			: sendScrollMessage(name, RepairCost, nextRepairCost_2)
 		broadcastRandomFail(PLAYER_NAME)
-		sendScrollMessage(name, RepairCost, 5)
 		destroyItem(PLAYER_NAME)
 		return 'fail'
 	}
@@ -1612,7 +1615,7 @@ function applyRandomEnchant(enchantData, displayData, nbtData, isPlus) {
 		_c = _b.result,
 		upgraded = _c.upgraded,
 		downgraded = _c.downgraded
-	var nextRepairCost = getNextRepairCost(RepairCost, 'random', false)
+	var nextRepairCost = getNextRepairCost(RepairCost, 'random', isPlus)
 	sendScrollMessage(name, RepairCost, nextRepairCost)
 	playSound('block.anvil.use', PLAYER_NAME)
 	var _d = TITLE_SETTINGS.successRandom,
