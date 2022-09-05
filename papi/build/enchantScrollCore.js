@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.js
- * Version: v1.4.0
- * Last Update: 2022-09-04
+ * Version: v1.4.1
+ * Last Update: 2022-09-05
  *
  * TypeScript Version: v4.7.4
  * Target: ES5
@@ -1734,8 +1734,12 @@ function applyEnchant(args) {
 			)
 		sendMessage(consoleColorString(message))
 	}
-	if (enchant === 'random') return applyRandomEnchant(enchantData, displayData, nbtData, checkPlus)
-	return applyNormalEnchant(enchantData, enchant, displayData, nbtData, checkPlus)
+	if (enchant === 'random') {
+		applyRandomEnchant(enchantData, displayData, nbtData, checkPlus)
+		return 1
+	}
+	applyNormalEnchant(enchantData, enchant, displayData, nbtData, checkPlus)
+	return 1
 }
 function hasEnchant(args) {
 	var returnType = args[1]

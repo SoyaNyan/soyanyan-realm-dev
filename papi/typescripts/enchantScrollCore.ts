@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.ts
- * Version: v1.4.0
- * Last Update: 2022-09-04
+ * Version: v1.4.1
+ * Last Update: 2022-09-05
  *
  * TypeScript Version: v4.7.4
  * Target: ES5
@@ -2567,10 +2567,18 @@ function applyEnchant(args: string[]): DataType {
 	}
 
 	// check random enchant scroll
-	if (enchant === 'random') return applyRandomEnchant(enchantData, displayData, nbtData, checkPlus)
+	if (enchant === 'random') {
+		applyRandomEnchant(enchantData, displayData, nbtData, checkPlus)
+
+		// return number 1 or 0 for EI config
+		return 1
+	}
 
 	// check normal enchant scroll
-	return applyNormalEnchant(enchantData, enchant, displayData, nbtData, checkPlus)
+	applyNormalEnchant(enchantData, enchant, displayData, nbtData, checkPlus)
+
+	// return number 1 or 0 for EI config
+	return 1
 }
 
 // check target item has any enchants
