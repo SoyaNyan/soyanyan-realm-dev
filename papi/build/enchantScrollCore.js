@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.js
- * Version: v1.4.1
- * Last Update: 2022-09-05
+ * Version: v1.4.2
+ * Last Update: 2022-09-06
  *
  * TypeScript Version: v4.7.4
  * Target: ES5
@@ -85,7 +85,7 @@ var ENCHANT_NAME = {
 	silk_touch: '섬세한 손길',
 	smite: '강타',
 	soul_speed: '영혼 가속',
-	sweeping_edge: '휩쓸기',
+	sweeping: '휩쓸기',
 	swift_sneak: '신속한 잠행',
 	thorns: '가시',
 	unbreaking: '내구성',
@@ -338,41 +338,41 @@ var ENCHANT_BLAKLIST = [
 var ENCHANT_LIMIT = {
 	mending: [1, 1],
 	silk_touch: [1, 1],
-	unbreaking: [3, 15],
-	efficiency: [5, 15],
-	fortune: [3, 15],
+	unbreaking: [3, 20],
+	efficiency: [5, 20],
+	fortune: [3, 20],
 	aqua_affinity: [1, 1],
-	respiration: [3, 15],
-	thorns: [3, 15],
-	protection: [4, 15],
-	projectile_protection: [4, 15],
-	fire_protection: [4, 15],
-	blast_protection: [4, 15],
-	swift_sneak: [3, 15],
-	feather_falling: [4, 15],
-	soul_speed: [3, 15],
-	depth_strider: [3, 15],
-	frost_walker: [2, 15],
-	fire_aspect: [2, 15],
-	looting: [3, 15],
-	knockback: [2, 15],
-	sweeping: [3, 15],
-	sharpness: [5, 15],
-	smite: [5, 15],
-	bane_of_arthropods: [5, 15],
-	cleaving: [3, 15],
-	power: [5, 15],
-	punch: [2, 15],
+	respiration: [3, 20],
+	thorns: [3, 20],
+	protection: [4, 20],
+	projectile_protection: [4, 20],
+	fire_protection: [4, 20],
+	blast_protection: [4, 20],
+	swift_sneak: [3, 20],
+	feather_falling: [4, 20],
+	soul_speed: [3, 20],
+	depth_strider: [3, 20],
+	frost_walker: [2, 20],
+	fire_aspect: [2, 20],
+	looting: [3, 20],
+	knockback: [2, 20],
+	sweeping: [3, 20],
+	sharpness: [5, 20],
+	smite: [5, 20],
+	bane_of_arthropods: [5, 20],
+	cleaving: [3, 20],
+	power: [5, 20],
+	punch: [2, 20],
 	flame: [1, 1],
 	infinity: [1, 1],
-	lure: [3, 15],
-	luck_of_the_sea: [3, 15],
-	impaling: [5, 15],
+	lure: [3, 20],
+	luck_of_the_sea: [3, 20],
+	impaling: [5, 20],
 	channeling: [1, 1],
-	loyalty: [3, 15],
-	riptide: [3, 15],
-	quick_charge: [3, 15],
-	piercing: [4, 15],
+	loyalty: [3, 20],
+	riptide: [3, 20],
+	quick_charge: [3, 20],
+	piercing: [4, 20],
 	multishot: [1, 1],
 }
 var ENCHANT_SCROLLS = {
@@ -699,26 +699,26 @@ var REPAIR_COST_LIMIT = {
 		TURTLE: 5,
 	},
 	base: {
-		SWORD: 50,
-		PICKAXE: 50,
-		AXE: 50,
-		SHOVEL: 40,
-		HOE: 35,
-		HELMET: 45,
-		CHESTPLATE: 40,
-		LEGGINGS: 40,
-		BOOTS: 45,
+		SWORD: 65,
+		PICKAXE: 65,
+		AXE: 65,
+		SHOVEL: 55,
+		HOE: 50,
+		HELMET: 60,
+		CHESTPLATE: 55,
+		LEGGINGS: 55,
+		BOOTS: 60,
 	},
 	other: {
-		BOW: 55,
-		FISHING_ROD: 40,
-		TRIDENT: 55,
+		BOW: 65,
+		FISHING_ROD: 55,
+		TRIDENT: 65,
 		CROSSBOW: 55,
-		SHEARS: 30,
-		SHIELD: 30,
-		ELYTRA: 30,
-		FLINT_AND_STEEL: 30,
-		CARROT_ON_A_STICK: 30,
+		SHEARS: 40,
+		SHIELD: 40,
+		ELYTRA: 40,
+		FLINT_AND_STEEL: 35,
+		CARROT_ON_A_STICK: 35,
 	},
 }
 var ENCHANT_PANALTY = {
@@ -1082,7 +1082,7 @@ function mergeLores(lore, enchantData) {
 	var enchantLore = createEnchantmentLore(enchantData)
 	var loreStarts = checkCustomLore(40)
 	if (loreStarts === false) {
-		if (lore.length === 0) {
+		if ((lore === null || lore === void 0 ? void 0 : lore.length) === 0) {
 			return {
 				lore: enchantLore,
 				loreStarts: -1,
@@ -1129,19 +1129,19 @@ function checkPlus16() {
 	return checkVersion
 }
 function execConsoleCommand(command) {
-	if (command === undefined || command.length === 0) return false
+	if (typeof command === 'undefined' || command.length === 0) return false
 	return BukkitServer.dispatchCommand(BukkitServer.getConsoleSender(), command)
 }
 function execCommand(command) {
-	if (command === undefined || command.length === 0) return false
+	if (typeof command === 'undefined' || command.length === 0) return false
 	return BukkitPlayer.performCommand(command)
 }
 function sendMessage(message) {
-	if (message === undefined || message.length === 0) return false
+	if (typeof message === 'undefined' || message.length === 0) return false
 	return BukkitPlayer.sendMessage(message)
 }
 function logConsole(message) {
-	if (message === undefined || message.length === 0) return false
+	if (typeof message === 'undefined' || message.length === 0) return false
 	return BukkitServer.getConsoleSender().sendMessage(message)
 }
 function getDisplayName() {
@@ -1260,23 +1260,12 @@ function getEnchantData(slot) {
 	})
 	return enchantData
 }
-function checkCustomLore(slot) {
-	var rawData = parsePlaceholder('checkitem_getinfo:'.concat(slot, '_nbtints:nbt'))
-	var nbtData = {}
-	var nbtDataArr = rawData.replace(/INTEGER:/g, '').split('|')
-	nbtDataArr.forEach(function (nbtTag) {
-		var _a = nbtTag.split(':'),
-			label = _a[0],
-			value = _a[1]
-		nbtData[label] = parseInt(value)
-	})
-	return typeof nbtData['customLore'] !== undefined ? nbtData['customLore'] : false
-}
 function getIntegerNBTData(slot) {
 	var rawData = parsePlaceholder('checkitem_getinfo:'.concat(slot, '_nbtints:nbt'))
 	var nbtData = {
 		Damage: 0,
 		RepairCost: 0,
+		customLore: false,
 	}
 	var nbtDataArr = rawData.replace(/INTEGER:/g, '').split('|')
 	nbtDataArr.forEach(function (nbtTag) {
@@ -1294,6 +1283,10 @@ function getDamage(slot) {
 function getRepairCost(slot) {
 	var RepairCost = getIntegerNBTData(slot).RepairCost
 	return RepairCost
+}
+function checkCustomLore(slot) {
+	var customLore = getIntegerNBTData(slot).customLore
+	return typeof customLore !== 'undefined' ? customLore : false
 }
 function getItemInfo(itemCode) {
 	return ITEM_SETTINGS[itemCode]
@@ -1412,7 +1405,7 @@ function getSuccessChance(enchant, level, isPlus) {
 	var nextLevel = isPlus ? level + 1 : level
 	var boosted = enchant !== 'random' ? getBoostedChance() : 0
 	var successChance =
-		1000 * (success[nextLevel] * getEventMultiplier() + boosted) * rarityWeight[enchant]
+		10000 * (success[nextLevel] * getEventMultiplier() + boosted) * rarityWeight[enchant]
 	return successChance
 }
 function getFailChance(enchant, level, isPlus) {
@@ -1614,20 +1607,16 @@ function applyRandomEnchant(enchantData, displayData, nbtData, isPlus) {
 		RepairCost = nbtData.RepairCost
 	var name = ENCHANT_SCROLLS['random'].normal.name
 	if (!randomEnchantChance(isPlus)) {
-		playSound('entity.item.break', PLAYER_NAME)
-		var _a = isPlus ? TITLE_SETTINGS.destroy : TITLE_SETTINGS.failRandom,
+		playSound('entity.villager.no', PLAYER_NAME)
+		var _a = TITLE_SETTINGS.failRandom,
 			title_3 = _a.title,
 			subtitle_3 = _a.subtitle
 		playTitle(title_3, subtitle_3, PLAYER_NAME)
 		var nextRepairCost_2 = getNextRepairCost(RepairCost, 'random', isPlus)
 		var failNBTData = { Damage: Damage, RepairCost: nextRepairCost_2 }
-		isPlus
-			? sendScrollMessage(name, RepairCost, 5)
-			: sendScrollMessage(name, RepairCost, nextRepairCost_2)
+		sendScrollMessage(name, RepairCost, nextRepairCost_2)
 		broadcastRandomFail(PLAYER_NAME)
-		isPlus
-			? destroyItem(PLAYER_NAME)
-			: replaceItem(PLAYER_NAME, failNBTData, displayData, enchantData)
+		replaceItem(PLAYER_NAME, failNBTData, displayData, enchantData)
 		return 'fail'
 	}
 	var _b = getRandomEnchantResult(enchantData),
