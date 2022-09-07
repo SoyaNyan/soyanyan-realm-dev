@@ -158,73 +158,7 @@ if (!Array.prototype.includes) {
 // player name
 const PLAYER_NAME = '%player_name%'
 
-const ENCHANT_NAME: { [index: string]: string } = {
-	aqua_affinity: '친수성',
-	bane_of_arthropods: '살충',
-	blast_protection: '폭발로부터 보호',
-	channeling: '집전',
-	cleaving: '쪼개기',
-	binding_curse: '귀속 저주',
-	vanishing_curse: '소실 저주',
-	depth_strider: '물갈퀴',
-	efficiency: '효율',
-	feather_falling: '가벼운 착지',
-	fire_aspect: '발화',
-	fire_protection: '화염으로부터 보호',
-	flame: '화염',
-	fortune: '행운',
-	frost_walker: '차가운 걸음',
-	impaling: '찌르기',
-	infinity: '무한',
-	knockback: '밀치기',
-	looting: '약탈',
-	loyalty: '충성',
-	luck_of_the_sea: '바다의 행운',
-	lure: '미끼',
-	mending: '수선',
-	multishot: '다중 발사',
-	piercing: '관통',
-	power: '힘',
-	projectile_protection: '발사체로부터 보호',
-	protection: '보호',
-	punch: '밀어내기',
-	quick_charge: '빠른 장전',
-	respiration: '호흡',
-	riptide: '급류',
-	sharpness: '날카로움',
-	silk_touch: '섬세한 손길',
-	smite: '강타',
-	soul_speed: '영혼 가속',
-	sweeping: '휩쓸기',
-	swift_sneak: '신속한 잠행',
-	thorns: '가시',
-	unbreaking: '내구성',
-}
-
-const ENCHANT_LEVEL: Array<string> = [
-	'',
-	'I',
-	'II',
-	'III',
-	'IV',
-	'V',
-	'VI',
-	'VII',
-	'VIII',
-	'IX',
-	'X',
-	'XI',
-	'XII',
-	'XIII',
-	'XIV',
-	'XV',
-	'XVI',
-	'XVII',
-	'XVIII',
-	'XIX',
-	'XX',
-]
-
+// valid enchant settings
 const VALID_ENCHANTS: { [index: string]: ValidEnchantType } = {
 	unbreaking: {
 		suffixes: [
@@ -403,6 +337,20 @@ const VALID_ENCHANTS: { [index: string]: ValidEnchantType } = {
 	},
 }
 
+// banned enchant list
+const ENCHANT_BLAKLIST: Array<string> = [
+	'mending',
+	'silk_touch',
+	'aqua_affinity',
+	'flame',
+	'infinity',
+	'channeling',
+	'multishot',
+	'binding_curse',
+	'vanishing_curse',
+]
+
+// item kr names
 const ITEMS_LOCALE_KR: {
 	item: { [index: string]: string }
 	material: { [index: string]: string }
@@ -442,21 +390,35 @@ const ITEMS_LOCALE_KR: {
 	},
 }
 
-const ENCHANT_BLAKLIST: Array<string> = [
-	'mending',
-	'silk_touch',
-	'aqua_affinity',
-	'flame',
-	'infinity',
-	'channeling',
-	'multishot',
-	'binding_curse',
-	'vanishing_curse',
+// enchant level labels
+const ENCHANT_LEVEL: Array<string> = [
+	'',
+	'I',
+	'II',
+	'III',
+	'IV',
+	'V',
+	'VI',
+	'VII',
+	'VIII',
+	'IX',
+	'X',
+	'XI',
+	'XII',
+	'XIII',
+	'XIV',
+	'XV',
+	'XVI',
+	'XVII',
+	'XVIII',
+	'XIX',
+	'XX',
 ]
 
+// enchant level limit settings
+// [enchantments]: [min, max]
+// if plus scroll, max = max - 1
 const ENCHANT_LIMIT: { [index: string]: Array<number> } = {
-	// [enchantments]: [min, max]
-	// if plus scroll, max = max - 1
 	mending: [1, 1],
 	silk_touch: [1, 1],
 	unbreaking: [3, 20],
@@ -497,6 +459,161 @@ const ENCHANT_LIMIT: { [index: string]: Array<number> } = {
 	multishot: [1, 1],
 }
 
+// normal enchant chance settings
+const ENCHANT_CHANCE: EnchantChanceSettingType = {
+	chance: {
+		normal: {
+			success: [
+				1, 1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.25, 0.2, 0.15, 0.15, 0.1, 0.1, 0.05, 0.05, 0.01,
+				0.001, 0.0001,
+			],
+			fail: [
+				0, 0, 0, 0.05, 0.05, 0.1, 0.1, 0.15, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6,
+				0.65, 0.7,
+			],
+		},
+		plus: {
+			success: [
+				1, 1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.25, 0.2, 0.15, 0.15, 0.1, 0.1, 0.05, 0.05, 0.01,
+				0.001, 0.0001,
+			],
+			fail: [
+				0, 0, 0, 0.05, 0.05, 0.1, 0.1, 0.15, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6,
+				0.65, 0.7,
+			],
+		},
+	},
+	rarityWeight: {
+		mending: 1,
+		silk_touch: 1,
+		unbreaking: 0.8,
+		efficiency: 1,
+		fortune: 0.5,
+		aqua_affinity: 1,
+		respiration: 0.8,
+		thorns: 0.8,
+		protection: 0.8,
+		projectile_protection: 0.9,
+		fire_protection: 0.9,
+		blast_protection: 0.9,
+		swift_sneak: 0.8,
+		feather_falling: 0.8,
+		soul_speed: 0.8,
+		depth_strider: 0.8,
+		frost_walker: 0.7,
+		fire_aspect: 0.7,
+		looting: 0.5,
+		knockback: 0.7,
+		sweeping: 0.8,
+		sharpness: 0.9,
+		smite: 0.9,
+		bane_of_arthropods: 1,
+		cleaving: 0.8,
+		power: 0.9,
+		punch: 0.7,
+		flame: 1,
+		infinity: 1,
+		lure: 0.5,
+		luck_of_the_sea: 0.5,
+		impaling: 0.9,
+		channeling: 1,
+		loyalty: 0.8,
+		riptide: 0.8,
+		quick_charge: 0.8,
+		piercing: 0.8,
+		multishot: 1,
+	},
+}
+
+// random enchant chance settings
+const RANDOM_ENCHANT_CHANCE: { normal: number; plus: number } = {
+	normal: 0.5,
+	plus: 0.6,
+}
+
+// event settings
+const EVENT_DAYS: Array<number> = [0, 6]
+const EVENT_CHANCE_MULTIPLIER: number = 2
+
+// item repair cost limit(enchant panalty) settings
+const REPAIR_COST_LIMIT: {
+	material: { [index: string]: number }
+	base: { [index: string]: number }
+	other: { [index: string]: number }
+} = {
+	// material of the item
+	material: {
+		NETHERITE: 10,
+		DIAMOND: 5,
+		GOLDEN: 15,
+		CHAINMAIL: 0,
+		IRON: -5,
+		STONE: -10,
+		WOODEN: -15,
+		TURTLE: 5,
+	},
+	// basic tools, weapons, armors
+	base: {
+		SWORD: 65,
+		PICKAXE: 65,
+		AXE: 65,
+		SHOVEL: 55,
+		HOE: 50,
+		HELMET: 60,
+		CHESTPLATE: 55,
+		LEGGINGS: 55,
+		BOOTS: 60,
+	},
+	// other items
+	other: {
+		BOW: 65,
+		FISHING_ROD: 55,
+		TRIDENT: 65,
+		CROSSBOW: 65,
+		SHEARS: 40,
+		SHIELD: 40,
+		ELYTRA: 40,
+		FLINT_AND_STEEL: 35,
+		CARROT_ON_A_STICK: 35,
+	},
+}
+
+// enchant panalty settings
+const ENCHANT_PANALTY: { [index: string]: number } = {
+	unbreaking: 2,
+	efficiency: 1,
+	fortune: 3,
+	respiration: 2,
+	thorns: 2,
+	protection: 1,
+	projectile_protection: 1,
+	fire_protection: 1,
+	blast_protection: 1,
+	swift_sneak: 2,
+	feather_falling: 1,
+	soul_speed: 2,
+	depth_strider: 2,
+	frost_walker: 2,
+	fire_aspect: 2,
+	looting: 3,
+	knockback: 2,
+	sweeping: 2,
+	sharpness: 1,
+	smite: 1,
+	bane_of_arthropods: 1,
+	cleaving: 2,
+	power: 1,
+	punch: 2,
+	lure: 2,
+	luck_of_the_sea: 3,
+	impaling: 1,
+	loyalty: 2,
+	riptide: 2,
+	piercing: 1,
+	random: 3,
+}
+
+// EI::enchant scroll item settings
 const ENCHANT_SCROLLS: {
 	[index: string]: {
 		normal: { name: string; eiCode: string }
@@ -815,159 +932,8 @@ const ENCHANT_SCROLLS: {
 	},
 }
 
-const REPAIR_COST_LIMIT: {
-	material: { [index: string]: number }
-	base: { [index: string]: number }
-	other: { [index: string]: number }
-} = {
-	// material of the item
-	material: {
-		NETHERITE: 10,
-		DIAMOND: 5,
-		GOLDEN: 15,
-		CHAINMAIL: 0,
-		IRON: -5,
-		STONE: -10,
-		WOODEN: -15,
-		TURTLE: 5,
-	},
-	// basic tools, weapons, armors
-	base: {
-		SWORD: 65,
-		PICKAXE: 65,
-		AXE: 65,
-		SHOVEL: 55,
-		HOE: 50,
-		HELMET: 60,
-		CHESTPLATE: 55,
-		LEGGINGS: 55,
-		BOOTS: 60,
-	},
-	// other items
-	other: {
-		BOW: 65,
-		FISHING_ROD: 55,
-		TRIDENT: 65,
-		CROSSBOW: 55,
-		SHEARS: 40,
-		SHIELD: 40,
-		ELYTRA: 40,
-		FLINT_AND_STEEL: 35,
-		CARROT_ON_A_STICK: 35,
-	},
-}
-
-const ENCHANT_PANALTY: { [index: string]: number } = {
-	unbreaking: 2,
-	efficiency: 1,
-	fortune: 3,
-	respiration: 2,
-	thorns: 2,
-	protection: 1,
-	projectile_protection: 1,
-	fire_protection: 1,
-	blast_protection: 1,
-	swift_sneak: 2,
-	feather_falling: 1,
-	soul_speed: 2,
-	depth_strider: 2,
-	frost_walker: 2,
-	fire_aspect: 2,
-	looting: 3,
-	knockback: 2,
-	sweeping: 2,
-	sharpness: 1,
-	smite: 1,
-	bane_of_arthropods: 1,
-	cleaving: 2,
-	power: 1,
-	punch: 2,
-	lure: 2,
-	luck_of_the_sea: 3,
-	impaling: 1,
-	loyalty: 2,
-	riptide: 2,
-	piercing: 1,
-	random: 3,
-}
-
-const ENCHANT_CHANCE: EnchantChanceSettingType = {
-	chance: {
-		normal: {
-			success: [
-				1, 1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.25, 0.2, 0.15, 0.15, 0.1, 0.1, 0.05, 0.05, 0.01,
-				0.001, 0.0001,
-			],
-			fail: [
-				0, 0, 0, 0.05, 0.05, 0.1, 0.1, 0.15, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6,
-				0.65, 0.7,
-			],
-		},
-		plus: {
-			success: [
-				1, 1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.25, 0.2, 0.15, 0.15, 0.1, 0.1, 0.05, 0.05, 0.01,
-				0.001, 0.0001,
-			],
-			fail: [
-				0, 0, 0, 0.05, 0.05, 0.1, 0.1, 0.15, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6,
-				0.65, 0.7,
-			],
-		},
-	},
-	rarityWeight: {
-		mending: 1,
-		silk_touch: 1,
-		unbreaking: 0.8,
-		efficiency: 1,
-		fortune: 0.5,
-		aqua_affinity: 1,
-		respiration: 0.8,
-		thorns: 0.8,
-		protection: 0.8,
-		projectile_protection: 0.9,
-		fire_protection: 0.9,
-		blast_protection: 0.9,
-		swift_sneak: 0.8,
-		feather_falling: 0.8,
-		soul_speed: 0.8,
-		depth_strider: 0.8,
-		frost_walker: 0.7,
-		fire_aspect: 0.7,
-		looting: 0.5,
-		knockback: 0.7,
-		sweeping: 0.8,
-		sharpness: 0.9,
-		smite: 0.9,
-		bane_of_arthropods: 1,
-		cleaving: 0.8,
-		power: 0.9,
-		punch: 0.7,
-		flame: 1,
-		infinity: 1,
-		lure: 0.5,
-		luck_of_the_sea: 0.5,
-		impaling: 0.9,
-		channeling: 1,
-		loyalty: 0.8,
-		riptide: 0.8,
-		quick_charge: 0.8,
-		piercing: 0.8,
-		multishot: 1,
-	},
-}
-
-const RANDOM_ENCHANT_CHANCE: { normal: number; plus: number } = {
-	normal: 0.5,
-	plus: 0.6,
-}
-
-// event settins
-const EVENT_DAYS: Array<number> = [0, 6]
-
-const EVENT_CHANCE_MULTIPLIER: number = 2
-
-// item settings
-const ITEM_SETTINGS: { [index: string]: ItemInfoType } = {
+// EI::special item settings
+const SPECIAL_ITEMS: { [index: string]: ItemInfoType } = {
 	protectScroll: {
 		name: '&7[#55CBCD ★★★ &7] #ECD5E3&l아이템 #FFFFB5&l프로텍트 #ECEAE4&l스크롤',
 		placeholder: 'checkitem_amount_lorecontains:ES-PS001',
@@ -1322,7 +1288,7 @@ function createEnchantmentLore(enchantData: ItemEnchantDataType): string[] {
 		enchantLore.push(
 			JSON.stringify([
 				{
-					text: `${ENCHANT_NAME[enchant]} ${levelStr}`,
+					text: `${VALID_ENCHANTS[enchant].krName} ${levelStr}`,
 					color: enchant.includes('curse') ? 'red' : 'gray',
 					italic: false,
 				},
@@ -1711,7 +1677,7 @@ function checkCustomLore(slot: number): number | boolean {
 // get settings of items
 function getItemInfo(itemCode: string): ItemInfoType {
 	// return info object
-	return ITEM_SETTINGS[itemCode]
+	return SPECIAL_ITEMS[itemCode]
 }
 
 // get amount of specific item in player's inventory
@@ -1837,9 +1803,9 @@ function getNextRepairCost(repairCost: number, enchant: string, isPlus: boolean)
 function getEssenceInfo(slot: number): ItemInfoType | boolean {
 	// get enchant essence settings
 	const enchantEssence: { [index: string]: ItemInfoType } = {
-		enchantEssenceLow: ITEM_SETTINGS['enchantEssenceLow'],
-		enchantEssenceMedium: ITEM_SETTINGS['enchantEssenceMedium'],
-		enchantEssenceHigh: ITEM_SETTINGS['enchantEssenceHigh'],
+		enchantEssenceLow: SPECIAL_ITEMS['enchantEssenceLow'],
+		enchantEssenceMedium: SPECIAL_ITEMS['enchantEssenceMedium'],
+		enchantEssenceHigh: SPECIAL_ITEMS['enchantEssenceHigh'],
 	}
 
 	// check kinds of essence
@@ -2643,7 +2609,7 @@ function applyReducer(args: string[]): DataType {
 	replaceItem(PLAYER_NAME, nbtData, displayData, enchantData)
 
 	// get reducer name
-	const { name } = ITEM_SETTINGS[itemCode]
+	const { name } = SPECIAL_ITEMS[itemCode]
 
 	// set message
 	const message = `&7[&6강화&7] ${name}&f를 사용해 &c&l패널티&f를 &6&l정화&f했습니다. &7(${repairCost} -> ${nbtData.RepairCost})`
