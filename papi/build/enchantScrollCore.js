@@ -24,10 +24,6 @@ var __assign =
 			}
 		return __assign.apply(this, arguments)
 	}
-var PlaceholderAPI = new Object()
-var BukkitServer = new Object()
-var BukkitPlayer = new Object()
-var args = []
 if (!String.prototype.includes) {
 	String.prototype.includes = function (search, start) {
 		if (typeof start !== 'number') start = 0
@@ -1020,6 +1016,36 @@ function mergeLores(lore, enchantData) {
 		lore: enchantLore.concat(customLore),
 		loreStarts: enchantLore.length,
 	}
+}
+function uuidv4() {
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+		var r = (Math.random() * 16) | 0,
+			v = c == 'x' ? r : (r & 0x3) | 0x8
+		return v.toString(16)
+	})
+}
+function toNbtUuid(uuid) {
+	var _a, _b
+	return '[I;'.concat(
+		(_b =
+			(_a = uuid === null || uuid === void 0 ? void 0 : uuid.replace(/-/g, '')) === null ||
+			_a === void 0
+				? void 0
+				: _a.match(/.{8}/g)) === null || _b === void 0
+			? void 0
+			: _b
+					.map(function (str) {
+						return parseInt(str, 16)
+					})
+					.map(function (num) {
+						return num & 0x80000000 ? num - 0xffffffff - 1 : num
+					})
+					.join(','),
+		']'
+	)
+}
+function nbtUuid() {
+	return toNbtUuid(uuidv4())
 }
 function parsePlaceholder(placeholder) {
 	return PlaceholderAPI.static.setPlaceholders(BukkitPlayer, '%'.concat(placeholder, '%'))

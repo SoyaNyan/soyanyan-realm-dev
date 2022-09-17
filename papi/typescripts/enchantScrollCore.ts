@@ -1265,6 +1265,30 @@ function mergeLores(
 	}
 }
 
+// create uuid v4
+function uuidv4(): string {
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c: string) {
+		let r = (Math.random() * 16) | 0,
+			v = c == 'x' ? r : (r & 0x3) | 0x8
+		return v.toString(16)
+	})
+}
+
+// convert uuid to nbtUUID format
+function toNbtUuid(uuid: string): string {
+	return `[I;${uuid
+		?.replace(/-/g, '')
+		?.match(/.{8}/g)
+		?.map((str: string) => parseInt(str, 16))
+		.map((num: number) => (num & 0x80000000 ? num - 0xffffffff - 1 : num))
+		.join(',')}]`
+}
+
+// get nbt uuid string
+function nbtUuid(): string {
+	return toNbtUuid(uuidv4())
+}
+
 /**
   [ Placeholder API utilities ]
 */
