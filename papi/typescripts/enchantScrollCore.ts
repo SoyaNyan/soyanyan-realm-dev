@@ -1,10 +1,10 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.ts
- * Version: v1.4.2
- * Last Update: 2022-09-06
+ * Version: v1.4.3
+ * Last Update: 2022-09-17
  *
- * TypeScript Version: v4.7.4
+ * TypeScript Version: v4.8.2
  * Target: ES5
  * JSX: None
  * Module: ESNext
@@ -31,35 +31,49 @@ declare global {
 	}
 }
 
-// available stored data types
-type DataType = number | string | boolean
+/**
+ * types: command handler
+ */
+type ReturnDataType = number | string | boolean
 
 type CommandObjectType = {
 	argLen: Array<number>
-	callback: (args: string[]) => DataType
+	callback: (args: string[]) => ReturnDataType
 }
 
+/**
+ * types: settings
+ */
 type ValidEnchantType = {
 	suffixes: Array<string>
 	items: Array<string>
 	krName: string
 }
 
-type EnchantChanceSettingType = {
-	chance: EnchantChanceType
+type EnchantChanceType = {
+	chance: {
+		normal: {
+			success: Array<number>
+			fail: Array<number>
+		}
+		plus: {
+			success: Array<number>
+			fail: Array<number>
+		}
+	}
 	rarityWeight: { [index: string]: number }
 }
 
-type EnchantChanceType = {
-	normal: EnchantChanceDetailType
-	plus: EnchantChanceDetailType
-}
+/**
+ * types: utility types
+ */
+type MakeOptional<Type, Key extends keyof Type> = Omit<Type, Key> & Partial<Pick<Type, Key>>
 
-type EnchantChanceDetailType = {
-	success: Array<number>
-	fail: Array<number>
-}
+type MakeRequired<Type, Key extends keyof Type> = Omit<Type, Key> & Required<Pick<Type, Key>>
 
+/**
+ * types: item data
+ */
 type ItemEnchantDataType = {
 	[index: string]: number
 }
@@ -80,37 +94,21 @@ type ItemInfoType = {
 	amount?: number
 }
 
-type StrictItemInfoType = {
-	name: string
-	placeholder: string
-	code: string
-	eiCode: string
-	mat: string
-	amount: number
+type StrictItemInfoType = MakeRequired<ItemInfoType, 'amount'>
+
+type DisplayDataType = {
+	Name: string
+	Lore: Array<string>
 }
 
+/**
+ * types: command utilities
+ */
 type TitleType = {
 	text: string
 	color?: string
 	italic?: boolean
 	bold?: boolean
-}
-
-type NBTStringType = {
-	text: string
-	color?: string
-	italic?: boolean
-	bold?: boolean
-}
-
-type DisplayDataType = {
-	Name: Array<NBTStringType>
-	Lore: Array<Array<NBTStringType>>
-}
-
-type ConvertedDisplayDataType = {
-	Name: string
-	Lore: Array<string>
 }
 
 /**
@@ -458,7 +456,7 @@ const ENCHANT_LIMIT: { [index: string]: Array<number> } = {
 }
 
 // normal enchant chance settings
-const ENCHANT_CHANCE: EnchantChanceSettingType = {
+const ENCHANT_CHANCE: EnchantChanceType = {
 	chance: {
 		normal: {
 			success: [
@@ -1069,7 +1067,7 @@ const TITLE_SETTINGS: {
   [ general utilities ] 
 */
 // stringify data for placeholder return
-function stringify(data: DataType): string {
+function stringify(data: ReturnDataType): string {
 	return `${data}`
 }
 
@@ -1418,7 +1416,7 @@ function broadcastMessage(message: string): boolean {
 function replaceItem(
 	playerName: string,
 	nbtData: ItemIntNBTDataType,
-	displayData: ConvertedDisplayDataType,
+	displayData: DisplayDataType,
 	enchantData?: ItemEnchantDataType
 ): boolean {
 	// get integer nbt data
@@ -2070,7 +2068,7 @@ function sendScrollMessage(scrollName: string, repairCost: number, nextRepairCos
 function applyNormalEnchant(
 	enchantData: ItemEnchantDataType,
 	enchant: string,
-	displayData: ConvertedDisplayDataType,
+	displayData: DisplayDataType,
 	nbtData: ItemIntNBTDataType,
 	isPlus: boolean
 ): string {
@@ -2200,7 +2198,7 @@ function applyNormalEnchant(
 // apply random enchant scroll
 function applyRandomEnchant(
 	enchantData: ItemEnchantDataType,
-	displayData: ConvertedDisplayDataType,
+	displayData: DisplayDataType,
 	nbtData: ItemIntNBTDataType,
 	isPlus: boolean
 ): string {
@@ -2241,10 +2239,7 @@ function applyRandomEnchant(
 	}
 
 	// get result after scroll applied
-	const {
-		enchantData: nextEnchantData,
-		result: { upgraded, downgraded },
-	} = getRandomEnchantResult(enchantData)
+	const { enchantData: nextEnchantData } = getRandomEnchantResult(enchantData)
 	// get item repair cost after scroll applied
 	const nextRepairCost = getNextRepairCost(RepairCost, 'random', isPlus)
 
@@ -2275,7 +2270,7 @@ function applyRandomEnchant(
   [ action handler ] 
 */
 // check target enchant or item is valid
-function checkEnchant(args: string[]): DataType {
+function checkEnchant(args: string[]): ReturnDataType {
 	// get args
 	const [, returnType, enchant] = args
 
@@ -2296,7 +2291,7 @@ function checkEnchant(args: string[]): DataType {
 }
 
 // check target enchant of item is upgradable
-function checkUpgradable(args: string[]): DataType {
+function checkUpgradable(args: string[]): ReturnDataType {
 	// get args
 	const [, returnType, enchant, isPlus] = args
 
@@ -2314,7 +2309,7 @@ function checkUpgradable(args: string[]): DataType {
 }
 
 // check every enchants meets valid enchant settings (for random enchant scroll)
-function checkValidItem(args: string[]): DataType {
+function checkValidItem(args: string[]): ReturnDataType {
 	// get args
 	const [, returnType, isPlus] = args
 
@@ -2345,7 +2340,7 @@ function checkValidItem(args: string[]): DataType {
 }
 
 // check limit of target item's repair cost
-function checkRepairCostLimit(args: string[]): DataType {
+function checkRepairCostLimit(args: string[]): ReturnDataType {
 	// get args
 	const [, returnType, enchant, isPlus] = args
 
@@ -2372,7 +2367,7 @@ function checkRepairCostLimit(args: string[]): DataType {
 }
 
 // get repair cost limit of target item
-function repairCostLimit(args: string[]): DataType {
+function repairCostLimit(args: string[]): ReturnDataType {
 	// get args
 	const [, returnType] = args
 
@@ -2387,7 +2382,7 @@ function repairCostLimit(args: string[]): DataType {
 }
 
 // apply enchant scroll to target item
-function applyEnchant(args: string[]): DataType {
+function applyEnchant(args: string[]): ReturnDataType {
 	// get args
 	const [, returnType, enchant, isPlus] = args
 
@@ -2416,7 +2411,7 @@ function applyEnchant(args: string[]): DataType {
 	}
 
 	// get display data
-	const displayData: ConvertedDisplayDataType = {
+	const displayData: DisplayDataType = {
 		Name: displayName,
 		Lore: lore,
 	}
@@ -2449,7 +2444,7 @@ function applyEnchant(args: string[]): DataType {
 }
 
 // check target item has any enchants
-function hasEnchant(args: string[]): DataType {
+function hasEnchant(args: string[]): ReturnDataType {
 	// get args
 	const [, returnType] = args
 
@@ -2461,7 +2456,7 @@ function hasEnchant(args: string[]): DataType {
 }
 
 // check target item has repair cost or larger than 0
-function hasRepairCost(args: string[]): DataType {
+function hasRepairCost(args: string[]): ReturnDataType {
 	// get args
 	const [, returnType] = args
 
@@ -2473,7 +2468,7 @@ function hasRepairCost(args: string[]): DataType {
 }
 
 // apply cost reducer to target item
-function applyReducer(args: string[]): DataType {
+function applyReducer(args: string[]): ReturnDataType {
 	// get args
 	const [, returnType, reducer] = args
 
@@ -2512,7 +2507,7 @@ function applyReducer(args: string[]): DataType {
 	}
 
 	// get display data
-	const displayData: ConvertedDisplayDataType = {
+	const displayData: DisplayDataType = {
 		Name: getDisplayName(),
 		Lore: getLore(),
 	}
@@ -2540,7 +2535,7 @@ function applyReducer(args: string[]): DataType {
 }
 
 // fix custom lore (hidden enchants)
-function fixLore(): DataType {
+function fixLore(): ReturnDataType {
 	// get args
 	const [, returnType] = args
 
@@ -2557,7 +2552,7 @@ function fixLore(): DataType {
 	}
 
 	// get display data
-	const displayData: ConvertedDisplayDataType = {
+	const displayData: DisplayDataType = {
 		Name: getDisplayName(),
 		Lore: getLore(),
 	}

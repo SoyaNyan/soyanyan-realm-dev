@@ -1,10 +1,10 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.js
- * Version: v1.4.2
- * Last Update: 2022-09-06
+ * Version: v1.4.3
+ * Last Update: 2022-09-17
  *
- * TypeScript Version: v4.7.4
+ * TypeScript Version: v4.8.2
  * Target: ES5
  * JSX: None
  * Module: ESNext
@@ -24,6 +24,10 @@ var __assign =
 			}
 		return __assign.apply(this, arguments)
 	}
+var PlaceholderAPI = new Object()
+var BukkitServer = new Object()
+var BukkitPlayer = new Object()
+var args = []
 if (!String.prototype.includes) {
 	String.prototype.includes = function (search, start) {
 		if (typeof start !== 'number') start = 0
@@ -911,49 +915,6 @@ var TITLE_SETTINGS = {
 		subtitle: { 'text': '아이템이 파괴 되었습니다.', 'color': 'gray', 'bold': true },
 	},
 }
-function exists(path) {
-	return Data.exists(path)
-}
-function get(path) {
-	var result
-	if (path.length > 0) {
-		if (!exists(path)) return false
-		result = Data.get(path)
-	} else {
-		result = Data.getData()
-	}
-	return result
-}
-function set(path, payload) {
-	if (exists(path)) {
-		return update(path, payload)
-	}
-	Data.set(path, payload)
-	save()
-	return true
-}
-function update(path, payload) {
-	if (!exists(path)) {
-		return set(path, payload)
-	}
-	Data.set(path, payload)
-	save()
-	return true
-}
-function remove(path) {
-	if (!exists(path)) return false
-	Data.remove(path)
-	save()
-	return true
-}
-function clear() {
-	Data.clear()
-	save()
-	return true
-}
-function save() {
-	Placeholder.saveData()
-}
 function stringify(data) {
 	return ''.concat(data)
 }
@@ -1079,6 +1040,7 @@ function getVersion() {
 	if (version.includes('1.18')) return 18
 	if (version.includes('1.19')) return 19
 	if (version.includes('1.19.1')) return 19.1
+	if (version.includes('1.19.2')) return 19.2
 	return -1
 }
 function checkPlus16() {
@@ -1577,17 +1539,13 @@ function applyRandomEnchant(enchantData, displayData, nbtData, isPlus) {
 		replaceItem(PLAYER_NAME, failNBTData, displayData, enchantData)
 		return 'fail'
 	}
-	var _b = getRandomEnchantResult(enchantData),
-		nextEnchantData = _b.enchantData,
-		_c = _b.result,
-		upgraded = _c.upgraded,
-		downgraded = _c.downgraded
+	var nextEnchantData = getRandomEnchantResult(enchantData).enchantData
 	var nextRepairCost = getNextRepairCost(RepairCost, 'random', isPlus)
 	sendScrollMessage(name, RepairCost, nextRepairCost)
 	playSound('block.anvil.use', PLAYER_NAME)
-	var _d = TITLE_SETTINGS.successRandom,
-		title = _d.title,
-		subtitle = _d.subtitle
+	var _b = TITLE_SETTINGS.successRandom,
+		title = _b.title,
+		subtitle = _b.subtitle
 	playTitle(title, subtitle, PLAYER_NAME)
 	broadcastRandomSuccess(PLAYER_NAME)
 	replaceItem(
