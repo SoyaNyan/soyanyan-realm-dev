@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.ts
- * Version: v1.4.3
- * Last Update: 2022-09-17
+ * Version: v1.4.4
+ * Last Update: 2022-09-25
  *
  * TypeScript Version: v4.8.2
  * Target: ES5
@@ -13,7 +13,9 @@
 /**
   [ global objects ] 
 */
+const Data: any = new Object()
 const PlaceholderAPI: any = new Object()
+const Placeholder: any = new Object()
 const BukkitServer: any = new Object()
 const BukkitPlayer: any = new Object()
 const args: string[] = []
@@ -331,6 +333,51 @@ const VALID_ENCHANTS: { [index: string]: ValidEnchantType } = {
 		items: ['CROSSBOW'],
 		krName: '관통',
 	},
+	mending: {
+		suffixes: [],
+		items: [],
+		krName: '수선',
+	},
+	silk_touch: {
+		suffixes: [],
+		items: [],
+		krName: '섬세한 손길',
+	},
+	aqua_affinity: {
+		suffixes: [],
+		items: [],
+		krName: '친수성',
+	},
+	flame: {
+		suffixes: [],
+		items: [],
+		krName: '화염',
+	},
+	infinity: {
+		suffixes: [],
+		items: [],
+		krName: '무한',
+	},
+	channeling: {
+		suffixes: [],
+		items: [],
+		krName: '집전',
+	},
+	multishot: {
+		suffixes: [],
+		items: [],
+		krName: '다중 발사',
+	},
+	binding_curse: {
+		suffixes: [],
+		items: [],
+		krName: '귀속 저주',
+	},
+	vanishing_curse: {
+		suffixes: [],
+		items: [],
+		krName: '소실 저주',
+	},
 }
 
 // banned enchant list
@@ -419,38 +466,38 @@ const ENCHANT_LIMIT: { [index: string]: Array<number> } = {
 	silk_touch: [1, 1],
 	unbreaking: [3, 20],
 	efficiency: [5, 20],
-	fortune: [3, 20],
+	fortune: [3, 12],
 	aqua_affinity: [1, 1],
-	respiration: [3, 20],
-	thorns: [3, 20],
-	protection: [4, 20],
-	projectile_protection: [4, 20],
-	fire_protection: [4, 20],
-	blast_protection: [4, 20],
-	swift_sneak: [3, 20],
-	feather_falling: [4, 20],
-	soul_speed: [3, 20],
-	depth_strider: [3, 20],
-	frost_walker: [2, 20],
-	fire_aspect: [2, 20],
-	looting: [3, 20],
-	knockback: [2, 20],
-	sweeping: [3, 20],
+	respiration: [3, 10],
+	thorns: [3, 15],
+	protection: [4, 15],
+	projectile_protection: [4, 15],
+	fire_protection: [4, 15],
+	blast_protection: [4, 15],
+	swift_sneak: [3, 10],
+	feather_falling: [4, 10],
+	soul_speed: [3, 10],
+	depth_strider: [3, 10],
+	frost_walker: [2, 7],
+	fire_aspect: [2, 5],
+	looting: [3, 12],
+	knockback: [2, 10],
+	sweeping: [3, 10],
 	sharpness: [5, 20],
 	smite: [5, 20],
 	bane_of_arthropods: [5, 20],
-	cleaving: [3, 20],
+	cleaving: [3, 10],
 	power: [5, 20],
-	punch: [2, 20],
+	punch: [2, 10],
 	flame: [1, 1],
 	infinity: [1, 1],
-	lure: [3, 20],
-	luck_of_the_sea: [3, 20],
+	lure: [3, 12],
+	luck_of_the_sea: [3, 12],
 	impaling: [5, 20],
 	channeling: [1, 1],
-	loyalty: [3, 20],
-	riptide: [3, 20],
-	quick_charge: [3, 20],
+	loyalty: [3, 10],
+	riptide: [3, 10],
+	quick_charge: [3, 10],
 	piercing: [4, 20],
 	multishot: [1, 1],
 }
@@ -460,63 +507,63 @@ const ENCHANT_CHANCE: EnchantChanceType = {
 	chance: {
 		normal: {
 			success: [
-				1, 1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.25, 0.2, 0.15, 0.15, 0.1, 0.1, 0.05, 0.05, 0.01,
-				0.001, 0.0001,
+				1, 1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.25, 0.2, 0.15, 0.15, 0.1, 0.05, 0.01, 0.005,
+				0.001, 0.0005, 0.0001,
 			],
 			fail: [
-				0, 0, 0, 0.05, 0.05, 0.1, 0.1, 0.15, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6,
-				0.65, 0.7,
+				0, 0, 0, 0.05, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 1,
+				1,
 			],
 		},
 		plus: {
 			success: [
-				1, 1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.25, 0.2, 0.15, 0.15, 0.1, 0.1, 0.05, 0.05, 0.01,
-				0.001, 0.0001,
+				1, 1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.25, 0.2, 0.15, 0.15, 0.1, 0.05, 0.01, 0.005,
+				0.001, 0.0005, 0.0001,
 			],
 			fail: [
-				0, 0, 0, 0.05, 0.05, 0.1, 0.1, 0.15, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6,
-				0.65, 0.7,
+				0, 0, 0, 0.05, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 1,
+				1,
 			],
 		},
 	},
 	rarityWeight: {
 		mending: 1,
 		silk_touch: 1,
-		unbreaking: 0.8,
-		efficiency: 1,
-		fortune: 0.5,
+		unbreaking: 0.7,
+		efficiency: 0.5,
+		fortune: 0.3,
 		aqua_affinity: 1,
 		respiration: 0.8,
 		thorns: 0.8,
-		protection: 0.8,
-		projectile_protection: 0.9,
-		fire_protection: 0.9,
-		blast_protection: 0.9,
-		swift_sneak: 0.8,
-		feather_falling: 0.8,
-		soul_speed: 0.8,
-		depth_strider: 0.8,
+		protection: 0.5,
+		projectile_protection: 0.7,
+		fire_protection: 0.7,
+		blast_protection: 0.7,
+		swift_sneak: 0.6,
+		feather_falling: 0.5,
+		soul_speed: 0.6,
+		depth_strider: 0.6,
 		frost_walker: 0.7,
 		fire_aspect: 0.7,
-		looting: 0.5,
+		looting: 0.3,
 		knockback: 0.7,
-		sweeping: 0.8,
-		sharpness: 0.9,
-		smite: 0.9,
-		bane_of_arthropods: 1,
-		cleaving: 0.8,
-		power: 0.9,
+		sweeping: 0.6,
+		sharpness: 0.5,
+		smite: 0.5,
+		bane_of_arthropods: 0.6,
+		cleaving: 0.6,
+		power: 0.5,
 		punch: 0.7,
 		flame: 1,
 		infinity: 1,
-		lure: 0.5,
-		luck_of_the_sea: 0.5,
-		impaling: 0.9,
+		lure: 0.3,
+		luck_of_the_sea: 0.3,
+		impaling: 0.6,
 		channeling: 1,
-		loyalty: 0.8,
-		riptide: 0.8,
-		quick_charge: 0.8,
-		piercing: 0.8,
+		loyalty: 0.7,
+		riptide: 0.6,
+		quick_charge: 0.6,
+		piercing: 0.5,
 		multishot: 1,
 	},
 }
@@ -528,8 +575,8 @@ const RANDOM_ENCHANT_CHANCE: { normal: number; plus: number } = {
 }
 
 // event settings
-const EVENT_DAYS: Array<number> = [0, 6]
-const EVENT_CHANCE_MULTIPLIER: number = 2
+const EVENT_DAYS: Array<number> = [0]
+const EVENT_CHANCE_MULTIPLIER: number = 1.5
 
 // item repair cost limit(enchant panalty) settings
 const REPAIR_COST_LIMIT: {
@@ -550,7 +597,7 @@ const REPAIR_COST_LIMIT: {
 	},
 	// basic tools, weapons, armors
 	base: {
-		SWORD: 65,
+		SWORD: 70,
 		PICKAXE: 65,
 		AXE: 65,
 		SHOVEL: 55,
@@ -574,39 +621,39 @@ const REPAIR_COST_LIMIT: {
 	},
 }
 
-// enchant panalty settings
+// enchant panalty settings (class 1 to 5)
 const ENCHANT_PANALTY: { [index: string]: number } = {
 	unbreaking: 2,
-	efficiency: 1,
-	fortune: 3,
+	efficiency: 3,
+	fortune: 4,
 	respiration: 2,
 	thorns: 2,
-	protection: 1,
-	projectile_protection: 1,
-	fire_protection: 1,
-	blast_protection: 1,
-	swift_sneak: 2,
-	feather_falling: 1,
+	protection: 3,
+	projectile_protection: 3,
+	fire_protection: 3,
+	blast_protection: 3,
+	swift_sneak: 3,
+	feather_falling: 3,
 	soul_speed: 2,
 	depth_strider: 2,
 	frost_walker: 2,
-	fire_aspect: 2,
-	looting: 3,
-	knockback: 2,
+	fire_aspect: 1,
+	looting: 4,
+	knockback: 1,
 	sweeping: 2,
-	sharpness: 1,
-	smite: 1,
-	bane_of_arthropods: 1,
-	cleaving: 2,
-	power: 1,
-	punch: 2,
+	sharpness: 3,
+	smite: 3,
+	bane_of_arthropods: 2,
+	cleaving: 3,
+	power: 3,
+	punch: 1,
 	lure: 2,
 	luck_of_the_sea: 3,
-	impaling: 1,
+	impaling: 3,
 	loyalty: 2,
 	riptide: 2,
-	piercing: 1,
-	random: 3,
+	piercing: 3,
+	random: 5,
 }
 
 // EI::enchant scroll item settings
@@ -1061,6 +1108,90 @@ const TITLE_SETTINGS: {
 		],
 		subtitle: { 'text': '아이템이 파괴 되었습니다.', 'color': 'gray', 'bold': true },
 	},
+}
+
+/**
+  [ data utilities ] 
+*/
+// check if data(key) exists in global store
+function exists(path: string): boolean {
+	// returns true if a key exists; else false. (Placeholder API)
+	return Data.exists(path)
+}
+
+// get data from global store
+function get(path: string): ReturnDataType {
+	let result: ReturnDataType
+
+	// check data exists
+	if (path.length > 0) {
+		// check data exists
+		if (!exists(path)) return false
+
+		// returns the value stored under key. (Placeholder API)
+		// type of data value => number | string | boolean
+		result = Data.get(path)
+	} else {
+		// returns a Map<String, Object> of the entire placeholder script's data. (Placeholder API)
+		result = Data.getData()
+	}
+
+	return result
+}
+
+// set data in global store
+function set(path: string, payload: ReturnDataType): boolean {
+	// check data exists
+	if (exists(path)) {
+		return update(path, payload)
+	}
+
+	// stores a value under key. (Placeholder API)
+	Data.set(path, payload)
+	save()
+
+	return true
+}
+
+// update data in global store
+function update(path: string, payload: ReturnDataType): boolean {
+	// check data exists
+	if (!exists(path)) {
+		return set(path, payload)
+	}
+
+	// stores a value under key. (Placeholder API)
+	Data.set(path, payload)
+	save()
+
+	return true
+}
+
+// remove data from global store
+function remove(path: string): boolean {
+	// check data exists
+	if (!exists(path)) return false
+
+	// removes a key from the data. (Placeholder API)
+	Data.remove(path)
+	save()
+
+	return true
+}
+
+// remove all data from global store
+function clear(): boolean {
+	// removes all data. (Placeholder API)
+	Data.clear()
+	save()
+
+	return true
+}
+
+// saves current state
+function save(): void {
+	// saves the current data state to the data file. (Placeholder API)
+	Placeholder.saveData()
 }
 
 /**
@@ -2147,8 +2278,10 @@ function applyNormalEnchant(
 		// show title & subtitle
 		playTitle(title, subtitle, PLAYER_NAME)
 
-		// broadcast success message
-		broadcastSuccess(PLAYER_NAME, enchant, nextEnchantData[enchant])
+		// broadcast success message (+15 ~)
+		if (nextEnchantData[enchant] >= 15) {
+			broadcastSuccess(PLAYER_NAME, enchant, nextEnchantData[enchant])
+		}
 
 		// replace target item
 		replaceItem(PLAYER_NAME, { Damage, RepairCost: nextRepairCost }, displayData, nextEnchantData)
@@ -2182,8 +2315,10 @@ function applyNormalEnchant(
 			? sendScrollMessage(name, RepairCost, 5)
 			: sendScrollMessage(name, RepairCost, nextRepairCost)
 
-		// broadcast fail message
-		broadcastFail(PLAYER_NAME, enchant, nextLevel)
+		// broadcast fail message (+15 ~)
+		if (nextLevel >= 15) {
+			broadcastFail(PLAYER_NAME, enchant, nextLevel)
+		}
 
 		// replace target item
 		isPlus
@@ -2209,8 +2344,10 @@ function applyNormalEnchant(
 	// show title & subtitle
 	playTitle(title, subtitle, PLAYER_NAME)
 
-	// broadcast fail message
-	broadcastFail(PLAYER_NAME, enchant, nextLevel)
+	// broadcast fail message  (+15 ~)
+	if (nextLevel >= 15) {
+		broadcastFail(PLAYER_NAME, enchant, nextLevel)
+	}
 
 	// replace target item
 	replaceItem(PLAYER_NAME, failNBTData, displayData, nextEnchantData)

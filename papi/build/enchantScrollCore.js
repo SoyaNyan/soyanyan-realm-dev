@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.js
- * Version: v1.4.3
- * Last Update: 2022-09-17
+ * Version: v1.4.4
+ * Last Update: 2022-09-25
  *
  * TypeScript Version: v4.8.2
  * Target: ES5
@@ -224,6 +224,51 @@ var VALID_ENCHANTS = {
 		items: ['CROSSBOW'],
 		krName: '관통',
 	},
+	mending: {
+		suffixes: [],
+		items: [],
+		krName: '수선',
+	},
+	silk_touch: {
+		suffixes: [],
+		items: [],
+		krName: '섬세한 손길',
+	},
+	aqua_affinity: {
+		suffixes: [],
+		items: [],
+		krName: '친수성',
+	},
+	flame: {
+		suffixes: [],
+		items: [],
+		krName: '화염',
+	},
+	infinity: {
+		suffixes: [],
+		items: [],
+		krName: '무한',
+	},
+	channeling: {
+		suffixes: [],
+		items: [],
+		krName: '집전',
+	},
+	multishot: {
+		suffixes: [],
+		items: [],
+		krName: '다중 발사',
+	},
+	binding_curse: {
+		suffixes: [],
+		items: [],
+		krName: '귀속 저주',
+	},
+	vanishing_curse: {
+		suffixes: [],
+		items: [],
+		krName: '소실 저주',
+	},
 }
 var ENCHANT_BLAKLIST = [
 	'mending',
@@ -298,38 +343,38 @@ var ENCHANT_LIMIT = {
 	silk_touch: [1, 1],
 	unbreaking: [3, 20],
 	efficiency: [5, 20],
-	fortune: [3, 20],
+	fortune: [3, 12],
 	aqua_affinity: [1, 1],
-	respiration: [3, 20],
-	thorns: [3, 20],
-	protection: [4, 20],
-	projectile_protection: [4, 20],
-	fire_protection: [4, 20],
-	blast_protection: [4, 20],
-	swift_sneak: [3, 20],
-	feather_falling: [4, 20],
-	soul_speed: [3, 20],
-	depth_strider: [3, 20],
-	frost_walker: [2, 20],
-	fire_aspect: [2, 20],
-	looting: [3, 20],
-	knockback: [2, 20],
-	sweeping: [3, 20],
+	respiration: [3, 10],
+	thorns: [3, 15],
+	protection: [4, 15],
+	projectile_protection: [4, 15],
+	fire_protection: [4, 15],
+	blast_protection: [4, 15],
+	swift_sneak: [3, 10],
+	feather_falling: [4, 10],
+	soul_speed: [3, 10],
+	depth_strider: [3, 10],
+	frost_walker: [2, 7],
+	fire_aspect: [2, 5],
+	looting: [3, 12],
+	knockback: [2, 10],
+	sweeping: [3, 10],
 	sharpness: [5, 20],
 	smite: [5, 20],
 	bane_of_arthropods: [5, 20],
-	cleaving: [3, 20],
+	cleaving: [3, 10],
 	power: [5, 20],
-	punch: [2, 20],
+	punch: [2, 10],
 	flame: [1, 1],
 	infinity: [1, 1],
-	lure: [3, 20],
-	luck_of_the_sea: [3, 20],
+	lure: [3, 12],
+	luck_of_the_sea: [3, 12],
 	impaling: [5, 20],
 	channeling: [1, 1],
-	loyalty: [3, 20],
-	riptide: [3, 20],
-	quick_charge: [3, 20],
+	loyalty: [3, 10],
+	riptide: [3, 10],
+	quick_charge: [3, 10],
 	piercing: [4, 20],
 	multishot: [1, 1],
 }
@@ -337,63 +382,63 @@ var ENCHANT_CHANCE = {
 	chance: {
 		normal: {
 			success: [
-				1, 1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.25, 0.2, 0.15, 0.15, 0.1, 0.1, 0.05, 0.05, 0.01,
-				0.001, 0.0001,
+				1, 1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.25, 0.2, 0.15, 0.15, 0.1, 0.05, 0.01, 0.005,
+				0.001, 0.0005, 0.0001,
 			],
 			fail: [
-				0, 0, 0, 0.05, 0.05, 0.1, 0.1, 0.15, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6,
-				0.65, 0.7,
+				0, 0, 0, 0.05, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 1,
+				1,
 			],
 		},
 		plus: {
 			success: [
-				1, 1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.25, 0.2, 0.15, 0.15, 0.1, 0.1, 0.05, 0.05, 0.01,
-				0.001, 0.0001,
+				1, 1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.25, 0.2, 0.15, 0.15, 0.1, 0.05, 0.01, 0.005,
+				0.001, 0.0005, 0.0001,
 			],
 			fail: [
-				0, 0, 0, 0.05, 0.05, 0.1, 0.1, 0.15, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6,
-				0.65, 0.7,
+				0, 0, 0, 0.05, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 1,
+				1,
 			],
 		},
 	},
 	rarityWeight: {
 		mending: 1,
 		silk_touch: 1,
-		unbreaking: 0.8,
-		efficiency: 1,
-		fortune: 0.5,
+		unbreaking: 0.7,
+		efficiency: 0.5,
+		fortune: 0.3,
 		aqua_affinity: 1,
 		respiration: 0.8,
 		thorns: 0.8,
-		protection: 0.8,
-		projectile_protection: 0.9,
-		fire_protection: 0.9,
-		blast_protection: 0.9,
-		swift_sneak: 0.8,
-		feather_falling: 0.8,
-		soul_speed: 0.8,
-		depth_strider: 0.8,
+		protection: 0.5,
+		projectile_protection: 0.7,
+		fire_protection: 0.7,
+		blast_protection: 0.7,
+		swift_sneak: 0.6,
+		feather_falling: 0.5,
+		soul_speed: 0.6,
+		depth_strider: 0.6,
 		frost_walker: 0.7,
 		fire_aspect: 0.7,
-		looting: 0.5,
+		looting: 0.3,
 		knockback: 0.7,
-		sweeping: 0.8,
-		sharpness: 0.9,
-		smite: 0.9,
-		bane_of_arthropods: 1,
-		cleaving: 0.8,
-		power: 0.9,
+		sweeping: 0.6,
+		sharpness: 0.5,
+		smite: 0.5,
+		bane_of_arthropods: 0.6,
+		cleaving: 0.6,
+		power: 0.5,
 		punch: 0.7,
 		flame: 1,
 		infinity: 1,
-		lure: 0.5,
-		luck_of_the_sea: 0.5,
-		impaling: 0.9,
+		lure: 0.3,
+		luck_of_the_sea: 0.3,
+		impaling: 0.6,
 		channeling: 1,
-		loyalty: 0.8,
-		riptide: 0.8,
-		quick_charge: 0.8,
-		piercing: 0.8,
+		loyalty: 0.7,
+		riptide: 0.6,
+		quick_charge: 0.6,
+		piercing: 0.5,
 		multishot: 1,
 	},
 }
@@ -401,8 +446,8 @@ var RANDOM_ENCHANT_CHANCE = {
 	normal: 0.5,
 	plus: 0.6,
 }
-var EVENT_DAYS = [0, 6]
-var EVENT_CHANCE_MULTIPLIER = 2
+var EVENT_DAYS = [0]
+var EVENT_CHANCE_MULTIPLIER = 1.5
 var REPAIR_COST_LIMIT = {
 	material: {
 		NETHERITE: 10,
@@ -415,7 +460,7 @@ var REPAIR_COST_LIMIT = {
 		TURTLE: 5,
 	},
 	base: {
-		SWORD: 65,
+		SWORD: 70,
 		PICKAXE: 65,
 		AXE: 65,
 		SHOVEL: 55,
@@ -439,36 +484,36 @@ var REPAIR_COST_LIMIT = {
 }
 var ENCHANT_PANALTY = {
 	unbreaking: 2,
-	efficiency: 1,
-	fortune: 3,
+	efficiency: 3,
+	fortune: 4,
 	respiration: 2,
 	thorns: 2,
-	protection: 1,
-	projectile_protection: 1,
-	fire_protection: 1,
-	blast_protection: 1,
-	swift_sneak: 2,
-	feather_falling: 1,
+	protection: 3,
+	projectile_protection: 3,
+	fire_protection: 3,
+	blast_protection: 3,
+	swift_sneak: 3,
+	feather_falling: 3,
 	soul_speed: 2,
 	depth_strider: 2,
 	frost_walker: 2,
-	fire_aspect: 2,
-	looting: 3,
-	knockback: 2,
+	fire_aspect: 1,
+	looting: 4,
+	knockback: 1,
 	sweeping: 2,
-	sharpness: 1,
-	smite: 1,
-	bane_of_arthropods: 1,
-	cleaving: 2,
-	power: 1,
-	punch: 2,
+	sharpness: 3,
+	smite: 3,
+	bane_of_arthropods: 2,
+	cleaving: 3,
+	power: 3,
+	punch: 1,
 	lure: 2,
 	luck_of_the_sea: 3,
-	impaling: 1,
+	impaling: 3,
 	loyalty: 2,
 	riptide: 2,
-	piercing: 1,
-	random: 3,
+	piercing: 3,
+	random: 5,
 }
 var ENCHANT_SCROLLS = {
 	unbreaking: {
@@ -910,6 +955,49 @@ var TITLE_SETTINGS = {
 		],
 		subtitle: { 'text': '아이템이 파괴 되었습니다.', 'color': 'gray', 'bold': true },
 	},
+}
+function exists(path) {
+	return Data.exists(path)
+}
+function get(path) {
+	var result
+	if (path.length > 0) {
+		if (!exists(path)) return false
+		result = Data.get(path)
+	} else {
+		result = Data.getData()
+	}
+	return result
+}
+function set(path, payload) {
+	if (exists(path)) {
+		return update(path, payload)
+	}
+	Data.set(path, payload)
+	save()
+	return true
+}
+function update(path, payload) {
+	if (!exists(path)) {
+		return set(path, payload)
+	}
+	Data.set(path, payload)
+	save()
+	return true
+}
+function remove(path) {
+	if (!exists(path)) return false
+	Data.remove(path)
+	save()
+	return true
+}
+function clear() {
+	Data.clear()
+	save()
+	return true
+}
+function save() {
+	Placeholder.saveData()
 }
 function stringify(data) {
 	return ''.concat(data)
@@ -1511,7 +1599,9 @@ function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) 
 		var nextRepairCost_1 = getNextRepairCost(RepairCost, enchant, isPlus)
 		sendScrollMessage(name, RepairCost, nextRepairCost_1)
 		playTitle(title_1, subtitle_1, PLAYER_NAME)
-		broadcastSuccess(PLAYER_NAME, enchant, nextEnchantData[enchant])
+		if (nextEnchantData[enchant] >= 15) {
+			broadcastSuccess(PLAYER_NAME, enchant, nextEnchantData[enchant])
+		}
 		replaceItem(
 			PLAYER_NAME,
 			{ Damage: Damage, RepairCost: nextRepairCost_1 },
@@ -1532,7 +1622,9 @@ function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) 
 		isPlus
 			? sendScrollMessage(name, RepairCost, 5)
 			: sendScrollMessage(name, RepairCost, nextRepairCost)
-		broadcastFail(PLAYER_NAME, enchant, nextLevel)
+		if (nextLevel >= 15) {
+			broadcastFail(PLAYER_NAME, enchant, nextLevel)
+		}
 		isPlus
 			? destroyItem(PLAYER_NAME)
 			: replaceItem(PLAYER_NAME, failNBTData, displayData, nextEnchantData)
@@ -1544,7 +1636,9 @@ function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) 
 		subtitle = _e.subtitle
 	sendScrollMessage(name, RepairCost, nextRepairCost)
 	playTitle(title, subtitle, PLAYER_NAME)
-	broadcastFail(PLAYER_NAME, enchant, nextLevel)
+	if (nextLevel >= 15) {
+		broadcastFail(PLAYER_NAME, enchant, nextLevel)
+	}
 	replaceItem(PLAYER_NAME, failNBTData, displayData, nextEnchantData)
 	return 'fail'
 }
