@@ -1,19 +1,19 @@
 name: '&7[#55CBCD ★★ &7] #55CBCD&l선명한 #FFFFB5&l정화의 #ECEAE4&l가루'
 lore:
-  - '&7'
-  - '&7아이템 종류: &6&l특수 &e&l아이템 &7(ES-CR001)'
-  - '&7아이템 적용대상: &d모든 아이템'
-  - '&d인챈트가 적용된 아이템 한정.'
-  - '&7---------------------'
-  - '&e&l좌클릭&7으로 사용하면 &f&n&l왼손&7에 든'
-  - '&7아이템의 &9&l패널티 &7수치를 &a5&7만큼'
-  - '&7&c&l차감&7시킬 수 있다.'
-  - '&7---------------------'
-  - '&c&l<사용조건>'
-  - '&7'
-  - '&7사용가능 횟수: &b1&f&l회'
-  - '&7재사용 대기시간: &e5&f초'
-  - '&7사용방법: 공중에 좌클릭'
+- '&7'
+- '&7아이템 종류: &6&l특수 &e&l아이템 &7(ES-CR001)'
+- '&7아이템 적용대상: &d모든 아이템'
+- '&d인챈트가 적용된 아이템 한정.'
+- '&7---------------------'
+- '&e&l좌클릭&7으로 사용하면 &f&n&l왼손&7에 든'
+- '&7아이템의 &9&l패널티 &7수치를 &a5&7만큼'
+- '&7&c&l차감&7시킬 수 있다.'
+- '&7---------------------'
+- '&c&l<사용조건>'
+- '&7'
+- '&7사용가능 횟수: &b1&f&l회'
+- '&7재사용 대기시간: &e5&f초'
+- '&7사용방법: 공중에 좌클릭'
 material: SUGAR
 glow: true
 disableStack: false
@@ -91,9 +91,9 @@ activators:
     requiredExecutableItems:
       errorMessage: ''
     detailedSlots:
-      - -1
+    - -1
     commands:
-      - 'NOTHING*%javascript_enchant_scroll_applyReducer,0,medium%'
+    - NOTHING*%javascript_enchant_scroll_applyReducer,0,medium%
     playerConditions: {}
     worldConditions: {}
     itemConditions: {}
