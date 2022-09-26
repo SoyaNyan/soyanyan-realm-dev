@@ -1,10 +1,10 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollRecipeCore.js
- * Version: v1.0.0
- * Last Update: 2022-09-05
+ * Version: v1.1.0
+ * Last Update: 2022-09-26
  *
- * TypeScript Version: v4.7.4
+ * TypeScript Version: v4.8.4
  * Target: ES5
  * JSX: None
  * Module: ESNext

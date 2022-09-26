@@ -1,10 +1,10 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollRecipeCore.ts
- * Version: v1.0.0
- * Last Update: 2022-09-05
+ * Version: v1.1.0
+ * Last Update: 2022-09-26
  *
- * TypeScript Version: v4.7.4
+ * TypeScript Version: v4.8.4
  * Target: ES5
  * JSX: None
  * Module: ESNext
@@ -34,12 +34,12 @@ declare global {
 }
 
 // available stored data types
-type DataType = number | string | boolean
+type ReturnDataType = number | string | boolean
 
 // for main command controller
 type CommandObjectType = {
 	argLen: Array<number>
-	callback: (args: string[]) => DataType
+	callback: (args: string[]) => ReturnDataType
 }
 
 // for title & subtitle command
@@ -509,7 +509,7 @@ const TITLE_SETTINGS: {
   [ general utilities ] 
 */
 // stringify data for placeholder return
-function stringify(data: DataType): string {
+function stringify(data: ReturnDataType): string {
 	return `${data}`
 }
 
@@ -771,7 +771,7 @@ function getScrollPlusChance(isPlus: boolean): boolean {
   [ action handler ] 
 */
 // make enchant scroll with specific recipe
-function makeScroll(): DataType {
+function makeScroll(): ReturnDataType {
 	// get args
 	const [, returnType, recipeType, isPlus] = args
 

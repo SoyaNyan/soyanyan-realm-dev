@@ -1353,7 +1353,8 @@ function isEventDay() {
 	var day = today.getDay()
 	return EVENT_DAYS.includes(day)
 }
-function getEventMultiplier() {
+function getEventMultiplier(level) {
+	if (level >= 11) return 1
 	if (isEventDay()) return EVENT_CHANCE_MULTIPLIER
 	return 1
 }
@@ -1439,7 +1440,7 @@ function getSuccessChance(enchant, level, isPlus) {
 	var nextLevel = isPlus ? level + 1 : level
 	var boosted = enchant !== 'random' ? getBoostedChance() : 0
 	var successChance =
-		10000 * (success[nextLevel] * getEventMultiplier() + boosted) * rarityWeight[enchant]
+		10000 * (success[nextLevel] * getEventMultiplier(level) + boosted) * rarityWeight[enchant]
 	return successChance
 }
 function getFailChance(enchant, level, isPlus) {
@@ -1751,11 +1752,11 @@ function applyEnchant(args) {
 		Lore: lore,
 	}
 	if (isEventDay()) {
-		var multiplier = getEventMultiplier()
+		var multiplier = getEventMultiplier(0)
 		var message =
 			'&7[&6\uAC15\uD654&7] &c&l\uD56B\uD0C0\uC784 &e&l\uC774\uBCA4\uD2B8&f\uB85C &9&l\uAC15\uD654\uD655\uB960&f\uC774 &6&l'.concat(
 				multiplier,
-				'&7\uBC30 &f\uC99D\uAC00\uD588\uC2B5\uB2C8\uB2E4.'
+				'&7\uBC30 &f\uC99D\uAC00\uD588\uC2B5\uB2C8\uB2E4. (+11\uBD80\uD130\uB294 \uC801\uC6A9\uB418\uC9C0 \uC54A\uC74C)'
 			)
 		sendMessage(consoleColorString(message))
 	}

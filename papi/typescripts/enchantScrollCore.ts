@@ -1806,7 +1806,10 @@ function isEventDay(): boolean {
 }
 
 // get event chance multiplier if today is event day
-function getEventMultiplier(): number {
+function getEventMultiplier(level: number): number {
+	// if over +10, no event multiplier
+	if (level >= 11) return 1
+
 	// check today is event day
 	if (isEventDay()) return EVENT_CHANCE_MULTIPLIER
 	return 1
@@ -1980,7 +1983,7 @@ function getSuccessChance(enchant: string, level: number, isPlus: boolean): numb
 
 	// calc success chance
 	const successChance =
-		10000 * (success[nextLevel] * getEventMultiplier() + boosted) * rarityWeight[enchant]
+		10000 * (success[nextLevel] * getEventMultiplier(level) + boosted) * rarityWeight[enchant]
 
 	// return success chance
 	return successChance
@@ -2580,10 +2583,10 @@ function applyEnchant(args: string[]): ReturnDataType {
 	// check event
 	if (isEventDay()) {
 		// get event multiplier
-		const multiplier = getEventMultiplier()
+		const multiplier = getEventMultiplier(0)
 
 		// set message
-		const message = `&7[&6강화&7] &c&l핫타임 &e&l이벤트&f로 &9&l강화확률&f이 &6&l${multiplier}&7배 &f증가했습니다.`
+		const message = `&7[&6강화&7] &c&l핫타임 &e&l이벤트&f로 &9&l강화확률&f이 &6&l${multiplier}&7배 &f증가했습니다. (+11부터는 적용되지 않음)`
 
 		// send message
 		sendMessage(consoleColorString(message))
