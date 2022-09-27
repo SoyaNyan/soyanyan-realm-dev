@@ -612,6 +612,7 @@ function getVersion(): number {
 	if (version.includes('1.18')) return 18
 	if (version.includes('1.19')) return 19
 	if (version.includes('1.19.1')) return 19.1
+	if (version.includes('1.19.2')) return 19.2
 
 	// unknown(unsupported) version
 	return -1
@@ -771,7 +772,7 @@ function getScrollPlusChance(isPlus: boolean): boolean {
   [ action handler ] 
 */
 // make enchant scroll with specific recipe
-function makeScroll(): ReturnDataType {
+function makeScroll(args: string[]): ReturnDataType {
 	// get args
 	const [, returnType, recipeType, isPlus] = args
 

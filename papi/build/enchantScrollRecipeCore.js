@@ -484,6 +484,7 @@ function getVersion() {
 	if (version.includes('1.18')) return 18
 	if (version.includes('1.19')) return 19
 	if (version.includes('1.19.1')) return 19.1
+	if (version.includes('1.19.2')) return 19.2
 	return -1
 }
 function checkPlus16() {
@@ -558,7 +559,7 @@ function getScrollPlusChance(isPlus) {
 	var rand = Math.floor(Math.random() * 100)
 	return rand < plusChance
 }
-function makeScroll() {
+function makeScroll(args) {
 	var returnType = args[1],
 		recipeType = args[2],
 		isPlus = args[3]

@@ -93,7 +93,7 @@ activators:
     detailedSlots:
       - -1
     commands:
-      - 'RANDOM RUN: javascript_enchant_scroll_applyReducer,0,medium%'
+      - 'RANDOM RUN: %javascript_enchant_scroll_applyReducer,0,medium%'
       - NOTHING*1
       - RANDOM END
     playerConditions: {}
