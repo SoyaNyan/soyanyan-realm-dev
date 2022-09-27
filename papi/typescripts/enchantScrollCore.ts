@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.ts
- * Version: v1.4.4
- * Last Update: 2022-09-25
+ * Version: v1.4.6
+ * Last Update: 2022-09-27
  *
  * TypeScript Version: v4.8.2
  * Target: ES5
@@ -575,8 +575,8 @@ const RANDOM_ENCHANT_CHANCE: { normal: number; plus: number } = {
 }
 
 // event settings
-const EVENT_DAYS: Array<number> = [0]
-const EVENT_CHANCE_MULTIPLIER: number = 1.5
+const EVENT_DAYS: Array<number> = [0, 6]
+const EVENT_CHANCE_MULTIPLIER: number = 2
 
 // item repair cost limit(enchant panalty) settings
 const REPAIR_COST_LIMIT: {
@@ -597,27 +597,27 @@ const REPAIR_COST_LIMIT: {
 	},
 	// basic tools, weapons, armors
 	base: {
-		SWORD: 70,
-		PICKAXE: 65,
-		AXE: 65,
-		SHOVEL: 55,
-		HOE: 50,
-		HELMET: 60,
-		CHESTPLATE: 55,
-		LEGGINGS: 55,
-		BOOTS: 60,
+		SWORD: 80,
+		PICKAXE: 75,
+		AXE: 75,
+		SHOVEL: 65,
+		HOE: 60,
+		HELMET: 70,
+		CHESTPLATE: 65,
+		LEGGINGS: 65,
+		BOOTS: 70,
 	},
 	// other items
 	other: {
-		BOW: 65,
-		FISHING_ROD: 55,
-		TRIDENT: 65,
-		CROSSBOW: 65,
-		SHEARS: 40,
-		SHIELD: 40,
-		ELYTRA: 40,
-		FLINT_AND_STEEL: 35,
-		CARROT_ON_A_STICK: 35,
+		BOW: 75,
+		FISHING_ROD: 70,
+		TRIDENT: 75,
+		CROSSBOW: 75,
+		SHEARS: 50,
+		SHIELD: 50,
+		ELYTRA: 50,
+		FLINT_AND_STEEL: 45,
+		CARROT_ON_A_STICK: 45,
 	},
 }
 
@@ -2020,7 +2020,7 @@ function getEnchantResult(
 	const successChance = getSuccessChance(enchant, level, isPlus)
 
 	// random number
-	const rand = Math.floor(Math.random() * 1000)
+	const rand = Math.floor(Math.random() * 10000)
 
 	// success
 	if (rand < successChance) {
@@ -2098,7 +2098,7 @@ function getRandomEnchantResult(enchantData: ItemEnchantDataType): {
 		if (ENCHANT_BLAKLIST.includes(enchant)) continue
 
 		// random number
-		const rand = Math.floor(Math.random() * 1000)
+		const rand = Math.floor(Math.random() * 10000)
 
 		// get enchant level
 		const level = enchantData[enchant]
@@ -2265,7 +2265,11 @@ function applyNormalEnchant(
 	// success
 	if (success) {
 		// play sound effect
-		playSound('block.anvil.use', PLAYER_NAME)
+		if (nextEnchantData[enchant] >= 12) {
+			playSound('ui.toast.challenge_complete', PLAYER_NAME)
+		} else {
+			playSound('block.anvil.use', PLAYER_NAME)
+		}
 
 		// get title setting
 		const {
@@ -2281,8 +2285,8 @@ function applyNormalEnchant(
 		// show title & subtitle
 		playTitle(title, subtitle, PLAYER_NAME)
 
-		// broadcast success message (+15 ~)
-		if (nextEnchantData[enchant] >= 15) {
+		// broadcast success message (+12 ~)
+		if (nextEnchantData[enchant] >= 12) {
 			broadcastSuccess(PLAYER_NAME, enchant, nextEnchantData[enchant])
 		}
 
@@ -2318,8 +2322,8 @@ function applyNormalEnchant(
 			? sendScrollMessage(name, RepairCost, 5)
 			: sendScrollMessage(name, RepairCost, nextRepairCost)
 
-		// broadcast fail message (+15 ~)
-		if (nextLevel >= 15) {
+		// broadcast fail message (+12 ~)
+		if (nextLevel >= 12) {
 			broadcastFail(PLAYER_NAME, enchant, nextLevel)
 		}
 
@@ -2347,8 +2351,8 @@ function applyNormalEnchant(
 	// show title & subtitle
 	playTitle(title, subtitle, PLAYER_NAME)
 
-	// broadcast fail message  (+15 ~)
-	if (nextLevel >= 15) {
+	// broadcast fail message  (+12 ~)
+	if (nextLevel >= 12) {
 		broadcastFail(PLAYER_NAME, enchant, nextLevel)
 	}
 

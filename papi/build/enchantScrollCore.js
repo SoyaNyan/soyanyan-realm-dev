@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.js
- * Version: v1.4.4
- * Last Update: 2022-09-25
+ * Version: v1.4.6
+ * Last Update: 2022-09-27
  *
  * TypeScript Version: v4.8.2
  * Target: ES5
@@ -446,8 +446,8 @@ var RANDOM_ENCHANT_CHANCE = {
 	normal: 0.5,
 	plus: 0.6,
 }
-var EVENT_DAYS = [0]
-var EVENT_CHANCE_MULTIPLIER = 1.5
+var EVENT_DAYS = [0, 6]
+var EVENT_CHANCE_MULTIPLIER = 2
 var REPAIR_COST_LIMIT = {
 	material: {
 		NETHERITE: 10,
@@ -460,26 +460,26 @@ var REPAIR_COST_LIMIT = {
 		TURTLE: 5,
 	},
 	base: {
-		SWORD: 70,
-		PICKAXE: 65,
-		AXE: 65,
-		SHOVEL: 55,
-		HOE: 50,
-		HELMET: 60,
-		CHESTPLATE: 55,
-		LEGGINGS: 55,
-		BOOTS: 60,
+		SWORD: 80,
+		PICKAXE: 75,
+		AXE: 75,
+		SHOVEL: 65,
+		HOE: 60,
+		HELMET: 70,
+		CHESTPLATE: 65,
+		LEGGINGS: 65,
+		BOOTS: 70,
 	},
 	other: {
-		BOW: 65,
-		FISHING_ROD: 55,
-		TRIDENT: 65,
-		CROSSBOW: 65,
-		SHEARS: 40,
-		SHIELD: 40,
-		ELYTRA: 40,
-		FLINT_AND_STEEL: 35,
-		CARROT_ON_A_STICK: 35,
+		BOW: 75,
+		FISHING_ROD: 70,
+		TRIDENT: 75,
+		CROSSBOW: 75,
+		SHEARS: 50,
+		SHIELD: 50,
+		ELYTRA: 50,
+		FLINT_AND_STEEL: 45,
+		CARROT_ON_A_STICK: 45,
 	},
 }
 var ENCHANT_PANALTY = {
@@ -1453,7 +1453,7 @@ function getFailChance(enchant, level, isPlus) {
 function getEnchantResult(enchantData, enchant, isPlus) {
 	var level = enchantData[enchant]
 	var successChance = getSuccessChance(enchant, level, isPlus)
-	var rand = Math.floor(Math.random() * 1000)
+	var rand = Math.floor(Math.random() * 10000)
 	if (rand < successChance) {
 		var successEnchantData = getNextEnchantData(true, enchantData, enchant, isPlus)
 		return {
@@ -1492,7 +1492,7 @@ function getRandomEnchantResult(enchantData) {
 	}
 	for (var enchant in enchantData) {
 		if (ENCHANT_BLAKLIST.includes(enchant)) continue
-		var rand = Math.floor(Math.random() * 1000)
+		var rand = Math.floor(Math.random() * 10000)
 		var level = enchantData[enchant]
 		var successChance = getSuccessChance(enchant, level, false)
 		if (rand < successChance) {
@@ -1593,14 +1593,18 @@ function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) 
 		}
 	}
 	if (success) {
-		playSound('block.anvil.use', PLAYER_NAME)
+		if (nextEnchantData[enchant] >= 12) {
+			playSound('ui.toast.challenge_complete', PLAYER_NAME)
+		} else {
+			playSound('block.anvil.use', PLAYER_NAME)
+		}
 		var _c = TITLE_SETTINGS.success,
 			title_1 = _c.title,
 			subtitle_1 = _c.subtitle
 		var nextRepairCost_1 = getNextRepairCost(RepairCost, enchant, isPlus)
 		sendScrollMessage(name, RepairCost, nextRepairCost_1)
 		playTitle(title_1, subtitle_1, PLAYER_NAME)
-		if (nextEnchantData[enchant] >= 15) {
+		if (nextEnchantData[enchant] >= 12) {
 			broadcastSuccess(PLAYER_NAME, enchant, nextEnchantData[enchant])
 		}
 		replaceItem(
@@ -1623,7 +1627,7 @@ function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) 
 		isPlus
 			? sendScrollMessage(name, RepairCost, 5)
 			: sendScrollMessage(name, RepairCost, nextRepairCost)
-		if (nextLevel >= 15) {
+		if (nextLevel >= 12) {
 			broadcastFail(PLAYER_NAME, enchant, nextLevel)
 		}
 		isPlus
@@ -1637,7 +1641,7 @@ function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) 
 		subtitle = _e.subtitle
 	sendScrollMessage(name, RepairCost, nextRepairCost)
 	playTitle(title, subtitle, PLAYER_NAME)
-	if (nextLevel >= 15) {
+	if (nextLevel >= 12) {
 		broadcastFail(PLAYER_NAME, enchant, nextLevel)
 	}
 	replaceItem(PLAYER_NAME, failNBTData, displayData, nextEnchantData)
