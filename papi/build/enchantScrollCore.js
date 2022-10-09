@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.js
- * Version: v1.4.6
- * Last Update: 2022-09-27
+ * Version: v1.4.7
+ * Last Update: 2022-10-09
  *
  * TypeScript Version: v4.8.2
  * Target: ES5
@@ -1269,7 +1269,7 @@ function getKrName(slot) {
 	var item = ITEMS_LOCALE_KR.item,
 		material = ITEMS_LOCALE_KR.material,
 		suffix = ITEMS_LOCALE_KR.suffix
-	var placeholder = 'checkitem_getinfo:'.concat(slot, '_mat:material')
+	var placeholder = 'checkitem_getinfo:'.concat(slot, '_mat:')
 	var targetItem = parsePlaceholder(placeholder)
 	if (targetItem in item) return item[targetItem]
 	var _a = targetItem.split('_'),
@@ -1282,9 +1282,7 @@ function isEnchanted(slot) {
 	return enchanted === 'true'
 }
 function getEnchantData(slot) {
-	var rawData = parsePlaceholder(
-		'checkitem_getinfo:'.concat(slot, '_enchantments:enchantment')
-	).split('|')
+	var rawData = parsePlaceholder('checkitem_getinfo:'.concat(slot, '_enchantments:')).split('|')
 	var enchantData = {}
 	rawData.forEach(function (enchantStr) {
 		var _a = enchantStr.replace('minecraft:', '').split(':'),
@@ -1295,7 +1293,7 @@ function getEnchantData(slot) {
 	return enchantData
 }
 function getIntegerNBTData(slot) {
-	var rawData = parsePlaceholder('checkitem_getinfo:'.concat(slot, '_nbtints:nbt'))
+	var rawData = parsePlaceholder('checkitem_getinfo:'.concat(slot, '_nbtints:'))
 	var nbtData = {
 		Damage: 0,
 		RepairCost: 0,
@@ -1760,7 +1758,7 @@ function applyEnchant(args) {
 		var message =
 			'&7[&6\uAC15\uD654&7] &c&l\uD56B\uD0C0\uC784 &e&l\uC774\uBCA4\uD2B8&f\uB85C &9&l\uAC15\uD654\uD655\uB960&f\uC774 &6&l'.concat(
 				multiplier,
-				'&7\uBC30 &f\uC99D\uAC00\uD588\uC2B5\uB2C8\uB2E4. (+11\uBD80\uD130\uB294 \uC801\uC6A9\uB418\uC9C0 \uC54A\uC74C)'
+				'&7\uBC30 &f\uC99D\uAC00\uD588\uC2B5\uB2C8\uB2E4. &7(+11\uBD80\uD130\uB294 \uC801\uC6A9\uB418\uC9C0 \uC54A\uC74C)'
 			)
 		sendMessage(consoleColorString(message))
 	}

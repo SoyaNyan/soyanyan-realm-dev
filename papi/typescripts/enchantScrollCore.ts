@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.ts
- * Version: v1.4.6
- * Last Update: 2022-09-27
+ * Version: v1.4.7
+ * Last Update: 2022-10-09
  *
  * TypeScript Version: v4.8.2
  * Target: ES5
@@ -1646,7 +1646,7 @@ function getKrName(slot: number): string {
 	const { item, material, suffix } = ITEMS_LOCALE_KR
 
 	// set placeholder
-	const placeholder = `checkitem_getinfo:${slot}_mat:material`
+	const placeholder = `checkitem_getinfo:${slot}_mat:`
 
 	// get item name(mat)
 	const targetItem = parsePlaceholder(placeholder)
@@ -1673,7 +1673,7 @@ function isEnchanted(slot: number): boolean {
 // get enchant data of target item (in specific slot)
 function getEnchantData(slot: number): ItemEnchantDataType {
 	// get raw enchant data
-	const rawData = parsePlaceholder(`checkitem_getinfo:${slot}_enchantments:enchantment`).split('|')
+	const rawData = parsePlaceholder(`checkitem_getinfo:${slot}_enchantments:`).split('|')
 
 	// parse enchant data from raw data string
 	const enchantData: ItemEnchantDataType = {}
@@ -1692,7 +1692,7 @@ function getEnchantData(slot: number): ItemEnchantDataType {
 // get integer nbt data of target item (in specific slot)
 function getIntegerNBTData(slot: number): ItemIntNBTDataType {
 	// get raw repair nbt data
-	const rawData = parsePlaceholder(`checkitem_getinfo:${slot}_nbtints:nbt`)
+	const rawData = parsePlaceholder(`checkitem_getinfo:${slot}_nbtints:`)
 
 	// default nbt data
 	const nbtData: ItemIntNBTDataType = {
@@ -2590,7 +2590,7 @@ function applyEnchant(args: string[]): ReturnDataType {
 		const multiplier = getEventMultiplier(0)
 
 		// set message
-		const message = `&7[&6강화&7] &c&l핫타임 &e&l이벤트&f로 &9&l강화확률&f이 &6&l${multiplier}&7배 &f증가했습니다. (+11부터는 적용되지 않음)`
+		const message = `&7[&6강화&7] &c&l핫타임 &e&l이벤트&f로 &9&l강화확률&f이 &6&l${multiplier}&7배 &f증가했습니다. &7(+11부터는 적용되지 않음)`
 
 		// send message
 		sendMessage(consoleColorString(message))
