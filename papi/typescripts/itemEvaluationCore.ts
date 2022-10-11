@@ -855,12 +855,18 @@ function playTitle(
 }
 
 // play sound effect to player (sound => entity.villager.yes (without minecraft:))
-function playSound(sound: string, playerName: string, broadcast: boolean): boolean {
-	// set target
-	const target = broadcast ? '@a' : `${playerName}`
-
+function playSound(sound: string, playerName: string): boolean {
 	// set command
-	const command = `minecraft:execute at ${playerName} run playsound minecraft:${sound} voice ${target}`
+	const command = `minecraft:execute at ${playerName} run playsound minecraft:${sound} voice ${playerName}`
+
+	// execute command
+	return execConsoleCommand(command)
+}
+
+// play sound effect to all player
+function playSoundAll(sound: string): boolean {
+	// set command
+	const command = `minecraft:playsound minecraft:${sound} voice @a 0 0 0 1 1 1`
 
 	// execute command
 	return execConsoleCommand(command)
@@ -1369,7 +1375,7 @@ function sellItem(args: string[]): ReturnDataType {
 	// check if the price of item is mroe than BROADCAST_PRICE
 	if (price >= BROADCAST_PRICE) {
 		// play sound effect
-		playSound('ui.toast.challenge_complete', PLAYER_NAME, true)
+		playSoundAll('ui.toast.challenge_complete')
 
 		// set message
 		const message = `&b&l${PLAYER_NAME}&f님이 &a&l&n${krName}&f을(를) &6&l${formatWithCommas(
@@ -1380,7 +1386,7 @@ function sellItem(args: string[]): ReturnDataType {
 		broadcastMessage(message)
 	} else {
 		// play sound effect
-		playSound('entity.villager.celebrate', PLAYER_NAME, false)
+		playSound('entity.villager.celebrate', PLAYER_NAME)
 
 		// set message
 		const message = `&7[&6감정&7] &a&l&n${krName}&f을(를) &6&l${formatWithCommas(

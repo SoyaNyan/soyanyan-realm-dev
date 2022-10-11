@@ -535,12 +535,15 @@ function playTitle(title, subtitle, playerName) {
 	showTitle(title, playerName)
 	return showSubtitle(subtitle, playerName)
 }
-function playSound(sound, playerName, broadcast) {
-	var target = broadcast ? '@a' : ''.concat(playerName)
+function playSound(sound, playerName) {
 	var command = 'minecraft:execute at '
 		.concat(playerName, ' run playsound minecraft:')
 		.concat(sound, ' voice ')
-		.concat(target)
+		.concat(playerName)
+	return execConsoleCommand(command)
+}
+function playSoundAll(sound) {
+	var command = 'minecraft:playsound minecraft:'.concat(sound, ' voice @a 0 0 0 1 1 1')
 	return execConsoleCommand(command)
 }
 function broadcastMessage(message) {
@@ -802,7 +805,7 @@ function sellItem(args) {
 		return 0
 	}
 	if (price >= BROADCAST_PRICE) {
-		playSound('ui.toast.challenge_complete', PLAYER_NAME, true)
+		playSoundAll('ui.toast.challenge_complete')
 		var message = '&b&l'
 			.concat(PLAYER_NAME, '&f\uB2D8\uC774 &a&l&n')
 			.concat(krName, '&f\uC744(\uB97C) &6&l')
@@ -812,7 +815,7 @@ function sellItem(args) {
 			)
 		broadcastMessage(message)
 	} else {
-		playSound('entity.villager.celebrate', PLAYER_NAME, false)
+		playSound('entity.villager.celebrate', PLAYER_NAME)
 		var message = '&7[&6\uAC10\uC815&7] &a&l&n'
 			.concat(krName, '&f\uC744(\uB97C) &6&l')
 			.concat(
