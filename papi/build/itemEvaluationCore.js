@@ -781,9 +781,9 @@ function evaluatePrice(args) {
 	if (returnType === '1') return formatWithCommas(fixDigits(price))
 	if (returnType === '2') {
 		var message =
-			'&7[&6\uAC10\uC815&7] &f\uAC10\uC815 \uACB0\uACFC &a&l&n\uC544\uC774\uD15C\uC758 \uAC00\uCE58&f\uB294 &b&l'.concat(
+			'&7[&6\uAC10\uC815&7] &f\uAC10\uC815 \uACB0\uACFC &a&l&n\uC544\uC774\uD15C\uC758 \uAC00\uCE58&f\uB294 &6&l'.concat(
 				formatWithCommas(fixDigits(price)),
-				'&7exp &f\uC785\uB2C8\uB2E4.'
+				'&cexp &f\uC785\uB2C8\uB2E4.'
 			)
 		sendMessage(consoleColorString(message))
 		return 1
@@ -805,19 +805,19 @@ function sellItem(args) {
 		playSound('ui.toast.challenge_complete', PLAYER_NAME, true)
 		var message = '&b&l'
 			.concat(PLAYER_NAME, '&f\uB2D8\uC774 &a&l&n')
-			.concat(krName, '&f\uC744(\uB97C) &b&l')
+			.concat(krName, '&f\uC744(\uB97C) &6&l')
 			.concat(
 				formatWithCommas(fixDigits(price)),
-				'&7exp&f\uC5D0 &c&l\uD310\uB9E4&f\uD588\uC2B5\uB2C8\uB2E4.'
+				'&cexp &f\uC5D0 &e&l\uD310\uB9E4&f\uD588\uC2B5\uB2C8\uB2E4.'
 			)
 		broadcastMessage(message)
 	} else {
 		playSound('entity.villager.celebrate', PLAYER_NAME, false)
 		var message = '&7[&6\uAC10\uC815&7] &a&l&n'
-			.concat(krName, '&f\uC744(\uB97C) &b&l')
+			.concat(krName, '&f\uC744(\uB97C) &6&l')
 			.concat(
 				formatWithCommas(fixDigits(price)),
-				'&7exp&f\uC5D0 &c&l\uD310\uB9E4&f\uD588\uC2B5\uB2C8\uB2E4.'
+				'&cexp &f\uC5D0 &e&l\uD310\uB9E4&f\uD588\uC2B5\uB2C8\uB2E4.'
 			)
 		sendMessage(consoleColorString(message))
 	}

@@ -1326,9 +1326,9 @@ function evaluatePrice(args: string[]): ReturnDataType {
 	if (returnType === '1') return formatWithCommas(fixDigits(price))
 	if (returnType === '2') {
 		// set message
-		const message = `&7[&6감정&7] &f감정 결과 &a&l&n아이템의 가치&f는 &b&l${formatWithCommas(
+		const message = `&7[&6감정&7] &f감정 결과 &a&l&n아이템의 가치&f는 &6&l${formatWithCommas(
 			fixDigits(price)
-		)}&7exp &f입니다.`
+		)}&cexp &f입니다.`
 
 		// send message
 		sendMessage(consoleColorString(message))
@@ -1372,9 +1372,9 @@ function sellItem(args: string[]): ReturnDataType {
 		playSound('ui.toast.challenge_complete', PLAYER_NAME, true)
 
 		// set message
-		const message = `&b&l${PLAYER_NAME}&f님이 &a&l&n${krName}&f을(를) &b&l${formatWithCommas(
+		const message = `&b&l${PLAYER_NAME}&f님이 &a&l&n${krName}&f을(를) &6&l${formatWithCommas(
 			fixDigits(price)
-		)}&7exp&f에 &c&l판매&f했습니다.`
+		)}&cexp &f에 &e&l판매&f했습니다.`
 
 		// broadcast message
 		broadcastMessage(message)
@@ -1383,9 +1383,9 @@ function sellItem(args: string[]): ReturnDataType {
 		playSound('entity.villager.celebrate', PLAYER_NAME, false)
 
 		// set message
-		const message = `&7[&6감정&7] &a&l&n${krName}&f을(를) &b&l${formatWithCommas(
+		const message = `&7[&6감정&7] &a&l&n${krName}&f을(를) &6&l${formatWithCommas(
 			fixDigits(price)
-		)}&7exp&f에 &c&l판매&f했습니다.`
+		)}&cexp &f에 &e&l판매&f했습니다.`
 
 		// send message
 		sendMessage(consoleColorString(message))
