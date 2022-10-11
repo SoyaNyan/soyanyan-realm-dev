@@ -129,6 +129,9 @@ const PLAYER_NAME = '%player_name%'
 // broadcast prcie
 const BROADCAST_PRICE = 5000000
 
+// plus price offset
+const PLUS_PRICE_OFFSET = 0.1
+
 // item kr names
 const ITEMS_LOCALE_KR: {
 	item: { [index: string]: string }
@@ -302,10 +305,52 @@ const ENCHANT_LEVEL: Array<string> = [
 	'XX',
 ]
 
+// enchant min level
+const ENCHANT_MIN_LEVEL: { [index: string]: number } = {
+	mending: 1,
+	silk_touch: 1,
+	unbreaking: 3,
+	efficiency: 5,
+	fortune: 3,
+	aqua_affinity: 1,
+	respiration: 3,
+	thorns: 3,
+	protection: 4,
+	projectile_protection: 4,
+	fire_protection: 4,
+	blast_protection: 4,
+	swift_sneak: 3,
+	feather_falling: 4,
+	soul_speed: 3,
+	depth_strider: 3,
+	frost_walker: 2,
+	fire_aspect: 2,
+	looting: 3,
+	knockback: 2,
+	sweeping: 3,
+	sharpness: 5,
+	smite: 5,
+	bane_of_arthropods: 5,
+	cleaving: 3,
+	power: 5,
+	punch: 2,
+	flame: 1,
+	infinity: 1,
+	lure: 3,
+	luck_of_the_sea: 3,
+	impaling: 5,
+	channeling: 1,
+	loyalty: 3,
+	riptide: 3,
+	quick_charge: 3,
+	piercing: 4,
+	multishot: 1,
+}
+
 // total enchant level setting
 const TOTAL_ENCHANT_LEVEL: { [index: string]: number } = {
 	min: 5,
-	boost: 30,
+	boost: 15,
 }
 
 // item repair cost limit(enchant panalty) settings
@@ -810,9 +855,12 @@ function playTitle(
 }
 
 // play sound effect to player (sound => entity.villager.yes (without minecraft:))
-function playSound(sound: string, playerName: string): boolean {
+function playSound(sound: string, playerName: string, broadcast: boolean): boolean {
+	// set target
+	const target = broadcast ? '@a' : `${playerName}`
+
 	// set command
-	const command = `minecraft:execute at ${playerName} run playsound minecraft:${sound} voice ${playerName}`
+	const command = `minecraft:execute at ${playerName} run playsound minecraft:${sound} voice ${target}`
 
 	// execute command
 	return execConsoleCommand(command)
@@ -987,6 +1035,18 @@ function checkCustomLore(slot: number): number | boolean {
 	return typeof customLore !== 'undefined' ? customLore : false
 }
 
+// remove items in specific slot
+function removeSlotItem(slot: number, amount?: number): boolean {
+	// set placeholder
+	const placeholder =
+		typeof amount === 'undefined'
+			? `checkitem_remove_inslot:${slot}`
+			: `checkitem_remove_inslot:${slot},amt:${amount}`
+
+	// remove item
+	return parsePlaceholder(placeholder) === 'yes'
+}
+
 /**
   [ item evaluation utilities ]
 */
@@ -1012,6 +1072,29 @@ function getRarityScore(enchant: string): number {
 
 	// return score (1 + (1 - rarityWeight))
 	return 1 + (1 - rarityWeight)
+}
+
+// get total enhanced enchant level
+function getTotalEnhancedLevel(enchantData: ItemEnchantDataType): number {
+	// init level
+	let totalLevel = 0
+
+	// loop enchant data
+	for (const enchant in enchantData) {
+		// get enchant level
+		const level = enchantData[enchant]
+
+		// acc to total level
+		if (!enchant.includes('curse')) {
+			// get min level of enchant
+			const minLevel = ENCHANT_MIN_LEVEL[enchant]
+
+			totalLevel += level - minLevel
+		}
+	}
+
+	// return total level
+	return totalLevel
 }
 
 // get total enchant level
@@ -1061,7 +1144,7 @@ function getEnchantScore(enchantData: ItemEnchantDataType): number {
 	}
 
 	// get total enchant level
-	const totalLevel = getTotalEnchantLevel(enchantData)
+	const totalLevel = getTotalEnhancedLevel(enchantData)
 
 	// check total level
 	if (totalLevel <= TOTAL_ENCHANT_LEVEL.boost) {
@@ -1107,7 +1190,7 @@ function getRepairCostScore(itemCost: number, costLimit: number): number {
 }
 
 // evaluate price of the item
-function evaluateItemPrice(): number {
+function evaluateItemPrice(isPlus: boolean): number {
 	// get current repair cost
 	const repairCost = getRepairCost(40)
 
@@ -1126,8 +1209,10 @@ function evaluateItemPrice(): number {
 	// calc enchant score
 	const enchantScore = getEnchantScore(enchantData)
 
+	const offset = isPlus ? 1 + PLUS_PRICE_OFFSET : 1
+
 	// evaluated price
-	const price = enchantScore * repairCostScore
+	const price = enchantScore * repairCostScore * offset
 
 	// return price
 	return price
@@ -1187,11 +1272,20 @@ function giveExp(items: { [index: string]: number }): boolean {
 
 		// check amount is 0
 		if (amount > 0) {
-			// create command
-			const command = `ei give ${PLAYER_NAME} ${itemId} ${amount}`
+			// set max amount per command
+			const max = 100
 
-			// execute command
-			execConsoleCommand(command)
+			// check amount
+			for (let i = Math.floor(amount / max); i >= 0; i--) {
+				// set amount for this command
+				const cnt = i > 0 ? max : amount % max
+
+				// create command
+				const command = `ei give ${PLAYER_NAME} ${itemId} ${cnt}`
+
+				// execute command
+				execConsoleCommand(command)
+			}
 		}
 	}
 
@@ -1211,7 +1305,7 @@ function checkEnchantLevel(args: string[]): ReturnDataType {
 	const enchantData = getEnchantData(40)
 
 	// get total enchant level
-	const totalLevel = getTotalEnchantLevel(enchantData)
+	const totalLevel = getTotalEnhancedLevel(enchantData)
 
 	// return data
 	return TOTAL_ENCHANT_LEVEL.min <= totalLevel
@@ -1220,10 +1314,13 @@ function checkEnchantLevel(args: string[]): ReturnDataType {
 // evaludate item enchant price
 function evaluatePrice(args: string[]): ReturnDataType {
 	// get args
-	const [, returnType] = args
+	const [, returnType, isPlus] = args
+
+	// parse args
+	const checkPlus = isPlus === '1'
 
 	// evaluate item price
-	const price = evaluateItemPrice()
+	const price = evaluateItemPrice(checkPlus)
 
 	// check return type
 	if (returnType === '1') return formatWithCommas(fixDigits(price))
@@ -1247,10 +1344,16 @@ function evaluatePrice(args: string[]): ReturnDataType {
 // sell item at the evaluated price
 function sellItem(args: string[]): ReturnDataType {
 	// get args
-	const [, returnType] = args
+	const [, returnType, isPlus] = args
+
+	// parse args
+	const checkPlus = isPlus === '1'
+
+	// get item's name
+	const krName = getKrName(40)
 
 	// evaluate item price
-	const price = evaluateItemPrice()
+	const price = evaluateItemPrice(checkPlus)
 
 	// caclutate amount of items
 	const items = getExpItemAmount(price)
@@ -1258,18 +1361,15 @@ function sellItem(args: string[]): ReturnDataType {
 	// give exp to player
 	giveExp(items)
 
-	// set message
-	const message = `&7[&6감정&7] &f감정 결과 &a&l&n아이템의 가치&f는 &b&l${formatWithCommas(
-		fixDigits(price)
-	)}&7exp &f입니다.`
-
-	// send message
-	sendMessage(consoleColorString(message))
+	// remove sold item
+	if (!removeSlotItem(40, 1)) {
+		return 0
+	}
 
 	// check if the price of item is mroe than BROADCAST_PRICE
 	if (price >= BROADCAST_PRICE) {
-		// get item's name
-		const krName = getKrName(40)
+		// play sound effect
+		playSound('ui.toast.challenge_complete', PLAYER_NAME, true)
 
 		// set message
 		const message = `&b&l${PLAYER_NAME}&f님이 &a&l&n${krName}&f을(를) &b&l${formatWithCommas(
@@ -1278,10 +1378,21 @@ function sellItem(args: string[]): ReturnDataType {
 
 		// broadcast message
 		broadcastMessage(message)
+	} else {
+		// play sound effect
+		playSound('entity.villager.celebrate', PLAYER_NAME, false)
+
+		// set message
+		const message = `&7[&6감정&7] &a&l&n${krName}&f을(를) &b&l${formatWithCommas(
+			fixDigits(price)
+		)}&7exp&f에 &c&l판매&f했습니다.`
+
+		// send message
+		sendMessage(consoleColorString(message))
 	}
 
-	// return success ack
-	return true
+	// return for ei
+	return 1
 }
 
 // placeholder controller
@@ -1298,12 +1409,12 @@ function itemEvaluationCore(): string {
 			argLen: [2],
 			callback: checkEnchantLevel,
 		},
-		evaluateScore: {
-			argLen: [2],
+		evaluatePrice: {
+			argLen: [3],
 			callback: evaluatePrice,
 		},
 		sellItem: {
-			argLen: [2],
+			argLen: [3],
 			callback: sellItem,
 		},
 	}

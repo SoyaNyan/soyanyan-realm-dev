@@ -35,6 +35,7 @@ if (!Array.prototype.includes) {
 }
 var PLAYER_NAME = '%player_name%'
 var BROADCAST_PRICE = 5000000
+var PLUS_PRICE_OFFSET = 0.1
 var ITEMS_LOCALE_KR = {
 	item: {
 		BOW: '활',
@@ -190,9 +191,49 @@ var ENCHANT_LEVEL = [
 	'XIX',
 	'XX',
 ]
+var ENCHANT_MIN_LEVEL = {
+	mending: 1,
+	silk_touch: 1,
+	unbreaking: 3,
+	efficiency: 5,
+	fortune: 3,
+	aqua_affinity: 1,
+	respiration: 3,
+	thorns: 3,
+	protection: 4,
+	projectile_protection: 4,
+	fire_protection: 4,
+	blast_protection: 4,
+	swift_sneak: 3,
+	feather_falling: 4,
+	soul_speed: 3,
+	depth_strider: 3,
+	frost_walker: 2,
+	fire_aspect: 2,
+	looting: 3,
+	knockback: 2,
+	sweeping: 3,
+	sharpness: 5,
+	smite: 5,
+	bane_of_arthropods: 5,
+	cleaving: 3,
+	power: 5,
+	punch: 2,
+	flame: 1,
+	infinity: 1,
+	lure: 3,
+	luck_of_the_sea: 3,
+	impaling: 5,
+	channeling: 1,
+	loyalty: 3,
+	riptide: 3,
+	quick_charge: 3,
+	piercing: 4,
+	multishot: 1,
+}
 var TOTAL_ENCHANT_LEVEL = {
 	min: 5,
-	boost: 30,
+	boost: 15,
 }
 var REPAIR_COST_LIMIT = {
 	material: {
@@ -494,11 +535,12 @@ function playTitle(title, subtitle, playerName) {
 	showTitle(title, playerName)
 	return showSubtitle(subtitle, playerName)
 }
-function playSound(sound, playerName) {
+function playSound(sound, playerName, broadcast) {
+	var target = broadcast ? '@a' : ''.concat(playerName)
 	var command = 'minecraft:execute at '
 		.concat(playerName, ' run playsound minecraft:')
 		.concat(sound, ' voice ')
-		.concat(playerName)
+		.concat(target)
 	return execConsoleCommand(command)
 }
 function broadcastMessage(message) {
@@ -596,6 +638,13 @@ function checkCustomLore(slot) {
 	var customLore = getIntegerNBTData(slot).customLore
 	return typeof customLore !== 'undefined' ? customLore : false
 }
+function removeSlotItem(slot, amount) {
+	var placeholder =
+		typeof amount === 'undefined'
+			? 'checkitem_remove_inslot:'.concat(slot)
+			: 'checkitem_remove_inslot:'.concat(slot, ',amt:').concat(amount)
+	return parsePlaceholder(placeholder) === 'yes'
+}
 function getLevelWeight(level) {
 	var levelWeight = 0
 	for (var i = 0; i <= level - 1; i++) {
@@ -606,6 +655,17 @@ function getLevelWeight(level) {
 function getRarityScore(enchant) {
 	var rarityWeight = RARITY_WEIGHT[enchant]
 	return 1 + (1 - rarityWeight)
+}
+function getTotalEnhancedLevel(enchantData) {
+	var totalLevel = 0
+	for (var enchant in enchantData) {
+		var level = enchantData[enchant]
+		if (!enchant.includes('curse')) {
+			var minLevel = ENCHANT_MIN_LEVEL[enchant]
+			totalLevel += level - minLevel
+		}
+	}
+	return totalLevel
 }
 function getTotalEnchantLevel(enchantData) {
 	var totalLevel = 0
@@ -627,7 +687,7 @@ function getEnchantScore(enchantData) {
 		var levelScore = Math.floor(getLevelWeight(level) * rarityScore)
 		enchantScore += levelScore
 	}
-	var totalLevel = getTotalEnchantLevel(enchantData)
+	var totalLevel = getTotalEnhancedLevel(enchantData)
 	if (totalLevel <= TOTAL_ENCHANT_LEVEL.boost) {
 		return Math.floor(enchantScore * enchantCountWeight * (totalLevel / 2))
 	}
@@ -651,14 +711,15 @@ function getRepairCostScore(itemCost, costLimit) {
 	}
 	return 0.8
 }
-function evaluateItemPrice() {
+function evaluateItemPrice(isPlus) {
 	var repairCost = getRepairCost(40)
 	var targetItem = parsePlaceholder('player_item_in_offhand')
 	var repairCostLimit = getItemCostLimit(targetItem)
 	var repairCostScore = getRepairCostScore(repairCost, repairCostLimit)
 	var enchantData = getEnchantData(40)
 	var enchantScore = getEnchantScore(enchantData)
-	var price = enchantScore * repairCostScore
+	var offset = isPlus ? 1 + PLUS_PRICE_OFFSET : 1
+	var price = enchantScore * repairCostScore * offset
 	return price
 }
 function getExpItemAmount(balance) {
@@ -696,8 +757,12 @@ function giveExp(items) {
 		var itemId = expItems[item]
 		var amount = items[item]
 		if (amount > 0) {
-			var command = 'ei give '.concat(PLAYER_NAME, ' ').concat(itemId, ' ').concat(amount)
-			execConsoleCommand(command)
+			var max = 100
+			for (var i = Math.floor(amount / max); i >= 0; i--) {
+				var cnt = i > 0 ? max : amount % max
+				var command = 'ei give '.concat(PLAYER_NAME, ' ').concat(itemId, ' ').concat(cnt)
+				execConsoleCommand(command)
+			}
 		}
 	}
 	return true
@@ -705,12 +770,14 @@ function giveExp(items) {
 function checkEnchantLevel(args) {
 	var returnType = args[1]
 	var enchantData = getEnchantData(40)
-	var totalLevel = getTotalEnchantLevel(enchantData)
+	var totalLevel = getTotalEnhancedLevel(enchantData)
 	return TOTAL_ENCHANT_LEVEL.min <= totalLevel
 }
 function evaluatePrice(args) {
-	var returnType = args[1]
-	var price = evaluateItemPrice()
+	var returnType = args[1],
+		isPlus = args[2]
+	var checkPlus = isPlus === '1'
+	var price = evaluateItemPrice(checkPlus)
 	if (returnType === '1') return formatWithCommas(fixDigits(price))
 	if (returnType === '2') {
 		var message =
@@ -724,28 +791,37 @@ function evaluatePrice(args) {
 	return price
 }
 function sellItem(args) {
-	var returnType = args[1]
-	var price = evaluateItemPrice()
+	var returnType = args[1],
+		isPlus = args[2]
+	var checkPlus = isPlus === '1'
+	var krName = getKrName(40)
+	var price = evaluateItemPrice(checkPlus)
 	var items = getExpItemAmount(price)
 	giveExp(items)
-	var message =
-		'&7[&6\uAC10\uC815&7] &f\uAC10\uC815 \uACB0\uACFC &a&l&n\uC544\uC774\uD15C\uC758 \uAC00\uCE58&f\uB294 &b&l'.concat(
-			formatWithCommas(fixDigits(price)),
-			'&7exp &f\uC785\uB2C8\uB2E4.'
-		)
-	sendMessage(consoleColorString(message))
+	if (!removeSlotItem(40, 1)) {
+		return 0
+	}
 	if (price >= BROADCAST_PRICE) {
-		var krName = getKrName(40)
-		var message_1 = '&b&l'
+		playSound('ui.toast.challenge_complete', PLAYER_NAME, true)
+		var message = '&b&l'
 			.concat(PLAYER_NAME, '&f\uB2D8\uC774 &a&l&n')
 			.concat(krName, '&f\uC744(\uB97C) &b&l')
 			.concat(
 				formatWithCommas(fixDigits(price)),
 				'&7exp&f\uC5D0 &c&l\uD310\uB9E4&f\uD588\uC2B5\uB2C8\uB2E4.'
 			)
-		broadcastMessage(message_1)
+		broadcastMessage(message)
+	} else {
+		playSound('entity.villager.celebrate', PLAYER_NAME, false)
+		var message = '&7[&6\uAC10\uC815&7] &a&l&n'
+			.concat(krName, '&f\uC744(\uB97C) &b&l')
+			.concat(
+				formatWithCommas(fixDigits(price)),
+				'&7exp&f\uC5D0 &c&l\uD310\uB9E4&f\uD588\uC2B5\uB2C8\uB2E4.'
+			)
+		sendMessage(consoleColorString(message))
 	}
-	return true
+	return 1
 }
 function itemEvaluationCore() {
 	var result = false
@@ -755,12 +831,12 @@ function itemEvaluationCore() {
 			argLen: [2],
 			callback: checkEnchantLevel,
 		},
-		evaluateScore: {
-			argLen: [2],
+		evaluatePrice: {
+			argLen: [3],
 			callback: evaluatePrice,
 		},
 		sellItem: {
-			argLen: [2],
+			argLen: [3],
 			callback: sellItem,
 		},
 	}
