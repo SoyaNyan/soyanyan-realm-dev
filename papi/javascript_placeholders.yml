@@ -48,5 +48,7 @@ enchant_scroll:
   file: enchantScrollCore.js
 scroll_recipe:
   file: enchantScrollRecipeCore.js
+item_eval:
+  file: itemEvaluationCore.js
 example:
   file: example.js
