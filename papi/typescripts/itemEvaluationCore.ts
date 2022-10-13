@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: itemEvaluationCore.ts
- * Version: v1.1.0
- * Last Update: 2022-10-11
+ * Version: v1.1.1
+ * Last Update: 2022-10-13
  *
  * TypeScript Version: v4.8.4
  * Target: ES5
@@ -1302,6 +1302,32 @@ function giveExp(items: { [index: string]: number }): boolean {
 /**
   [ action handler ] 
 */
+// check player has valid item
+function checkValidItem(args: string[]): ReturnDataType {
+	// get args
+	const [, returnType] = args
+
+	// get settings
+	const { item, material, suffix } = ITEMS_LOCALE_KR
+
+	// set placeholder
+	const placeholder = `checkitem_getinfo:40_mat:`
+
+	// get item name(mat)
+	const targetItem = parsePlaceholder(placeholder)
+
+	// check item with no material info
+	if (targetItem in item) return true
+
+	// check material and suffix
+	const [mat, suff] = targetItem.split('_')
+
+	// check material and item name
+	if (mat in material && suff in suffix) return true
+
+	return false
+}
+
 // check total enchant level of item
 function checkEnchantLevel(args: string[]): ReturnDataType {
 	// get args
@@ -1411,6 +1437,10 @@ function itemEvaluationCore(): string {
 
 	// command(placeholder) settings
 	const VALID_COMMANDS: { [index: string]: CommandObjectType } = {
+		checkValidItem: {
+			argLen: [2],
+			callback: checkValidItem,
+		},
 		checkEnchantLevel: {
 			argLen: [2],
 			callback: checkEnchantLevel,

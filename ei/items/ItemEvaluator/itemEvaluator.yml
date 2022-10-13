@@ -107,6 +107,13 @@ activators:
       plchC1:
         type: PLAYER_STRING
         comparator: EQUALS
+        part1: '%javascript_item_eval_checkValidItem,0%'
+        part2: 'true'
+        cancelEventIfNotValid: false
+        messageIfNotValid: '&6>> 아이템 감정서를 사용할 수 없는 아이템입니다.'
+      plchC2:
+        type: PLAYER_STRING
+        comparator: EQUALS
         part1: '%javascript_item_eval_checkEnchantLevel,0%'
         part2: 'true'
         cancelEventIfNotValid: false
@@ -151,6 +158,13 @@ activators:
     customConditions: {}
     placeholdersConditions:
       plchC1:
+        type: PLAYER_STRING
+        comparator: EQUALS
+        part1: '%javascript_item_eval_checkValidItem,0%'
+        part2: 'true'
+        cancelEventIfNotValid: false
+        messageIfNotValid: '&6>> 아이템 감정서를 사용할 수 없는 아이템입니다.'
+      plchC2:
         type: PLAYER_STRING
         comparator: EQUALS
         part1: '%javascript_item_eval_checkEnchantLevel,0%'

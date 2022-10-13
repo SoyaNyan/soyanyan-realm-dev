@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: itemEvaluationCore.js
- * Version: v1.1.0
- * Last Update: 2022-10-11
+ * Version: v1.1.1
+ * Last Update: 2022-10-13
  *
  * TypeScript Version: v4.8.4
  * Target: ES5
@@ -770,6 +770,20 @@ function giveExp(items) {
 	}
 	return true
 }
+function checkValidItem(args) {
+	var returnType = args[1]
+	var item = ITEMS_LOCALE_KR.item,
+		material = ITEMS_LOCALE_KR.material,
+		suffix = ITEMS_LOCALE_KR.suffix
+	var placeholder = 'checkitem_getinfo:40_mat:'
+	var targetItem = parsePlaceholder(placeholder)
+	if (targetItem in item) return true
+	var _a = targetItem.split('_'),
+		mat = _a[0],
+		suff = _a[1]
+	if (mat in material && suff in suffix) return true
+	return false
+}
 function checkEnchantLevel(args) {
 	var returnType = args[1]
 	var enchantData = getEnchantData(40)
@@ -830,6 +844,10 @@ function itemEvaluationCore() {
 	var result = false
 	var action = args[0]
 	var VALID_COMMANDS = {
+		checkValidItem: {
+			argLen: [2],
+			callback: checkValidItem,
+		},
 		checkEnchantLevel: {
 			argLen: [2],
 			callback: checkEnchantLevel,
