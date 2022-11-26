@@ -33,7 +33,7 @@ hiders:
   hideEnchantments: false
   hideUnbreakable: false
   hideAttributes: false
-  hidePotionEffects: false
+  hidePotionEffects: true
   hideUsage: false
   hideDye: false
 enchantments: {}
