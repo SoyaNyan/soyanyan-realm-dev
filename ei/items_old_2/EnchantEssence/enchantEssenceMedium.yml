@@ -1,0 +1,77 @@
+name: '&7[#55CBCD ★★ &7] #ECEAE4&l쓸만한 #FF968A&l인챈트 #FFC8A2&l에센스'
+lore:
+- '&7'
+- '&7아이템 종류: &6&l특수 &e&l아이템 &7(ES-ES002)'
+- '&7아이템 적용대상: &d모든 강화 주문서'
+- '&d혼돈의 주문서 제외.'
+- '&7---------------------'
+- '&e&l아이템 강화 주문서&7를 사용할 때'
+- '&f&n&l퀵슬롯&7에 존재하는 인챈트 에센스의'
+- '&a&l개수 x 0.5% &7만큼 &9&l강화 확률&7을'
+- '&7증가시킨다. (가중치 적용 전 확률)'
+- '&7---------------------'
+- '&5>> 서로 다른 등급의 인챈트 에센스는'
+- '&5중복 적용되지 않는다.'
+- '&5>> 퀵슬롯 여러 칸에 인챈트 에센스가'
+- '&5있다면 가장 왼쪽의 칸만 적용된다.'
+- '&7---------------------'
+- '&c&l<사용조건>'
+- '&7'
+- '&7사용가능 횟수: &b1&f&l회'
+- '&7사용방법: 퀵슬롯에 올리고 강화'
+- '&7주문서 사용 (2~9번)'
+material: DIAMOND
+glow: true
+disableStack: false
+keepItemOnDeath: false
+canBeUsedOnlyByTheOwner: false
+storeItemInfo: false
+unbreakable: true
+usage: 0
+usageLimit: -1
+dropOptions:
+  glowDrop: false
+  glowDropColor: WHITE
+  displayNameDrop: false
+hiders:
+  hideEnchantments: false
+  hideUnbreakable: false
+  hideAttributes: false
+  hidePotionEffects: false
+  hideUsage: false
+enchantments: {}
+giveFirstJoin:
+  giveFirstJoin: false
+  giveFirstJoinAmount: 1
+  giveFirstJoinSlot: 0
+restrictions:
+  cancel-brewing: true
+  cancel-beacon: true
+  cancel-rename-anvil: true
+  cancel-anvil: true
+  cancel-dropper: true
+  cancel-dispenser: true
+  cancel-tool-interactions: true
+  cancel-enchant: true
+  cancel-item-craft-no-custom: true
+  cancel-lectern: true
+  cancel-enchant-anvil: true
+  cancel-item-craft: true
+  cancel-item-frame: true
+  cancel-grind-stone: true
+  cancel-hopper: true
+  cancel-deposit-in-furnace: true
+  cancel-stone-cutter: true
+  cancel-composter: true
+  cancel-smithing-table: true
+  cancel-cartography: true
+  cancel-loom: true
+cancelEventIfNoPerm: false
+cancelEventIfNotOwner: false
+disabledWorlds: []
+variables: {}
+activators: {}
+recognitions: []
+attributes: {}
+config_5: true
+config_update: true

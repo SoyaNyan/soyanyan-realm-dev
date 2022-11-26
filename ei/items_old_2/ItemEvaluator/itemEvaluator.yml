@@ -1,0 +1,178 @@
+name: '&7[#FFC8A2 ★★ &7] #FFFFB5&l아이템 #ECEAE4&l감정서'
+lore:
+  - '&7'
+  - '&7아이템 종류: &6&l아이템 &e&l감정서'
+  - '&7사용조건: &9총 5단계 이상 강화된 아이템'
+  - '&7--------------------------'
+  - '&7사용하면 &3&l&n강화된 아이템&7의 가격을'
+  - '&7&e&l감정&7할 수 있으며 &a&l감정가&7에 따라'
+  - '&7아이템을 &c&l판매&7할 수 있다.'
+  - '&7--------------------------'
+  - '&7< &c&l사용방법 &7>'
+  - '&7'
+  - '&7 [&6좌클릭&7] &f- &b아이템 &a감정'
+  - '&7 [&e쉬프트 &7+ &6좌클릭&7] &b아이템 &c판매'
+  - '&7 재사용 대기시간: &e10&f초'
+material: BOOK
+glow: true
+disableStack: false
+keepItemOnDeath: true
+canBeUsedOnlyByTheOwner: false
+storeItemInfo: false
+unbreakable: false
+usage: 1
+usageLimit: -1
+dropOptions:
+  glowDrop: true
+  glowDropColor: GOLD
+  displayNameDrop: false
+hiders:
+  hideEnchantments: false
+  hideUnbreakable: false
+  hideAttributes: false
+  hidePotionEffects: false
+  hideUsage: true
+enchantments: {}
+giveFirstJoin:
+  giveFirstJoin: false
+  giveFirstJoinAmount: 1
+  giveFirstJoinSlot: 0
+restrictions:
+  cancel-beacon: true
+  cancel-item-burn: true
+  cancel-rename-anvil: true
+  cancel-anvil: true
+  cancel-dropper: true
+  cancel-dispenser: true
+  cancel-tool-interactions: true
+  cancel-enchant: true
+  cancel-item-craft-no-custom: true
+  cancel-lectern: true
+  cancel-enchant-anvil: true
+  cancel-item-delete-by-cactus: true
+  cancel-item-craft: true
+  cancel-item-frame: true
+  cancel-item-delete-by-lightning: true
+  cancel-grind-stone: true
+  cancel-hopper: true
+  cancel-deposit-in-furnace: true
+  cancel-stone-cutter: true
+  cancel-composter: true
+  cancel-smithing-table: true
+  cancel-cartography: true
+  cancel-loom: true
+cancelEventIfNoPerm: false
+cancelEventIfNotOwner: false
+disabledWorlds: []
+variables: {}
+activators:
+  activator1:
+    name: '&e좌클릭'
+    option: PLAYER_LEFT_CLICK
+    typeTarget: ONLY_AIR
+    usageModification: 0
+    cancelEvent: true
+    silenceOutput: false
+    autoUpdateItem: true
+    cooldownOptions:
+      cooldown: 10
+      isCooldownInTicks: false
+      cooldownMsg: '&6>> 재사용 대기중... &7(%time_S%초)'
+      displayCooldownMessage: true
+      cancelEventIfInCooldown: true
+    globalCooldownOptions:
+      cooldown: 0
+      isCooldownInTicks: false
+      cooldownMsg: '&6>> 전체 재사용 대기중... &7(%time_S%초)'
+      displayCooldownMessage: true
+      cancelEventIfInCooldown: false
+    otherEICooldowns: {}
+    requiredItems:
+      errorMessage: ''
+    requiredExecutableItems:
+      errorMessage: ''
+    detailedSlots:
+      - -1
+    commands:
+      - 'RANDOM RUN: %javascript_item_eval_evaluatePrice,2,0%'
+      - NOTHING*1
+      - RANDOM END
+    playerConditions:
+      ifNotSneaking: true
+      ifNotSneakingMsg: ''
+    worldConditions: {}
+    itemConditions: {}
+    customConditions: {}
+    placeholdersConditions:
+      plchC1:
+        type: PLAYER_STRING
+        comparator: EQUALS
+        part1: '%javascript_item_eval_checkValidItem,0%'
+        part2: 'true'
+        cancelEventIfNotValid: false
+        messageIfNotValid: '&6>> 아이템 감정서를 사용할 수 없는 아이템입니다.'
+      plchC2:
+        type: PLAYER_STRING
+        comparator: EQUALS
+        part1: '%javascript_item_eval_checkEnchantLevel,0%'
+        part2: 'true'
+        cancelEventIfNotValid: false
+        messageIfNotValid: '&6>> 아이템 감정서를 사용하기위한 조건을 만족하지 않았습니다.'
+    variablesModification: {}
+  activator2:
+    name: '&e쉬프트좌클릭'
+    option: PLAYER_LEFT_CLICK
+    typeTarget: NO_TYPE_TARGET
+    usageModification: -1
+    cancelEvent: true
+    silenceOutput: false
+    autoUpdateItem: true
+    cooldownOptions:
+      cooldown: 10
+      isCooldownInTicks: false
+      cooldownMsg: '&6>> 재사용 대기중... &7(%time_S%초)'
+      displayCooldownMessage: true
+      cancelEventIfInCooldown: true
+    globalCooldownOptions:
+      cooldown: 0
+      isCooldownInTicks: false
+      cooldownMsg: '&6>> 전체 재사용 대기중... &7(%time_S%초)'
+      displayCooldownMessage: true
+      cancelEventIfInCooldown: false
+    otherEICooldowns: {}
+    requiredItems:
+      errorMessage: ''
+    requiredExecutableItems:
+      errorMessage: ''
+    detailedSlots:
+      - -1
+    commands:
+      - 'RANDOM RUN: %javascript_item_eval_sellItem,0,0%'
+      - NOTHING*1
+      - RANDOM END
+    playerConditions:
+      ifSneaking: true
+      ifSneakingMsg: ''
+    worldConditions: {}
+    itemConditions: {}
+    customConditions: {}
+    placeholdersConditions:
+      plchC1:
+        type: PLAYER_STRING
+        comparator: EQUALS
+        part1: '%javascript_item_eval_checkValidItem,0%'
+        part2: 'true'
+        cancelEventIfNotValid: false
+        messageIfNotValid: '&6>> 아이템 감정서를 사용할 수 없는 아이템입니다.'
+      plchC2:
+        type: PLAYER_STRING
+        comparator: EQUALS
+        part1: '%javascript_item_eval_checkEnchantLevel,0%'
+        part2: 'true'
+        cancelEventIfNotValid: false
+        messageIfNotValid: '&6>> 아이템 감정서를 사용하기위한 조건을 만족하지 않았습니다.'
+    variablesModification: {}
+recognitions: []
+attributes: {}
+config_5: true
+config_update: true

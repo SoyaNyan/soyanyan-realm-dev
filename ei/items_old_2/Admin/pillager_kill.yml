@@ -1,0 +1,129 @@
+name: '&e약탈자 철퇴'
+lore: []
+material: WHITE_BANNER
+glow: true
+disableStack: false
+keepItemOnDeath: false
+canBeUsedOnlyByTheOwner: false
+storeItemInfo: false
+unbreakable: true
+usage: 0
+usageLimit: -1
+dropOptions:
+  glowDrop: true
+  glowDropColor: WHITE
+  displayNameDrop: false
+hiders:
+  hideEnchantments: false
+  hideUnbreakable: false
+  hideAttributes: false
+  hidePotionEffects: true
+  hideUsage: false
+enchantments: {}
+giveFirstJoin:
+  giveFirstJoin: false
+  giveFirstJoinAmount: 1
+  giveFirstJoinSlot: 0
+restrictions: {}
+cancelEventIfNoPerm: false
+cancelEventIfNotOwner: false
+disabledWorlds: []
+variables: {}
+activators:
+  activator1:
+    name: '&eActivator'
+    option: PLAYER_ALL_CLICK
+    typeTarget: NO_TYPE_TARGET
+    usageModification: 0
+    cancelEvent: true
+    silenceOutput: false
+    autoUpdateItem: false
+    cooldownOptions:
+      cooldown: 0
+      isCooldownInTicks: false
+      cooldownMsg: '&cYou are in cooldown ! &7(&e%time_H%&6H &e%time_M%&6M &e%time_S%&6S&7)'
+      displayCooldownMessage: true
+      cancelEventIfInCooldown: false
+    globalCooldownOptions:
+      cooldown: 0
+      isCooldownInTicks: false
+      cooldownMsg: '&cYou are in cooldown ! &7(&e%time_H%&6H &e%time_M%&6M &e%time_S%&6S&7)'
+      displayCooldownMessage: true
+      cancelEventIfInCooldown: false
+    otherEICooldowns: {}
+    requiredItems:
+      errorMessage: ''
+    requiredExecutableItems:
+      errorMessage: ''
+    detailedSlots:
+    - -1
+    commands:
+    - minecraft:kill @e[type=minecraft:pillager]
+    playerConditions: {}
+    worldConditions: {}
+    itemConditions: {}
+    customConditions: {}
+    placeholdersConditions: {}
+    variablesModification: {}
+recognitions: []
+bannerSettings:
+  patterns:
+    pattern1:
+      '1':
+        string: color
+        object: CYAN
+      '2':
+        string: pattern
+        object: mr
+    pattern2:
+      '1':
+        string: color
+        object: LIGHT_GRAY
+      '2':
+        string: pattern
+        object: bs
+    pattern3:
+      '1':
+        string: color
+        object: GRAY
+      '2':
+        string: pattern
+        object: cs
+    pattern4:
+      '1':
+        string: color
+        object: LIGHT_GRAY
+      '2':
+        string: pattern
+        object: bo
+    pattern5:
+      '1':
+        string: color
+        object: BLACK
+      '2':
+        string: pattern
+        object: ms
+    pattern6:
+      '1':
+        string: color
+        object: LIGHT_GRAY
+      '2':
+        string: pattern
+        object: hh
+    pattern7:
+      '1':
+        string: color
+        object: LIGHT_GRAY
+      '2':
+        string: pattern
+        object: mc
+    pattern8:
+      '1':
+        string: color
+        object: BLACK
+      '2':
+        string: pattern
+        object: bo
+attributes: {}
+config_5: true
+config_update: true

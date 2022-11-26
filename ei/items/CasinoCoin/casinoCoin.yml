@@ -1,6 +1,6 @@
 name: §5§l카지노 코인
 lore:
-  - '&7소야냥렐름 카지노에서 사용할 수 있는 코인이다.'
+- '&7소야냥렐름 카지노에서 사용할 수 있는 코인이다.'
 material: DIAMOND
 glow: true
 disableStack: false

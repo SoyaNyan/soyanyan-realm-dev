@@ -1,0 +1,149 @@
+name: '&7[#FFC8A2 ★★ &7] &7&l조각난 &e&l경험치 &d&l크리스탈 &7| &610,000 &cexp'
+lore:
+- '&7'
+- '&7아이템 종류: &e경험치재료 &7(EE-EC005)'
+- '&7경험치 용량: &610,000 &cexp&7(&963&7lv)'
+- '&7------------------------'
+- '&f&l우클릭&7으로 사용하면 플레이어의'
+- '&7경험치를 &f10,000exp(63lv) &7저장'
+- '&7할 수 있다.'
+- '&7------------------------'
+- '&c&l<사용조건>'
+- '&7'
+- '&7사용가능 횟수: &b1&f&l회'
+- '&7재사용 대기시간: &e2&f&l초'
+- '&7사용방법: 공중에 우클릭'
+- '&7필요 경험치: &610,500&cexp &7(&a5%&7)'
+material: MEDIUM_AMETHYST_BUD
+glow: true
+disableStack: false
+keepItemOnDeath: false
+canBeUsedOnlyByTheOwner: false
+storeItemInfo: false
+unbreakable: false
+usage: 1
+usageLimit: -1
+dropOptions:
+  glowDrop: false
+  glowDropColor: WHITE
+  displayNameDrop: false
+hiders:
+  hideEnchantments: false
+  hideUnbreakable: false
+  hideAttributes: false
+  hidePotionEffects: false
+  hideUsage: false
+enchantments: {}
+giveFirstJoin:
+  giveFirstJoin: false
+  giveFirstJoinAmount: 1
+  giveFirstJoinSlot: 0
+restrictions:
+  cancel-rename-anvil: true
+  cancel-anvil: true
+  cancel-enchant: true
+  cancel-item-place: true
+  cancel-item-craft: true
+cancelEventIfNoPerm: false
+cancelEventIfNotOwner: false
+disabledWorlds: []
+variables: {}
+activators:
+  activator1:
+    name: '&eActivator'
+    option: PLAYER_RIGHT_CLICK
+    typeTarget: ONLY_AIR
+    usageModification: -1
+    cancelEvent: false
+    silenceOutput: false
+    autoUpdateItem: false
+    cooldownOptions:
+      cooldown: 2
+      isCooldownInTicks: false
+      cooldownMsg: '&6>> 재사용 대기중... &7(%time_S%초)'
+      displayCooldownMessage: true
+      cancelEventIfInCooldown: true
+    globalCooldownOptions:
+      cooldown: 0
+      isCooldownInTicks: false
+      cooldownMsg: '&cYou are in cooldown ! &7(&e%time_H%&6H &e%time_M%&6M &e%time_S%&6S&7)'
+      displayCooldownMessage: true
+      cancelEventIfInCooldown: false
+    otherEICooldowns: {}
+    requiredItems:
+      errorMessage: ''
+    requiredExecutableItems:
+      errorMessage: ''
+    detailedSlots:
+    - -1
+    commands:
+    - exp give %player% -10500
+    - ei give %player% exp_filled_crystal_10000
+    playerConditions:
+      ifSneakingMsg: ' &cYou must sneak to active the activator: &6%activator% &cof
+        this item!'
+      ifNotSneakingMsg: ' &cYou must not sneak to active the activator: &6%activator%
+        &cof this item!'
+      ifSprintingMsg: ' &cYou must sprint to active the activator: &6%activator% &cof
+        this item!'
+      ifFlyingMsg: ' &cYou must fly to active the activator: &6%activator% &cof this
+        item!'
+      ifBlockingMsg: ' &cYou must block damage with shield to active the activator:
+        &6%activator% &cof this item!'
+      ifNotBlockingMsg: ' &cYou must not block damage with shield to active the activator:
+        &6%activator% &cof this item!'
+      ifGlidingMsg: ' &cYou must glide to active the activator: &6%activator% &cof
+        this item!'
+      ifSwimmingMsg: ' &cYou must swin to active the activator: &6%activator% &cof
+        this item!'
+      ifIsInTheAirMsg: ' &cYou must be in the air to active the activator: &6%activator%
+        &cof this item!'
+      ifLightLevelMsg: ' &cLight level is not valid to active the activator: &6%activator%
+        &cof this item!'
+      ifPlayerEXP: '>=10500'
+      ifPlayerEXPMsg: ' &6>> 경험치 병을 채우기 위한 플레이어의 경험치가 충분하지 않습니다!'
+      ifPlayerLevelMsg: ' &cYour level is not valid to active the activator: &6%activator%
+        &cof this item!'
+      ifPlayerFoodLevelMsg: ' &cYour food is not valid to active the activator: &6%activator%
+        &cof this item!'
+      ifPlayerHealthMsg: ' &cYour health is not valid to active the activator: &6%activator%
+        &cof this item!'
+      ifPosXMsg: ' &cCoordinate X is not valid to active the activator: &6%activator%
+        &cof this item!'
+      ifPosYMsg: ' &cCoordinate Y is not valid to active the activator: &6%activator%
+        &cof this item!'
+      ifPosZMsg: ' &cCoordinate Z is not valid to active the activator: &6%activator%
+        &cof this item!'
+      ifHasPermissionMsg: ' &cYou doesn''t have the permission to active the activator:
+        &6%activator% &cof this item!'
+      ifNotHasPermissionMsg: ' &cYou have a blacklisted permission to active the activator:
+        &6%activator% &cof this item!'
+      ifTargetBlockMsg: ' &cYou don''t target the good type of block to active the
+        activator: &6%activator% &cof this item!'
+      ifNotTargetBlockMsg: ' &cYou don''t target the good type of block to active
+        the activator: &6%activator% &cof this item!'
+      ifIsOnTheBlockMsg: ' &cYou are not on the good type of block to active the activator:
+        &6%activator% &cof this item!'
+      ifIsNotOnTheBlockMsg: ' &cYou are not on the good type of block to active the
+        activator: &6%activator% &cof this item!'
+      ifInBiomeMsg: ' &cYou aren''t in the good biome to active the activator: &6%activator%
+        &cof this item!'
+      ifNotInBiomeMsg: ' &cYou aren''t in the good biome to active the activator:
+        &6%activator% &cof this item!'
+      ifInRegionMsg: ' &cYou aren''t in the good region to active the activator: &6%activator%
+        &cof this item!'
+      ifNotInRegionMsg: ' &cYou are in blacklisted region to active the activator:
+        &6%activator% &cof this item!'
+      ifInWorldMsg: ' &cYou aren''t in the good world to active the activator: &6%activator%
+        &cof this item!'
+      ifNotInWorldMsg: ' &cYou aren''t in the good world to active the activator:
+        &6%activator% &cof this item!'
+    worldConditions: {}
+    itemConditions: {}
+    customConditions: {}
+    placeholdersConditions: {}
+    variablesModification: {}
+recognitions: []
+attributes: {}
+config_5: true
+config_update: true

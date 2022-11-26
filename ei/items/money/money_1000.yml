@@ -1,6 +1,6 @@
 name: §b§o§l1,000원
 lore:
-  - '&7money (RM-MO001)'
+- '&7money (RM-MO001)'
 material: PAPER
 glow: true
 disableStack: false
