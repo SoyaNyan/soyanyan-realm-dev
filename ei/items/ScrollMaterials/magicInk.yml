@@ -1,8 +1,8 @@
 name: '&6&l마법의 &7&l잉크'
 lore:
-- '&7반짝반짝 빛나는 잉크.'
-- '&7주문서 제작에 쓸 수 있다.'
-material: GLOW_INK_SAC
+  - '&7반짝반짝 빛나는 잉크.'
+  - '&7주문서 제작에 쓸 수 있다.'
+material: DIAMOND
 glow: true
 disableStack: false
 keepItemOnDeath: false
@@ -58,3 +58,4 @@ recognitions: []
 attributes: {}
 config_5: true
 config_update: true
+customModelData: 10005

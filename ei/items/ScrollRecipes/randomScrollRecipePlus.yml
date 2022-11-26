@@ -1,22 +1,22 @@
 name: '&7[#FFC8A2 ★★ &7] #ECD5E3&l놀라운 #ECEAE4&l혼돈의 주문서 #FF968A&l제작 #FFC8A2&l레시피'
 lore:
-- '&7'
-- '&7아이템 종류: &6&l특수 &2&l제작 &e&l아이템'
-- '&7------------------------'
-- '&b&l강화 주문서 &6&l획득확률&7:'
-- '&f 일반 강화 주문서 : &a20&7%'
-- '&c 놀라운 &f강화 주문서 : &a80&7%'
-- '&7------------------------'
-- '&e&l클릭&7으로 사용하면 &f&n&l확률&7에 의해'
-- '&7랜덤한 &b&l혼돈의 &9&l강화 주문서 &a&l1&7종을'
-- '&7획득할 수 있다.'
-- '&7------------------------'
-- '&c&l<사용조건>'
-- '&7'
-- '&7사용가능 횟수: &b1&f&l회'
-- '&7재사용 대기시간: &e5&f초'
-- '&7사용방법: 공중에 클릭'
-material: KNOWLEDGE_BOOK
+  - '&7'
+  - '&7아이템 종류: &6&l특수 &2&l제작 &e&l아이템'
+  - '&7------------------------'
+  - '&b&l강화 주문서 &6&l획득확률&7:'
+  - '&f 일반 강화 주문서 : &a20&7%'
+  - '&c 놀라운 &f강화 주문서 : &a80&7%'
+  - '&7------------------------'
+  - '&e&l클릭&7으로 사용하면 &f&n&l확률&7에 의해'
+  - '&7랜덤한 &b&l혼돈의 &9&l강화 주문서 &a&l1&7종을'
+  - '&7획득할 수 있다.'
+  - '&7------------------------'
+  - '&c&l<사용조건>'
+  - '&7'
+  - '&7사용가능 횟수: &b1&f&l회'
+  - '&7재사용 대기시간: &e5&f초'
+  - '&7사용방법: 공중에 클릭'
+material: CREEPER_BANNER_PATTERN
 glow: true
 disableStack: false
 keepItemOnDeath: false
@@ -26,7 +26,7 @@ unbreakable: false
 usage: 1
 usageLimit: -1
 dropOptions:
-  glowDrop: false
+  glowDrop: true
   glowDropColor: WHITE
   displayNameDrop: false
 hiders:
@@ -95,11 +95,11 @@ activators:
     requiredExecutableItems:
       errorMessage: ''
     detailedSlots:
-    - -1
+      - -1
     commands:
-    - 'RANDOM RUN: %javascript_scroll_recipe_makeScroll,0,specialScrolls,1%'
-    - NOTHING*1
-    - RANDOM END
+      - 'RANDOM RUN: %javascript_scroll_recipe_makeScroll,0,specialScrolls,1%'
+      - NOTHING*1
+      - RANDOM END
     playerConditions: {}
     worldConditions: {}
     itemConditions: {}
@@ -110,3 +110,4 @@ recognitions: []
 attributes: {}
 config_5: true
 config_update: true
+customModelData: 10018

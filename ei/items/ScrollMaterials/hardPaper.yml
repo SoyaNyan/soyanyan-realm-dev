@@ -1,9 +1,9 @@
 name: '&6&l가공된 &f&l종이'
 lore:
-- '&7가공된 종이이다.'
-- '&7주문서 제작에 쓸 수 있다.'
-material: PAPER
-glow: true
+  - '&7가공된 종이이다.'
+  - '&7주문서 제작에 쓸 수 있다.'
+material: CREEPER_BANNER_PATTERN
+glow: false
 disableStack: false
 keepItemOnDeath: false
 canBeUsedOnlyByTheOwner: false
@@ -33,7 +33,6 @@ restrictions:
   cancel-anvil: true
   cancel-dropper: true
   cancel-dispenser: true
-  cancel-consumption: true
   cancel-tool-interactions: true
   cancel-enchant: true
   cancel-item-craft-no-custom: true
@@ -58,3 +57,4 @@ recognitions: []
 attributes: {}
 config_5: true
 config_update: true
+customModelData: 10032

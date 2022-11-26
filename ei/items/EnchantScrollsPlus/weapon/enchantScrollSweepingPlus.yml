@@ -1,23 +1,23 @@
 name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l무기 #FFFFB5&l휩쓸기 #ECEAE4&l강화 주문서'
 lore:
-- '&7'
-- '&7주문서 종류: &6&l휩쓸기 &e&l강화 주문서'
-- '&7주문서 적용조건: &9휩쓸기III &f~ &9휩쓸기VIII'
-- '&7--------------------------'
-- '&7성공확률 가중치 - &fx&30.6'
-- '&b&l강화성공 &7| &c&l파괴 &6&l확률&7:'
-- '&f  +5: &a70&7% | &c5&7%'
-- '&f  +6: &a60&7% | &c10&7%'
-- '&f  +7: &a50&7% | &c15&7%'
-- '&f  +8: &a40&7% | &c20&7%'
-- '&f  +9: &a30&7% | &c25&7%'
-- '&f +10: &a25&7% | &c30&7%'
-- '&7--------------------------'
-- '&c&l<사용조건>'
-- '&7'
-- '&7사용가능 횟수: &b1&f&l회'
-- '&7재사용 대기시간: &e5&f초'
-- '&7사용방법: 공중에 좌클릭'
+  - '&7'
+  - '&7주문서 종류: &6&l휩쓸기 &e&l강화 주문서'
+  - '&7주문서 적용조건: &9휩쓸기III &f~ &9휩쓸기VIII'
+  - '&7--------------------------'
+  - '&7성공확률 가중치 - &fx&30.6'
+  - '&b&l강화성공 &7| &c&l파괴 &6&l확률&7:'
+  - '&f  +5: &a70&7% | &c5&7%'
+  - '&f  +6: &a60&7% | &c10&7%'
+  - '&f  +7: &a50&7% | &c15&7%'
+  - '&f  +8: &a40&7% | &c20&7%'
+  - '&f  +9: &a30&7% | &c25&7%'
+  - '&f +10: &a25&7% | &c30&7%'
+  - '&7--------------------------'
+  - '&c&l<사용조건>'
+  - '&7'
+  - '&7사용가능 횟수: &b1&f&l회'
+  - '&7재사용 대기시간: &e5&f초'
+  - '&7사용방법: 공중에 좌클릭'
 material: MOJANG_BANNER_PATTERN
 glow: true
 disableStack: false
@@ -28,7 +28,7 @@ unbreakable: false
 usage: 1
 usageLimit: -1
 dropOptions:
-  glowDrop: false
+  glowDrop: true
   glowDropColor: WHITE
   displayNameDrop: false
 hiders:
@@ -82,11 +82,11 @@ activators:
     requiredExecutableItems:
       errorMessage: ''
     detailedSlots:
-    - -1
+      - -1
     commands:
-    - 'RANDOM RUN: %javascript_enchant_scroll_applyEnchant,0,sweeping,1%'
-    - NOTHING*1
-    - RANDOM END
+      - 'RANDOM RUN: %javascript_enchant_scroll_applyEnchant,0,sweeping,1%'
+      - NOTHING*1
+      - RANDOM END
     playerConditions: {}
     worldConditions: {}
     itemConditions: {}

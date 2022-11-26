@@ -1,31 +1,31 @@
 name: '&7[#55CBCD ★★★ &7] #ECD5E3&l아이템 #FFFFB5&l프로텍트 #ECEAE4&l스크롤'
 lore:
-- '&7'
-- '&7아이템 종류: &6&l특수 &e&l아이템 &7(ES-PS001)'
-- '&7아이템 적용대상: &d모든 강화 주문서'
-- '&b실패 시 파괴되는 강화 주문서'
-- '&d혼돈의 주문서 제외.'
-- '&7-----------------------'
-- '&e&l아이템 강화 주문서&7를 사용할 때'
-- '&f&l&n퀵슬롯&7에 프로텍트 스크롤이 존재'
-- '&7하면 &a&l신비로운 힘&7으로 강화 실패 시'
-- '&7아이템이 파괴되는 것을 &c&l방지&7한다.'
-- '&7-----------------------'
-- '&5>> 퀵슬롯 여러 칸에 프로텍트 스크롤이'
-- '&5있다면 가장 왼쪽의 칸만 적용된다.'
-- '&7-----------------------'
-- '&c&l<사용조건>'
-- '&7'
-- '&7사용가능 횟수: &b1&f&l회'
-- '&7사용방법: 퀵슬롯에 올리고 강화'
-- '&7주문서 사용 (2~9번)'
-material: FLOWER_BANNER_PATTERN
+  - '&7'
+  - '&7아이템 종류: &6&l특수 &e&l아이템 &7(ES-PS001)'
+  - '&7아이템 적용대상: &d모든 강화 주문서'
+  - '&b실패 시 파괴되는 강화 주문서'
+  - '&d혼돈의 주문서 제외.'
+  - '&7-----------------------'
+  - '&e&l아이템 강화 주문서&7를 사용할 때'
+  - '&f&l&n퀵슬롯&7에 프로텍트 스크롤이 존재'
+  - '&7하면 &a&l신비로운 힘&7으로 강화 실패 시'
+  - '&7아이템이 파괴되는 것을 &c&l방지&7한다.'
+  - '&7-----------------------'
+  - '&5>> 퀵슬롯 여러 칸에 프로텍트 스크롤이'
+  - '&5있다면 가장 왼쪽의 칸만 적용된다.'
+  - '&7-----------------------'
+  - '&c&l<사용조건>'
+  - '&7'
+  - '&7사용가능 횟수: &b1&f&l회'
+  - '&7사용방법: 퀵슬롯에 올리고 강화'
+  - '&7주문서 사용 (2~9번)'
+material: CREEPER_BANNER_PATTERN
 glow: true
 disableStack: false
 keepItemOnDeath: false
 canBeUsedOnlyByTheOwner: false
 storeItemInfo: false
-unbreakable: true
+unbreakable: false
 usage: 0
 usageLimit: -1
 dropOptions:
@@ -96,7 +96,7 @@ activators:
     requiredExecutableItems:
       errorMessage: ''
     detailedSlots:
-    - -1
+      - -1
     commands: []
     playerConditions: {}
     worldConditions: {}
@@ -110,3 +110,4 @@ bannerSettings:
 attributes: {}
 config_5: true
 config_update: true
+customModelData: 10002
