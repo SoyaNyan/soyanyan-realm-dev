@@ -2804,7 +2804,7 @@ function fixLore(): ReturnDataType {
 	playSound('block.anvil.use', PLAYER_NAME)
 
 	// return result
-	return true
+	return 1
 }
 
 // placeholder controller

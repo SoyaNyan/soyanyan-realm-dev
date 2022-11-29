@@ -1,0 +1,115 @@
+name: '&7[#FFC8A2 ★ &7] #ECEAE4&l아이템 #FF968A&l정보수정 #FFC8A2&l스크롤'
+lore:
+  - '&7'
+  - '&7아이템 종류: &6&l특수 &e&l아이템'
+  - '&7------------------------'
+  - '&e&l클릭&7으로 사용하면 &3&l&n강화된 아이템&7의'
+  - '&5&l인챈트 정보&7를 수정합니다.'
+  - '&7------------------------'
+  - '&c&l<사용조건>'
+  - '&7'
+  - '&7사용가능 횟수: &b1&f&l회'
+  - '&7재사용 대기시간: &e5&f초'
+  - '&7사용방법: 공중에 클릭'
+material: CREEPER_BANNER_PATTERN
+glow: true
+disableStack: false
+keepItemOnDeath: false
+canBeUsedOnlyByTheOwner: false
+storeItemInfo: false
+unbreakable: false
+usage: 1
+usageLimit: -1
+dropOptions:
+  glowDrop: false
+  glowDropColor: WHITE
+  displayNameDrop: false
+hiders:
+  hideEnchantments: false
+  hideUnbreakable: false
+  hideAttributes: false
+  hidePotionEffects: true
+  hideUsage: true
+  hideDye: false
+enchantments: {}
+giveFirstJoin:
+  giveFirstJoin: false
+  giveFirstJoinAmount: 1
+  giveFirstJoinSlot: 0
+restrictions:
+  cancel-enchant-anvil: true
+  cancel-item-frame: true
+  cancel-cartography: true
+  cancel-composter: true
+  cancel-dispenser: true
+  cancel-loom: true
+  cancel-smithing-table: true
+  cancel-dropper: true
+  cancel-rename-anvil: true
+  cancel-tool-interactions: true
+  cancel-consumption: true
+  cancel-anvil: true
+  cancel-hopper: true
+  cancel-grind-stone: true
+  cancel-brewing: true
+  cancel-lectern: true
+  cancel-item-craft: true
+  cancel-beacon: true
+  cancel-item-craft-no-custom: true
+  cancel-deposit-in-furnace: true
+  cancel-stone-cutter: true
+  cancel-enchant: true
+cancelEventIfNoPerm: false
+cancelEventIfNotOwner: false
+disabledWorlds: []
+variables: {}
+activators:
+  activator1:
+    name: 클릭 사용
+    option: PLAYER_ALL_CLICK
+    typeTarget: ONLY_AIR
+    usageModification: -1
+    cancelEvent: true
+    silenceOutput: false
+    autoUpdateItem: false
+    cooldownOptions:
+      cooldown: 5
+      isCooldownInTicks: false
+      cooldownMsg: '&6>> 재사용 대기중... &7(%time_S%초)'
+      displayCooldownMessage: true
+      cancelEventIfInCooldown: true
+    globalCooldownOptions:
+      cooldown: 0
+      isCooldownInTicks: false
+      cooldownMsg: '&6>> 전체 재사용 대기중... &7(%time_S%초)'
+      displayCooldownMessage: true
+      cancelEventIfInCooldown: false
+    otherEICooldowns: {}
+    requiredItems:
+      errorMessage: ''
+    requiredExecutableItems:
+      errorMessage: ''
+    detailedSlots:
+      - -1
+    commands:
+      - 'RANDOM RUN: %javascript_enchant_scroll_fixLore,0%'
+      - NOTHING*1
+      - RANDOM END
+    playerConditions: {}
+    worldConditions: {}
+    itemConditions: {}
+    customConditions: {}
+    placeholdersConditions:
+      plchC1:
+        type: PLAYER_STRING
+        comparator: EQUALS
+        part1: '%javascript_enchant_scroll_hasEnchant,0%'
+        part2: 'true'
+        cancelEventIfNotValid: false
+        messageIfNotValid: '&6>> 인챈트가 적용되지 않은 아이템에는 사용할 수 없습니다.'
+    variablesModification: {}
+recognitions: []
+attributes: {}
+config_5: true
+config_update: true
+customModelData: 10049
