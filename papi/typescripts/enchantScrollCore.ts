@@ -1,10 +1,10 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.ts
- * Version: v1.4.7
- * Last Update: 2022-10-09
+ * Version: v1.4.8
+ * Last Update: 2022-11-29
  *
- * TypeScript Version: v4.8.2
+ * TypeScript Version: v4.9.3
  * Target: ES5
  * JSX: None
  * Module: ESNext
@@ -2159,6 +2159,60 @@ function getNextEnchantData(
 	}
 }
 
+// send success message
+function sendSuccessMessage(playerName: string, enchant: string, nextLevel: number): boolean {
+	// get kr name of target item
+	const krName = getKrName(40)
+
+	// get kr name of enchant
+	const krEnchant = getKrEnchantName(enchant)
+
+	// set message
+	const message = `&7[&6강화&7] &7&l${krName}&f의 #FFFFB5&l${krEnchant} 인챈트 &6&l+${nextLevel} &f강화에 &a&l성공&f했습니다.`
+
+	// send message
+	return sendMessage(consoleColorString(message))
+}
+
+// send fail message
+function sendFailMessage(playerName: string, enchant: string, nextLevel: number): boolean {
+	// get kr name of target item
+	const krName = getKrName(40)
+
+	// get kr name of enchant
+	const krEnchant = getKrEnchantName(enchant)
+
+	// set message
+	const message = `&7[&6강화&7] &7&l${krName}&f의 #FFFFB5&l${krEnchant} 인챈트 &6&l+${nextLevel} &f강화에 &c&l실패&f했습니다.`
+
+	// send message
+	return sendMessage(consoleColorString(message))
+}
+
+// send success message
+function sendRandomSuccessMessage(playerName: string): boolean {
+	// get kr name of target item
+	const krName = getKrName(40)
+
+	// set message
+	const message = `&7[&6강화&7] &7&l${krName}&f의 #FFFFB5&l인챈트 &6&l랜덤 &f강화에 &a&l성공&f했습니다.`
+
+	// send message
+	return sendMessage(consoleColorString(message))
+}
+
+// send fail message
+function sendRandomFailMessage(playerName: string): boolean {
+	// get kr name of target item
+	const krName = getKrName(40)
+
+	// set message
+	const message = `&7[&6강화&7] &7&l${krName}&f의 #FFFFB5&l인챈트 &6&l랜덤 &f강화에 &c&l실패&f했습니다.`
+
+	// send message
+	return sendMessage(consoleColorString(message))
+}
+
 // broadcast success message
 function broadcastSuccess(playerName: string, enchant: string, nextLevel: number): boolean {
 	// get kr name of target item
@@ -2288,6 +2342,9 @@ function applyNormalEnchant(
 		// broadcast success message (+12 ~)
 		if (nextEnchantData[enchant] >= 12) {
 			broadcastSuccess(PLAYER_NAME, enchant, nextEnchantData[enchant])
+		} else {
+			// or send message to player
+			sendSuccessMessage(PLAYER_NAME, enchant, nextEnchantData[enchant])
 		}
 
 		// replace target item
@@ -2325,6 +2382,9 @@ function applyNormalEnchant(
 		// broadcast fail message (+12 ~)
 		if (nextLevel >= 12) {
 			broadcastFail(PLAYER_NAME, enchant, nextLevel)
+		} else {
+			// or send message to player
+			sendFailMessage(PLAYER_NAME, enchant, nextLevel)
 		}
 
 		// replace target item
@@ -2354,6 +2414,9 @@ function applyNormalEnchant(
 	// broadcast fail message  (+12 ~)
 	if (nextLevel >= 12) {
 		broadcastFail(PLAYER_NAME, enchant, nextLevel)
+	} else {
+		// or send message to player
+		sendFailMessage(PLAYER_NAME, enchant, nextLevel)
 	}
 
 	// replace target item

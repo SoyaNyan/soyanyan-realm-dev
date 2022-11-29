@@ -1,10 +1,10 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.js
- * Version: v1.4.7
- * Last Update: 2022-10-09
+ * Version: v1.4.8
+ * Last Update: 2022-11-29
  *
- * TypeScript Version: v4.8.2
+ * TypeScript Version: v4.9.3
  * Target: ES5
  * JSX: None
  * Module: ESNext
@@ -1521,6 +1521,40 @@ function getNextEnchantData(result, enchantData, enchant, isPlus) {
 		((_b = {}), (_b[enchant] = enchantData[enchant] - 1), _b)
 	)
 }
+function sendSuccessMessage(playerName, enchant, nextLevel) {
+	var krName = getKrName(40)
+	var krEnchant = getKrEnchantName(enchant)
+	var message = '&7[&6\uAC15\uD654&7] &7&l'
+		.concat(krName, '&f\uC758 #FFFFB5&l')
+		.concat(krEnchant, ' \uC778\uCC48\uD2B8 &6&l+')
+		.concat(nextLevel, ' &f\uAC15\uD654\uC5D0 &a&l\uC131\uACF5&f\uD588\uC2B5\uB2C8\uB2E4.')
+	return sendMessage(consoleColorString(message))
+}
+function sendFailMessage(playerName, enchant, nextLevel) {
+	var krName = getKrName(40)
+	var krEnchant = getKrEnchantName(enchant)
+	var message = '&7[&6\uAC15\uD654&7] &7&l'
+		.concat(krName, '&f\uC758 #FFFFB5&l')
+		.concat(krEnchant, ' \uC778\uCC48\uD2B8 &6&l+')
+		.concat(nextLevel, ' &f\uAC15\uD654\uC5D0 &c&l\uC2E4\uD328&f\uD588\uC2B5\uB2C8\uB2E4.')
+	return sendMessage(consoleColorString(message))
+}
+function sendRandomSuccessMessage(playerName) {
+	var krName = getKrName(40)
+	var message = '&7[&6\uAC15\uD654&7] &7&l'.concat(
+		krName,
+		'&f\uC758 #FFFFB5&l\uC778\uCC48\uD2B8 &6&l\uB79C\uB364 &f\uAC15\uD654\uC5D0 &a&l\uC131\uACF5&f\uD588\uC2B5\uB2C8\uB2E4.'
+	)
+	return sendMessage(consoleColorString(message))
+}
+function sendRandomFailMessage(playerName) {
+	var krName = getKrName(40)
+	var message = '&7[&6\uAC15\uD654&7] &7&l'.concat(
+		krName,
+		'&f\uC758 #FFFFB5&l\uC778\uCC48\uD2B8 &6&l\uB79C\uB364 &f\uAC15\uD654\uC5D0 &c&l\uC2E4\uD328&f\uD588\uC2B5\uB2C8\uB2E4.'
+	)
+	return sendMessage(consoleColorString(message))
+}
 function broadcastSuccess(playerName, enchant, nextLevel) {
 	var krName = getKrName(40)
 	var krEnchant = getKrEnchantName(enchant)
@@ -1604,6 +1638,8 @@ function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) 
 		playTitle(title_1, subtitle_1, PLAYER_NAME)
 		if (nextEnchantData[enchant] >= 12) {
 			broadcastSuccess(PLAYER_NAME, enchant, nextEnchantData[enchant])
+		} else {
+			sendSuccessMessage(PLAYER_NAME, enchant, nextEnchantData[enchant])
 		}
 		replaceItem(
 			PLAYER_NAME,
@@ -1627,6 +1663,8 @@ function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) 
 			: sendScrollMessage(name, RepairCost, nextRepairCost)
 		if (nextLevel >= 12) {
 			broadcastFail(PLAYER_NAME, enchant, nextLevel)
+		} else {
+			sendFailMessage(PLAYER_NAME, enchant, nextLevel)
 		}
 		isPlus
 			? destroyItem(PLAYER_NAME)
@@ -1641,6 +1679,8 @@ function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) 
 	playTitle(title, subtitle, PLAYER_NAME)
 	if (nextLevel >= 12) {
 		broadcastFail(PLAYER_NAME, enchant, nextLevel)
+	} else {
+		sendFailMessage(PLAYER_NAME, enchant, nextLevel)
 	}
 	replaceItem(PLAYER_NAME, failNBTData, displayData, nextEnchantData)
 	return 'fail'
