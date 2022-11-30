@@ -34,7 +34,7 @@ hiders:
   hideUnbreakable: false
   hideAttributes: false
   hidePotionEffects: true
-  hideUsage: false
+  hideUsage: true
 enchantments: {}
 giveFirstJoin:
   giveFirstJoin: false

@@ -1,29 +1,29 @@
 name: '&7[#FFC8A2 ★★ &7] #55CBCD&l방어구 #FFFFB5&l가시 #ECEAE4&l강화 주문서'
 lore:
-- '&7'
-- '&7주문서 종류: &6&l가시 &e&l강화 주문서'
-- '&7주문서 적용조건: &9가시III &f~ &9가시XIV'
-- '&7--------------------------'
-- '&7성공확률 가중치 - &fx&30.8'
-- '&b&l강화성공 &7| &c&l단계하락 &6&l확률&7:'
-- '&f  +4: &a80&7% | &c5&7%'
-- '&f  +5: &a70&7% | &c5&7%'
-- '&f  +6: &a60&7% | &c10&7%'
-- '&f  +7: &a50&7% | &c15&7%'
-- '&f  +8: &a40&7% | &c20&7%'
-- '&f  +9: &a30&7% | &c25&7%'
-- '&f +10: &a25&7% | &c30&7%'
-- '&f +11: &a20&7% | &c35&7%'
-- '&f +12: &a15&7% | &c40&7%'
-- '&f +13: &a10&7% | &c50&7%'
-- '&f +14: &a10&7% | &c60&7%'
-- '&f +15: &a5&7% | &c70&7%'
-- '&7--------------------------'
-- '&c&l<사용조건>'
-- '&7'
-- '&7사용가능 횟수: &b1&f&l회'
-- '&7재사용 대기시간: &e5&f초'
-- '&7사용방법: 공중에 좌클릭'
+  - '&7'
+  - '&7주문서 종류: &6&l가시 &e&l강화 주문서'
+  - '&7주문서 적용조건: &9가시III &f~ &9가시XIV'
+  - '&7--------------------------'
+  - '&7성공확률 가중치 - &fx&30.8'
+  - '&b&l강화성공 &7| &c&l단계하락 &6&l확률&7:'
+  - '&f  +4: &a80&7% | &c5&7%'
+  - '&f  +5: &a70&7% | &c5&7%'
+  - '&f  +6: &a60&7% | &c10&7%'
+  - '&f  +7: &a50&7% | &c15&7%'
+  - '&f  +8: &a40&7% | &c20&7%'
+  - '&f  +9: &a30&7% | &c25&7%'
+  - '&f +10: &a25&7% | &c30&7%'
+  - '&f +11: &a20&7% | &c35&7%'
+  - '&f +12: &a15&7% | &c40&7%'
+  - '&f +13: &a10&7% | &c50&7%'
+  - '&f +14: &a10&7% | &c60&7%'
+  - '&f +15: &a5&7% | &c70&7%'
+  - '&7--------------------------'
+  - '&c&l<사용조건>'
+  - '&7'
+  - '&7사용가능 횟수: &b1&f&l회'
+  - '&7재사용 대기시간: &e5&f초'
+  - '&7사용방법: 공중에 좌클릭'
 material: MOJANG_BANNER_PATTERN
 glow: true
 disableStack: false
@@ -42,7 +42,7 @@ hiders:
   hideUnbreakable: false
   hideAttributes: false
   hidePotionEffects: true
-  hideUsage: false
+  hideUsage: true
 enchantments: {}
 giveFirstJoin:
   giveFirstJoin: false
@@ -88,11 +88,11 @@ activators:
     requiredExecutableItems:
       errorMessage: ''
     detailedSlots:
-    - -1
+      - -1
     commands:
-    - 'RANDOM RUN: %javascript_enchant_scroll_applyEnchant,0,thorns,0%'
-    - NOTHING*1
-    - RANDOM END
+      - 'RANDOM RUN: %javascript_enchant_scroll_applyEnchant,0,thorns,0%'
+      - NOTHING*1
+      - RANDOM END
     playerConditions: {}
     worldConditions: {}
     itemConditions: {}
