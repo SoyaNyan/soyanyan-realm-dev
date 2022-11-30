@@ -1,18 +1,18 @@
 name: '&7[#FFC8A2 ★ &7] &a&l가득찬 &e&l경험치 &b&l유리병 &7| &61,000 &cexp'
 lore:
-- '&7'
-- '&7아이템 종류: &e경험치 &7(EE-FC003)'
-- '&7경험치 용량: &61,000 &cexp&7(&926&7lv)'
-- '&7----------------------'
-- '&f&l우클릭&7으로 사용하면 병에 저장된'
-- '&7경험치 1,000exp(26lv)을 획득'
-- '&7할 수 있다.'
-- '&7----------------------'
-- '&c&l<사용조건>'
-- '&7'
-- '&7사용가능 횟수: &b1&f&l회'
-- '&7재사용 대기시간: &e3&f초'
-- '&7사용방법: 공중에 우클릭'
+  - '&7'
+  - '&7아이템 종류: &e경험치 &7(EE-FC003)'
+  - '&7경험치 용량: &61,000 &cexp&7(&926&7lv)'
+  - '&7----------------------'
+  - '&f&l우클릭&7으로 사용하면 병에 저장된'
+  - '&7경험치 1,000exp(26lv)을 획득'
+  - '&7할 수 있다.'
+  - '&7----------------------'
+  - '&c&l<사용조건>'
+  - '&7'
+  - '&7사용가능 횟수: &b1&f&l회'
+  - '&7재사용 대기시간: &e3&f초'
+  - '&7사용방법: 공중에 우클릭'
 material: EXPERIENCE_BOTTLE
 glow: true
 disableStack: false
@@ -30,8 +30,8 @@ hiders:
   hideEnchantments: false
   hideUnbreakable: false
   hideAttributes: false
-  hidePotionEffects: false
-  hideUsage: false
+  hidePotionEffects: true
+  hideUsage: true
 enchantments: {}
 giveFirstJoin:
   giveFirstJoin: false
@@ -74,9 +74,9 @@ activators:
     requiredExecutableItems:
       errorMessage: ''
     detailedSlots:
-    - -1
+      - -1
     commands:
-    - exp give %player% 1000
+      - exp give %player% 1000
     playerConditions: {}
     worldConditions: {}
     itemConditions: {}
@@ -87,3 +87,4 @@ recognitions: []
 attributes: {}
 config_5: true
 config_update: true
+customModelData: 10018

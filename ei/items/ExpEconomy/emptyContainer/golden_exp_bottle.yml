@@ -1,19 +1,19 @@
 name: '&7[#55CBCD ★ &7] &6&l황금 &e&l경험치 &b&l유리병'
 lore:
-- '&7'
-- '&7아이템 종류: &e경험치재료 &7(EE-EC006)'
-- '&7경험치 용량: &5&l무제한'
-- '&7--------------------------'
-- '&f&l클릭&7으로 사용하면 플레이어의'
-- '&7경험치를 &6&l전부 &7저장할 수 있다.'
-- '&7--------------------------'
-- '&c&l<사용조건>'
-- '&7'
-- '&7사용가능 횟수: &b1&f&l회'
-- '&7재사용 대기시간: &e5&f&l초'
-- '&7사용방법: 공중에 우클릭'
-- '&7교환 수수료: &65&7%'
-material: HONEY_BOTTLE
+  - '&7'
+  - '&7아이템 종류: &e경험치재료 &7(EE-EC006)'
+  - '&7경험치 용량: &5&l무제한'
+  - '&7--------------------------'
+  - '&f&l클릭&7으로 사용하면 플레이어의'
+  - '&7경험치를 &6&l전부 &7저장할 수 있다.'
+  - '&7--------------------------'
+  - '&c&l<사용조건>'
+  - '&7'
+  - '&7사용가능 횟수: &b1&f&l회'
+  - '&7재사용 대기시간: &e5&f&l초'
+  - '&7사용방법: 공중에 우클릭'
+  - '&7교환 수수료: &65&7%'
+material: EXPERIENCE_BOTTLE
 glow: true
 disableStack: false
 keepItemOnDeath: false
@@ -31,7 +31,7 @@ hiders:
   hideUnbreakable: false
   hideAttributes: false
   hidePotionEffects: false
-  hideUsage: false
+  hideUsage: true
 enchantments: {}
 giveFirstJoin:
   giveFirstJoin: false
@@ -91,17 +91,17 @@ activators:
     requiredExecutableItems:
       errorMessage: ''
     detailedSlots:
-    - -1
+      - -1
     commands:
-    - 'SENDMESSAGE %item%을 사용했습니다. §7(수수료: %javascript_golden_bottle_tax% exp)'
-    - exp give %player% -%javascript_golden_bottle_require_exp%
-    - ei give %player% exp_filled_starlight_1000000 %javascript_golden_bottle_count_1000000%
-    - ei give %player% exp_filled_starlight_100000 %javascript_golden_bottle_count_100000%
-    - ei give %player% exp_filled_crystal_10000 %javascript_golden_bottle_count_10000%
-    - ei give %player% exp_filled_crystal_5000 %javascript_golden_bottle_count_5000%
-    - ei give %player% exp_filled_bottle_1000 %javascript_golden_bottle_count_1000%
-    - ei give %player% exp_filled_bottle_500 %javascript_golden_bottle_count_500%
-    - ei give %player% exp_filled_bottle_100 %javascript_golden_bottle_count_100%
+      - 'SENDMESSAGE %item%을 사용했습니다. §7(수수료: %javascript_golden_bottle_tax% exp)'
+      - exp give %player% -%javascript_golden_bottle_require_exp%
+      - ei give %player% exp_filled_starlight_1000000 %javascript_golden_bottle_count_1000000%
+      - ei give %player% exp_filled_starlight_100000 %javascript_golden_bottle_count_100000%
+      - ei give %player% exp_filled_crystal_10000 %javascript_golden_bottle_count_10000%
+      - ei give %player% exp_filled_crystal_5000 %javascript_golden_bottle_count_5000%
+      - ei give %player% exp_filled_bottle_1000 %javascript_golden_bottle_count_1000%
+      - ei give %player% exp_filled_bottle_500 %javascript_golden_bottle_count_500%
+      - ei give %player% exp_filled_bottle_100 %javascript_golden_bottle_count_100%
     playerConditions:
       ifPlayerEXP: '>=105'
       ifPlayerEXPMsg: ' &6>> 경험치 병을 채우기 위한 플레이어의 경험치가 충분하지 않습니다!'
@@ -111,6 +111,12 @@ activators:
     placeholdersConditions: {}
     variablesModification: {}
 recognitions: []
+potionSettings:
+  potionType: AWKWARD
+  potionExtended: false
+  potionUpgraded: false
+  potionEffects: {}
 attributes: {}
 config_5: true
 config_update: true
+customModelData: 10068

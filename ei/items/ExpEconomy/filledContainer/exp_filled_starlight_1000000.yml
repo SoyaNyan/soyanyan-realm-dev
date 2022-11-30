@@ -1,19 +1,19 @@
 name: '&7[#55CBCD ★ &7] &5&l찬&d&l란&c&l한 &e&l경험치&a&l의 &9&l핵 &7| &61,000,000 &cexp'
 lore:
-- '&7'
-- '&7아이템 종류: &e경험치 &7(EE-FC007)'
-- '&7경험치 용량: &61,000,000 &cexp&7(&9489&7lv)'
-- '&7-------------------------'
-- '&f&l우클릭&7으로 사용하면 결정에 저장된'
-- '&7경험치 1,000,000exp(489lv)을 획득'
-- '&7할 수 있다.'
-- '&7-------------------------'
-- '&c&l<사용조건>'
-- '&7'
-- '&7사용가능 횟수: &b1&f&l회'
-- '&7재사용 대기시간: &e3&f초'
-- '&7사용방법: 공중에 우클릭'
-material: END_CRYSTAL
+  - '&7'
+  - '&7아이템 종류: &e경험치 &7(EE-FC007)'
+  - '&7경험치 용량: &61,000,000 &cexp&7(&9489&7lv)'
+  - '&7-------------------------'
+  - '&f&l우클릭&7으로 사용하면 결정에 저장된'
+  - '&7경험치 1,000,000exp(489lv)을 획득'
+  - '&7할 수 있다.'
+  - '&7-------------------------'
+  - '&c&l<사용조건>'
+  - '&7'
+  - '&7사용가능 횟수: &b1&f&l회'
+  - '&7재사용 대기시간: &e3&f초'
+  - '&7사용방법: 공중에 우클릭'
+material: EMERALD
 glow: true
 disableStack: false
 keepItemOnDeath: false
@@ -37,7 +37,7 @@ hiders:
   hideUnbreakable: false
   hideAttributes: false
   hidePotionEffects: false
-  hideUsage: false
+  hideUsage: true
   hideDye: false
 enchantments: {}
 giveFirstJoin:
@@ -81,9 +81,9 @@ activators:
     requiredExecutableItems:
       errorMessage: ''
     detailedSlots:
-    - -1
+      - -1
     commands:
-    - exp give %player% 1000000
+      - exp give %player% 1000000
     playerConditions: {}
     worldConditions: {}
     itemConditions: {}
@@ -91,3 +91,4 @@ activators:
     placeholdersConditions: {}
     variablesModification: {}
 attributes: {}
+customModelData: 10016

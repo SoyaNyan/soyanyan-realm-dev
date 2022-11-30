@@ -1,19 +1,19 @@
 name: '&7[#FFC8A2 ★★ &7] &a&l충전된 &e&l경험치 &d&l크리스탈 &7| &610,000 &cexp'
 lore:
-- '&7'
-- '&7아이템 종류: &e경험치 &7(EE-FC005)'
-- '&7경험치 용량: &610,000 &cexp&7(&963&7lv)'
-- '&7----------------------'
-- '&f&l우클릭&7으로 사용하면 결정에 저장된'
-- '&7경험치 10,000exp(63lv)을 획득'
-- '&7할 수 있다.'
-- '&7----------------------'
-- '&c&l<사용조건>'
-- '&7'
-- '&7사용가능 횟수: &b1&f&l회'
-- '&7재사용 대기시간: &e3&f초'
-- '&7사용방법: 공중에 우클릭'
-material: AMETHYST_SHARD
+  - '&7'
+  - '&7아이템 종류: &e경험치 &7(EE-FC005)'
+  - '&7경험치 용량: &610,000 &cexp&7(&963&7lv)'
+  - '&7----------------------'
+  - '&f&l우클릭&7으로 사용하면 결정에 저장된'
+  - '&7경험치 10,000exp(63lv)을 획득'
+  - '&7할 수 있다.'
+  - '&7----------------------'
+  - '&c&l<사용조건>'
+  - '&7'
+  - '&7사용가능 횟수: &b1&f&l회'
+  - '&7재사용 대기시간: &e3&f초'
+  - '&7사용방법: 공중에 우클릭'
+material: EMERALD
 glow: true
 disableStack: false
 keepItemOnDeath: false
@@ -31,7 +31,7 @@ hiders:
   hideUnbreakable: false
   hideAttributes: false
   hidePotionEffects: false
-  hideUsage: false
+  hideUsage: true
 enchantments: {}
 giveFirstJoin:
   giveFirstJoin: false
@@ -74,9 +74,9 @@ activators:
     requiredExecutableItems:
       errorMessage: ''
     detailedSlots:
-    - -1
+      - -1
     commands:
-    - exp give %player% 10000
+      - exp give %player% 10000
     playerConditions: {}
     worldConditions: {}
     itemConditions: {}
@@ -87,3 +87,4 @@ recognitions: []
 attributes: {}
 config_5: true
 config_update: true
+customModelData: 10012

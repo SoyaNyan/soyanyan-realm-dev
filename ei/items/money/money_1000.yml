@@ -8,7 +8,7 @@ keepItemOnDeath: false
 canBeUsedOnlyByTheOwner: false
 storeItemInfo: false
 unbreakable: false
-usage: 0
+usage: 1
 usageLimit: -1
 cancelEventIfNoPerm: false
 cancelEventIfNotOwner: false
@@ -16,7 +16,7 @@ disabledWorlds: []
 recognitions: []
 config_5: true
 config_update: true
-customModelData: 10001
+customModelData: 10009
 dropOptions:
   glowDrop: true
   glowDropColor: MAGIC
@@ -26,7 +26,7 @@ hiders:
   hideUnbreakable: false
   hideAttributes: false
   hidePotionEffects: false
-  hideUsage: false
+  hideUsage: true
   hideDye: false
 enchantments: {}
 giveFirstJoin:
@@ -35,15 +35,15 @@ giveFirstJoin:
   giveFirstJoinSlot: 0
 restrictions:
   cancel-anvil: true
-  cancel-item-craft-no-custom: true
-  cancel-item-craft: true
-  cancel-cartography: true
-  cancel-deposit-in-furnace: true
-  cancel-rename-anvil: true
-  cancel-item-delete-by-lightning: true
-  cancel-enchant-anvil: true
   cancel-item-burn: true
+  cancel-rename-anvil: true
+  cancel-enchant-anvil: true
+  cancel-cartography: true
+  cancel-item-craft-no-custom: true
+  cancel-item-delete-by-lightning: true
   cancel-item-delete-by-cactus: true
+  cancel-item-craft: true
+  cancel-deposit-in-furnace: true
 variables: {}
 activators: {}
 attributes: {}
