@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.js
- * Version: v1.4.8
- * Last Update: 2022-11-29
+ * Version: v1.4.9
+ * Last Update: 2022-12-01
  *
  * TypeScript Version: v4.9.3
  * Target: ES5
@@ -1661,10 +1661,10 @@ function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) 
 		isPlus
 			? sendScrollMessage(name, RepairCost, 5)
 			: sendScrollMessage(name, RepairCost, nextRepairCost)
-		if (nextLevel >= 12) {
-			broadcastFail(PLAYER_NAME, enchant, nextLevel)
+		if (nextLevel + 1 >= 12) {
+			broadcastFail(PLAYER_NAME, enchant, nextLevel + 1)
 		} else {
-			sendFailMessage(PLAYER_NAME, enchant, nextLevel)
+			sendFailMessage(PLAYER_NAME, enchant, nextLevel + 1)
 		}
 		isPlus
 			? destroyItem(PLAYER_NAME)

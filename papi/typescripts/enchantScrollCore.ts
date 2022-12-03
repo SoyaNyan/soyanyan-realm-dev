@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.ts
- * Version: v1.4.8
- * Last Update: 2022-11-29
+ * Version: v1.4.9
+ * Last Update: 2022-12-01
  *
  * TypeScript Version: v4.9.3
  * Target: ES5
@@ -2380,11 +2380,11 @@ function applyNormalEnchant(
 			: sendScrollMessage(name, RepairCost, nextRepairCost)
 
 		// broadcast fail message (+12 ~)
-		if (nextLevel >= 12) {
-			broadcastFail(PLAYER_NAME, enchant, nextLevel)
+		if (nextLevel + 1 >= 12) {
+			broadcastFail(PLAYER_NAME, enchant, nextLevel + 1)
 		} else {
 			// or send message to player
-			sendFailMessage(PLAYER_NAME, enchant, nextLevel)
+			sendFailMessage(PLAYER_NAME, enchant, nextLevel + 1)
 		}
 
 		// replace target item
