@@ -1,0 +1,109 @@
+name: '&7[#FFC8A2 ★ &7] #F6EAC2&l평범한 #FFFFB5&l랜덤 #ECEAE4&l박스'
+lore:
+  - '&7'
+  - '&7아이템 종류: &6&l랜덤박스'
+  - '&7---------------------'
+  - '&b&l획득 가능한 &9&l아이템 &7| &6&l확률&7:'
+  - '&c&l 꽝 &f: &c20&7%'
+  - '&8&l 석탄 &f: &a20&7%'
+  - '&e&l 구리 주괴 &f: &a20&7%'
+  - '&7&l 철 주괴 &f: &a15&7%'
+  - '&6&l 금 주괴 &f: &a10&7%'
+  - '&a&l 에메랄드 &f: &a10&7%'
+  - '&b&l 다이아몬드 &f: &a4&7%'
+  - '&5&l 네더라이트 주괴 &f: &a1&7%'
+  - '&7---------------------'
+  - '&e&l클릭&7해서 사용하면 일정 확률로'
+  - '&7랜덤한 &3&l아이템&7을 획득할 수 있다.'
+  - '&7---------------------'
+  - '&c&l<사용조건>'
+  - '&7'
+  - '&7사용가능 횟수: &b1&f&l회'
+  - '&7재사용 대기시간: &e5&f초'
+  - '&7사용방법: 공중에 클릭'
+material: CHEST
+glow: true
+disableStack: false
+keepItemOnDeath: false
+canBeUsedOnlyByTheOwner: false
+storeItemInfo: false
+unbreakable: false
+usage: 1
+usageLimit: -1
+dropOptions:
+  glowDrop: true
+  glowDropColor: GOLD
+  displayNameDrop: false
+hiders:
+  hideEnchantments: false
+  hideUnbreakable: false
+  hideAttributes: false
+  hidePotionEffects: true
+  hideUsage: true
+enchantments: {}
+giveFirstJoin:
+  giveFirstJoin: false
+  giveFirstJoinAmount: 1
+  giveFirstJoinSlot: 0
+restrictions:
+  cancel-item-burn: true
+  cancel-rename-anvil: true
+  cancel-anvil: true
+  cancel-item-place: true
+cancelEventIfNoPerm: false
+cancelEventIfNotOwner: false
+disabledWorlds: []
+variables: {}
+activators:
+  activator1:
+    name: '&eActivator'
+    option: PLAYER_ALL_CLICK
+    typeTarget: ONLY_AIR
+    usageModification: -1
+    cancelEvent: true
+    silenceOutput: true
+    autoUpdateItem: false
+    cooldownOptions:
+      cooldown: 5
+      isCooldownInTicks: false
+      cooldownMsg: '&6>> 재사용 대기중... &7(%time_S%초)'
+      displayCooldownMessage: true
+      cancelEventIfInCooldown: true
+    globalCooldownOptions:
+      cooldown: 0
+      isCooldownInTicks: false
+      cooldownMsg: '&6>> 전체 재사용 대기중... &7(%time_S%초)'
+      displayCooldownMessage: true
+      cancelEventIfInCooldown: false
+    otherEICooldowns: {}
+    requiredItems:
+      errorMessage: ''
+    requiredExecutableItems:
+      errorMessage: ''
+    detailedSlots:
+      - -1
+    commands:
+      - 'RANDOM RUN: %javascript_random_crate_openCrate,0,testCrate%'
+      - NOTHING*1
+      - RANDOM END
+      - DELAY 2
+      - 'RANDOM RUN: %javascript_random_crate_rollCrate,0%'
+      - NOTHING*1
+      - RANDOM END
+      - 'LOOP START: 30'
+      - DELAYTICK 2
+      - execute at %player% run playsound minecraft:block.note_block.bass ambient %player%
+      - LOOP END
+      - 'RANDOM RUN: %javascript_random_crate_givePrize,0,testCrate%'
+      - NOTHING*1
+      - RANDOM END
+    playerConditions: {}
+    worldConditions: {}
+    itemConditions: {}
+    customConditions: {}
+    placeholdersConditions: {}
+    variablesModification: {}
+recognitions: []
+attributes: {}
+config_5: true
+config_update: true
