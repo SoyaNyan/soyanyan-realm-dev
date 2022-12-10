@@ -50,5 +50,7 @@ scroll_recipe:
   file: enchantScrollRecipeCore.js
 item_eval:
   file: itemEvaluationCore.js
+random_crate:
+  file: randomCrateCore.js
 example:
   file: example.js
