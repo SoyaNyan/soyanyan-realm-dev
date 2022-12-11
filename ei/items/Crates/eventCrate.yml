@@ -73,17 +73,6 @@ activators:
     detailedSlots:
       - -1
     commands:
-      - 'RANDOM RUN: %javascript_random_crate_openCrate,0,eventCrate%'
-      - NOTHING*1
-      - RANDOM END
-      - DELAY 2
-      - 'RANDOM RUN: %javascript_random_crate_rollCrate,0%'
-      - NOTHING*1
-      - RANDOM END
-      - 'LOOP START: 30'
-      - DELAYTICK 2
-      - execute at %player% run playsound minecraft:block.note_block.bass ambient %player%
-      - LOOP END
       - 'RANDOM RUN: %javascript_random_crate_givePrize,0,eventCrate%'
       - NOTHING*1
       - RANDOM END

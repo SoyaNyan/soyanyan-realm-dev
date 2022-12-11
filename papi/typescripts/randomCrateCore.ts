@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: randomCrateCore.ts
- * Version: v1.0.0
- * Last Update: 2022-12-10
+ * Version: v1.0.1
+ * Last Update: 2022-12-11
  *
  * TypeScript Version: v4.9.3
  * Target: ES5
@@ -125,7 +125,7 @@ const PLAYER_NAME = '%player_name%'
 const PRIZE_SETTINGS: CratePrizeSettingType = {
 	none: {
 		name: '&c꽝',
-		prob: 20,
+		prob: 0,
 		itemCode: 'none',
 		quantity: 0,
 		isEI: false,
@@ -133,7 +133,7 @@ const PRIZE_SETTINGS: CratePrizeSettingType = {
 	},
 	coal_10: {
 		name: '§8석탄',
-		prob: 20,
+		prob: 0,
 		itemCode: 'coal',
 		quantity: 10,
 		isEI: false,
@@ -141,7 +141,7 @@ const PRIZE_SETTINGS: CratePrizeSettingType = {
 	},
 	copper_ingot_10: {
 		name: '&e구리 주괴',
-		prob: 20,
+		prob: 0,
 		itemCode: 'copper_ingot',
 		quantity: 10,
 		isEI: false,
@@ -149,7 +149,7 @@ const PRIZE_SETTINGS: CratePrizeSettingType = {
 	},
 	iron_ingot_10: {
 		name: '&7철 주괴',
-		prob: 20,
+		prob: 0,
 		itemCode: 'iron_ingot',
 		quantity: 10,
 		isEI: false,
@@ -157,7 +157,7 @@ const PRIZE_SETTINGS: CratePrizeSettingType = {
 	},
 	gold_ingot_10: {
 		name: '&6금 주괴',
-		prob: 20,
+		prob: 0,
 		itemCode: 'gold_ingot',
 		quantity: 10,
 		isEI: false,
@@ -165,7 +165,7 @@ const PRIZE_SETTINGS: CratePrizeSettingType = {
 	},
 	emerald_10: {
 		name: '&a에메랄드',
-		prob: 20,
+		prob: 0,
 		itemCode: 'emerald',
 		quantity: 10,
 		isEI: false,
@@ -173,7 +173,7 @@ const PRIZE_SETTINGS: CratePrizeSettingType = {
 	},
 	diamond_5: {
 		name: '§b다이아몬드',
-		prob: 20,
+		prob: 0,
 		itemCode: 'diamond',
 		quantity: 5,
 		isEI: false,
@@ -181,10 +181,178 @@ const PRIZE_SETTINGS: CratePrizeSettingType = {
 	},
 	netherite_ingot_2: {
 		name: '§5네더라이트 주괴',
-		prob: 20,
+		prob: 0,
 		itemCode: 'netherite_ingot',
 		quantity: 2,
 		isEI: false,
+		broadcast: false,
+	},
+	costReducerLow_1: {
+		name: '&7[#55CBCD ★ &7] #55CBCD&l희미한 #FFFFB5&l정화의 #ECEAE4&l가루',
+		prob: 0,
+		itemCode: 'costReducerLow',
+		quantity: 1,
+		isEI: true,
+		broadcast: false,
+	},
+	costReducerMedium_1: {
+		name: '&7[#55CBCD ★★ &7] #55CBCD&l선명한 #FFFFB5&l정화의 #ECEAE4&l가루',
+		prob: 0,
+		itemCode: 'costReducerMedium',
+		quantity: 1,
+		isEI: true,
+		broadcast: false,
+	},
+	costReducerHigh_1: {
+		name: '&7[#55CBCD ★★★ &7] #55CBCD&l반짝이는 #FFFFB5&l정화의 #ECEAE4&l가루',
+		prob: 0,
+		itemCode: 'costReducerHigh',
+		quantity: 1,
+		isEI: true,
+		broadcast: false,
+	},
+	enchantEssenceLow_1: {
+		name: '&7[#55CBCD ★ &7] #ECEAE4&l미약한 #FF968A&l인챈트 #FFC8A2&l에센스',
+		prob: 0,
+		itemCode: 'enchantEssenceLow',
+		quantity: 1,
+		isEI: true,
+		broadcast: false,
+	},
+	enchantEssenceMedium_1: {
+		name: '&7[#55CBCD ★★ &7] #ECEAE4&l쓸만한 #FF968A&l인챈트 #FFC8A2&l에센스',
+		prob: 0,
+		itemCode: 'enchantEssenceMedium',
+		quantity: 1,
+		isEI: true,
+		broadcast: false,
+	},
+	enchantEssenceHigh_1: {
+		name: '&7[#55CBCD ★★★ &7] #ECEAE4&l강력한 #FF968A&l인챈트 #FFC8A2&l에센스',
+		prob: 0,
+		itemCode: 'enchantEssenceHigh',
+		quantity: 1,
+		isEI: true,
+		broadcast: false,
+	},
+	enchantProtectScroll_1: {
+		name: '&7[#55CBCD ★★★ &7] #ECD5E3&l아이템 #FFFFB5&l프로텍트 #ECEAE4&l스크롤',
+		prob: 0,
+		itemCode: 'enchantProtectScroll',
+		quantity: 1,
+		isEI: true,
+		broadcast: false,
+	},
+	armorScrollRecipe_1: {
+		name: '&7[#FFC8A2 ★ &7] #ECEAE4&l방어구 주문서 #FF968A&l제작 #FFC8A2&l레시피',
+		prob: 0,
+		itemCode: 'armorScrollRecipe',
+		quantity: 1,
+		isEI: true,
+		broadcast: false,
+	},
+	armorScrollRecipePlus_1: {
+		name: '&7[#FFC8A2 ★★ &7] #ECD5E3&l놀라운 #ECEAE4&l방어구 주문서 #FF968A&l제작 #FFC8A2&l레시피',
+		prob: 0,
+		itemCode: 'armorScrollRecipePlus',
+		quantity: 1,
+		isEI: true,
+		broadcast: false,
+	},
+	randomScrollRecipe_1: {
+		name: '&7[#FFC8A2 ★ &7] #ECEAE4&l혼돈의 주문서 #FF968A&l제작 #FFC8A2&l레시피',
+		prob: 0,
+		itemCode: 'randomScrollRecipe',
+		quantity: 1,
+		isEI: true,
+		broadcast: false,
+	},
+	randomScrollRecipePlus_1: {
+		name: '&7[#FFC8A2 ★★ &7] #ECD5E3&l놀라운 #ECEAE4&l혼돈의 주문서 #FF968A&l제작 #FFC8A2&l레시피',
+		prob: 0,
+		itemCode: 'randomScrollRecipePlus',
+		quantity: 1,
+		isEI: true,
+		broadcast: false,
+	},
+	toolScrollRecipe_1: {
+		name: '&7[#FFC8A2 ★ &7] #ECEAE4&l도구 주문서 #FF968A&l제작 #FFC8A2&l레시피',
+		prob: 0,
+		itemCode: 'toolScrollRecipe',
+		quantity: 1,
+		isEI: true,
+		broadcast: false,
+	},
+	toolScrollRecipePlus_1: {
+		name: '&7[#FFC8A2 ★★ &7] #ECD5E3&l놀라운 #ECEAE4&l도구 주문서 #FF968A&l제작 #FFC8A2&l레시피',
+		prob: 0,
+		itemCode: 'toolScrollRecipePlus',
+		quantity: 1,
+		isEI: true,
+		broadcast: false,
+	},
+	weaponScrollRecipe_1: {
+		name: '&7[#FFC8A2 ★ &7] #ECEAE4&l무기 주문서 #FF968A&l제작 #FFC8A2&l레시피',
+		prob: 0,
+		itemCode: 'weaponScrollRecipe',
+		quantity: 1,
+		isEI: true,
+		broadcast: false,
+	},
+	weaponScrollRecipePlus_1: {
+		name: '&7[#FFC8A2 ★★ &7] #ECD5E3&l놀라운 #ECEAE4&l무기 주문서 #FF968A&l제작 #FFC8A2&l레시피',
+		prob: 0,
+		itemCode: 'weaponScrollRecipePlus',
+		quantity: 1,
+		isEI: true,
+		broadcast: false,
+	},
+	hardPaper_5: {
+		name: '&6&l가공된 &f&l종이',
+		prob: 0,
+		itemCode: 'hardPaper',
+		quantity: 5,
+		isEI: true,
+		broadcast: false,
+	},
+	softPaper_5: {
+		name: '#CCE2CB&l매끄러운 #ECEAE4&l종이',
+		prob: 0,
+		itemCode: 'softPaper',
+		quantity: 5,
+		isEI: true,
+		broadcast: false,
+	},
+	magicPaper_5: {
+		name: '#55CBCD&l신비로운 #ECEAE4&l종이',
+		prob: 0,
+		itemCode: 'magicPaper',
+		quantity: 5,
+		isEI: true,
+		broadcast: false,
+	},
+	magicInk_5: {
+		name: '&6&l마법의 &7&l잉크',
+		prob: 0,
+		itemCode: 'magicInk',
+		quantity: 5,
+		isEI: true,
+		broadcast: false,
+	},
+	itemEvaluator_1: {
+		name: '&7[#FFC8A2 ★★ &7] #FFFFB5&l아이템 #ECEAE4&l감정서',
+		prob: 0,
+		itemCode: 'itemEvaluator',
+		quantity: 1,
+		isEI: true,
+		broadcast: false,
+	},
+	itemEvaluatorPlus_1: {
+		name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l화려한 #FFFFB5&l아이템 #ECEAE4&l감정서',
+		prob: 0,
+		itemCode: 'itemEvaluatorPlus',
+		quantity: 1,
+		isEI: true,
 		broadcast: false,
 	},
 }
@@ -195,14 +363,99 @@ const CRATE_SETTINGS: CrateSettingType = {
 		name: '&7[#FFC8A2 ★ &7] #F6EAC2&l평범한 #FFFFB5&l랜덤 #ECEAE4&l박스',
 		itemCode: 'commonRandomChest',
 		contents: [
-			PRIZE_SETTINGS.none,
-			PRIZE_SETTINGS.coal_10,
-			PRIZE_SETTINGS.copper_ingot_10,
-			PRIZE_SETTINGS.iron_ingot_10,
-			PRIZE_SETTINGS.gold_ingot_10,
-			PRIZE_SETTINGS.emerald_10,
-			PRIZE_SETTINGS.diamond_5,
-			PRIZE_SETTINGS.netherite_ingot_2,
+			{
+				...PRIZE_SETTINGS.none,
+				prob: 20,
+			},
+			{
+				...PRIZE_SETTINGS.coal_10,
+				prob: 20,
+			},
+			{
+				...PRIZE_SETTINGS.copper_ingot_10,
+				prob: 20,
+			},
+			{
+				...PRIZE_SETTINGS.iron_ingot_10,
+				prob: 15,
+			},
+			{
+				...PRIZE_SETTINGS.gold_ingot_10,
+				prob: 10,
+			},
+			{
+				...PRIZE_SETTINGS.emerald_10,
+				prob: 10,
+			},
+			{
+				...PRIZE_SETTINGS.diamond_5,
+				prob: 4,
+			},
+			{
+				...PRIZE_SETTINGS.netherite_ingot_2,
+				prob: 1,
+			},
+		],
+	},
+	eventCrate: {
+		name: '&7[#55CBCD ★★★ &7] #F6EAC2&l이벤트 #FFFFB5&l선물 #ECEAE4&l상자',
+		itemCode: 'commonRandomChest',
+		contents: [
+			{
+				...PRIZE_SETTINGS.hardPaper_5,
+				prob: 5,
+				broadcast: true,
+			},
+			{
+				...PRIZE_SETTINGS.softPaper_5,
+				prob: 5,
+				broadcast: true,
+			},
+			{
+				...PRIZE_SETTINGS.magicPaper_5,
+				prob: 10,
+				broadcast: true,
+			},
+			{
+				...PRIZE_SETTINGS.magicInk_5,
+				prob: 10,
+				broadcast: true,
+			},
+			{
+				...PRIZE_SETTINGS.enchantProtectScroll_1,
+				prob: 10,
+				broadcast: true,
+			},
+			{
+				...PRIZE_SETTINGS.enchantEssenceLow_1,
+				prob: 10,
+				broadcast: true,
+			},
+			{
+				...PRIZE_SETTINGS.enchantEssenceMedium_1,
+				prob: 10,
+				broadcast: true,
+			},
+			{
+				...PRIZE_SETTINGS.enchantEssenceHigh_1,
+				prob: 10,
+				broadcast: true,
+			},
+			{
+				...PRIZE_SETTINGS.costReducerLow_1,
+				prob: 10,
+				broadcast: true,
+			},
+			{
+				...PRIZE_SETTINGS.costReducerMedium_1,
+				prob: 10,
+				broadcast: true,
+			},
+			{
+				...PRIZE_SETTINGS.costReducerHigh_1,
+				prob: 10,
+				broadcast: true,
+			},
 		],
 	},
 }
@@ -210,174 +463,217 @@ const CRATE_SETTINGS: CrateSettingType = {
 // title & subtitle settings
 const CRATE_TITLE_SETTINGS: TitleSettingType = {
 	testCrate: {
-		title: [],
-		subtitle: [
+		title: [
 			{ text: '평범한', color: '#F6EAC2', bold: true },
 			{ text: '' },
 			{ text: '랜덤', color: '#F6EAC2', bold: true },
 			{ text: ' ' },
 			{ text: '박스', color: '#ECEAE4', bold: true },
 		],
+		subtitle: [],
+	},
+	eventCrate: {
+		title: [
+			{ text: '이벤트', color: '#F6EAC2', bold: true },
+			{ text: '' },
+			{ text: '선물', color: '#FFFFB5', bold: true },
+			{ text: ' ' },
+			{ text: '상자', color: '#ECEAE4', bold: true },
+		],
+		subtitle: [],
 	},
 }
 
 const PRIZE_TITLE_SETTINGS: TitleSettingType = {
 	none: {
-		title: [{ text: '꽝...', color: 'red', bold: true }],
-		subtitle: [],
+		title: [],
+		subtitle: [{ text: '꽝...', color: 'red', bold: true }],
 	},
 	coal: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '석탄', color: 'dark_gray', bold: true },
 			{ text: ' ' },
 			{ text: 'x', color: 'gray', bold: true },
 			{ text: ' ' },
-			{ text: '10', color: 'white', bold: true },
+			{ text: '1', color: 'white', bold: true },
 		],
-		subtitle: [],
 	},
 	copper_ingot: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '구리 주괴', color: 'yellow', bold: true },
 			{ text: ' ' },
 			{ text: 'x', color: 'gray', bold: true },
 			{ text: ' ' },
-			{ text: '10', color: 'white', bold: true },
+			{ text: '1', color: 'white', bold: true },
 		],
-		subtitle: [],
 	},
 	iron_ingot: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '철 주괴', color: 'gray', bold: true },
 			{ text: ' ' },
 			{ text: 'x', color: 'gray', bold: true },
 			{ text: ' ' },
-			{ text: '10', color: 'white', bold: true },
+			{ text: '1', color: 'white', bold: true },
 		],
-		subtitle: [],
 	},
 	gold_ingot: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '금 주괴', color: 'gold', bold: true },
 			{ text: ' ' },
 			{ text: 'x', color: 'gray', bold: true },
 			{ text: ' ' },
-			{ text: '10', color: 'white', bold: true },
+			{ text: '1', color: 'white', bold: true },
 		],
-		subtitle: [],
 	},
 	emerald: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '에메랄드', color: 'green', bold: true },
 			{ text: ' ' },
 			{ text: 'x', color: 'gray', bold: true },
 			{ text: ' ' },
-			{ text: '10', color: 'white', bold: true },
+			{ text: '1', color: 'white', bold: true },
 		],
-		subtitle: [],
 	},
 	diamond: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '다이아몬드', color: 'aqua', bold: true },
 			{ text: ' ' },
 			{ text: 'x', color: 'gray', bold: true },
 			{ text: ' ' },
-			{ text: '5', color: 'white', bold: true },
+			{ text: '1', color: 'white', bold: true },
 		],
-		subtitle: [],
 	},
 	netherite_ingot: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '네더라이트 주괴', color: 'dark_purple', bold: true },
 			{ text: ' ' },
 			{ text: 'x', color: 'gray', bold: true },
 			{ text: ' ' },
-			{ text: '2', color: 'white', bold: true },
+			{ text: '1', color: 'white', bold: true },
 		],
-		subtitle: [],
 	},
 	costReducerLow: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '희미한', color: '#55CBCD', bold: true },
 			{ text: ' ' },
 			{ text: '정화의', color: '#FFFFB5', bold: true },
 			{ text: ' ' },
 			{ text: '가루', color: '#ECEAE4', bold: true },
+			{ text: ' ' },
+			{ text: 'x', color: 'gray', bold: true },
+			{ text: ' ' },
+			{ text: '1', color: 'white', bold: true },
 		],
-		subtitle: [],
 	},
 	costReducerMedium: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '선명한', color: '#55CBCD', bold: true },
 			{ text: ' ' },
 			{ text: '정화의', color: '#FFFFB5', bold: true },
 			{ text: ' ' },
 			{ text: '가루', color: '#ECEAE4', bold: true },
+			{ text: ' ' },
+			{ text: 'x', color: 'gray', bold: true },
+			{ text: ' ' },
+			{ text: '1', color: 'white', bold: true },
 		],
-		subtitle: [],
 	},
 	costReducerHigh: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '반짝이는', color: '#55CBCD', bold: true },
 			{ text: ' ' },
 			{ text: '정화의', color: '#FFFFB5', bold: true },
 			{ text: ' ' },
 			{ text: '가루', color: '#ECEAE4', bold: true },
+			{ text: ' ' },
+			{ text: 'x', color: 'gray', bold: true },
+			{ text: ' ' },
+			{ text: '1', color: 'white', bold: true },
 		],
-		subtitle: [],
 	},
 	enchantEssenceLow: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '미약한', color: '#ECEAE4', bold: true },
 			{ text: ' ' },
 			{ text: '인챈트', color: '#FF968A', bold: true },
 			{ text: ' ' },
 			{ text: '에센스', color: '#FFC8A2', bold: true },
+			{ text: ' ' },
+			{ text: 'x', color: 'gray', bold: true },
+			{ text: ' ' },
+			{ text: '1', color: 'white', bold: true },
 		],
-		subtitle: [],
 	},
 	enchantEssenceMedium: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '쓸만한', color: '#ECEAE4', bold: true },
 			{ text: ' ' },
 			{ text: '인챈트', color: '#FF968A', bold: true },
 			{ text: ' ' },
 			{ text: '에센스', color: '#FFC8A2', bold: true },
+			{ text: ' ' },
+			{ text: 'x', color: 'gray', bold: true },
+			{ text: ' ' },
+			{ text: '1', color: 'white', bold: true },
 		],
-		subtitle: [],
 	},
 	enchantEssenceHigh: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '강력한', color: '#ECEAE4', bold: true },
 			{ text: ' ' },
 			{ text: '인챈트', color: '#FF968A', bold: true },
 			{ text: ' ' },
 			{ text: '에센스', color: '#FFC8A2', bold: true },
+			{ text: ' ' },
+			{ text: 'x', color: 'gray', bold: true },
+			{ text: ' ' },
+			{ text: '1', color: 'white', bold: true },
 		],
-		subtitle: [],
 	},
 	enchantProtectScroll: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '아이템', color: '#ECD5E3', bold: true },
 			{ text: ' ' },
 			{ text: '프로텍트', color: '#FFFFB5', bold: true },
 			{ text: ' ' },
 			{ text: '스크롤', color: '#ECEAE4', bold: true },
+			{ text: ' ' },
+			{ text: 'x', color: 'gray', bold: true },
+			{ text: ' ' },
+			{ text: '1', color: 'white', bold: true },
 		],
-		subtitle: [],
 	},
 	armorScrollRecipe: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '방어구 주문서', color: '#ECEAE4', bold: true },
 			{ text: ' ' },
 			{ text: '제작', color: '#FF968A', bold: true },
 			{ text: ' ' },
 			{ text: '레시피', color: '#FFC8A2', bold: true },
+			{ text: ' ' },
+			{ text: 'x', color: 'gray', bold: true },
+			{ text: ' ' },
+			{ text: '1', color: 'white', bold: true },
 		],
-		subtitle: [],
 	},
 	armorScrollRecipePlus: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '놀라운', color: '#ECD5E3', bold: true },
 			{ text: ' ' },
 			{ text: '방어구 주문서', color: '#ECEAE4', bold: true },
@@ -385,21 +681,29 @@ const PRIZE_TITLE_SETTINGS: TitleSettingType = {
 			{ text: '제작', color: '#FF968A', bold: true },
 			{ text: ' ' },
 			{ text: '레시피', color: '#FFC8A2', bold: true },
+			{ text: ' ' },
+			{ text: 'x', color: 'gray', bold: true },
+			{ text: ' ' },
+			{ text: '1', color: 'white', bold: true },
 		],
-		subtitle: [],
 	},
 	randomScrollRecipe: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '혼돈의 주문서', color: '#ECEAE4', bold: true },
 			{ text: ' ' },
 			{ text: '제작', color: '#FF968A', bold: true },
 			{ text: ' ' },
 			{ text: '레시피', color: '#FFC8A2', bold: true },
+			{ text: ' ' },
+			{ text: 'x', color: 'gray', bold: true },
+			{ text: ' ' },
+			{ text: '1', color: 'white', bold: true },
 		],
-		subtitle: [],
 	},
 	randomScrollRecipePlus: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '놀라운', color: '#ECD5E3', bold: true },
 			{ text: ' ' },
 			{ text: '혼돈의 주문서', color: '#ECEAE4', bold: true },
@@ -407,21 +711,25 @@ const PRIZE_TITLE_SETTINGS: TitleSettingType = {
 			{ text: '제작', color: '#FF968A', bold: true },
 			{ text: ' ' },
 			{ text: '레시피', color: '#FFC8A2', bold: true },
+			{ text: ' ' },
+			{ text: 'x', color: 'gray', bold: true },
+			{ text: ' ' },
+			{ text: '1', color: 'white', bold: true },
 		],
-		subtitle: [],
 	},
 	toolScrollRecipe: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '도구 주문서', color: '#ECEAE4', bold: true },
 			{ text: ' ' },
 			{ text: '제작', color: '#FF968A', bold: true },
 			{ text: ' ' },
 			{ text: '레시피', color: '#FFC8A2', bold: true },
 		],
-		subtitle: [],
 	},
 	toolScrollRecipePlus: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '놀라운', color: '#ECD5E3', bold: true },
 			{ text: ' ' },
 			{ text: '도구 주문서', color: '#ECEAE4', bold: true },
@@ -429,21 +737,29 @@ const PRIZE_TITLE_SETTINGS: TitleSettingType = {
 			{ text: '제작', color: '#FF968A', bold: true },
 			{ text: ' ' },
 			{ text: '레시피', color: '#FFC8A2', bold: true },
+			{ text: ' ' },
+			{ text: 'x', color: 'gray', bold: true },
+			{ text: ' ' },
+			{ text: '1', color: 'white', bold: true },
 		],
-		subtitle: [],
 	},
 	weaponScrollRecipe: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '무기 주문서', color: '#ECEAE4', bold: true },
 			{ text: ' ' },
 			{ text: '제작', color: '#FF968A', bold: true },
 			{ text: ' ' },
 			{ text: '레시피', color: '#FFC8A2', bold: true },
+			{ text: ' ' },
+			{ text: 'x', color: 'gray', bold: true },
+			{ text: ' ' },
+			{ text: '1', color: 'white', bold: true },
 		],
-		subtitle: [],
 	},
 	weaponScrollRecipePlus: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '놀라운', color: '#ECD5E3', bold: true },
 			{ text: ' ' },
 			{ text: '무기 주문서', color: '#ECEAE4', bold: true },
@@ -451,40 +767,85 @@ const PRIZE_TITLE_SETTINGS: TitleSettingType = {
 			{ text: '제작', color: '#FF968A', bold: true },
 			{ text: ' ' },
 			{ text: '레시피', color: '#FFC8A2', bold: true },
+			{ text: ' ' },
+			{ text: 'x', color: 'gray', bold: true },
+			{ text: ' ' },
+			{ text: '1', color: 'white', bold: true },
 		],
-		subtitle: [],
 	},
 	hardPaper: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '매끄러운', color: 'gold', bold: true },
 			{ text: ' ' },
 			{ text: '종이', color: 'white', bold: true },
+			{ text: ' ' },
+			{ text: 'x', color: 'gray', bold: true },
+			{ text: ' ' },
+			{ text: '1', color: 'white', bold: true },
 		],
-		subtitle: [],
 	},
 	softPaper: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '매끄러운', color: '#CCE2CB', bold: true },
 			{ text: ' ' },
 			{ text: '종이', color: '#ECEAE4', bold: true },
+			{ text: ' ' },
+			{ text: 'x', color: 'gray', bold: true },
+			{ text: ' ' },
+			{ text: '1', color: 'white', bold: true },
 		],
-		subtitle: [],
 	},
 	magicPaper: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '신비로운', color: '#55CBCD', bold: true },
 			{ text: ' ' },
 			{ text: '종이', color: '#ECEAE4', bold: true },
+			{ text: ' ' },
+			{ text: 'x', color: 'gray', bold: true },
+			{ text: ' ' },
+			{ text: '1', color: 'white', bold: true },
 		],
-		subtitle: [],
 	},
 	magicInk: {
-		title: [
+		title: [],
+		subtitle: [
 			{ text: '마법의', color: 'gold', bold: true },
 			{ text: ' ' },
 			{ text: '잉크', color: 'gray', bold: true },
+			{ text: ' ' },
+			{ text: 'x', color: 'gray', bold: true },
+			{ text: ' ' },
+			{ text: '1', color: 'white', bold: true },
 		],
-		subtitle: [],
+	},
+	itemEvaluator: {
+		title: [],
+		subtitle: [
+			{ text: '아이템', color: '#FFFFB5', bold: true },
+			{ text: ' ' },
+			{ text: '감정서', color: '#ECEAE4', bold: true },
+			{ text: ' ' },
+			{ text: 'x', color: 'gray', bold: true },
+			{ text: ' ' },
+			{ text: '1', color: 'white', bold: true },
+		],
+	},
+	itemEvaluatorPlus: {
+		title: [],
+		subtitle: [
+			{ text: '화려한', color: '#ECD5E3', bold: true },
+			{ text: ' ' },
+			{ text: '아이템', color: '#FFFFB5', bold: true },
+			{ text: ' ' },
+			{ text: '감정서', color: '#ECEAE4', bold: true },
+			{ text: ' ' },
+			{ text: 'x', color: 'gray', bold: true },
+			{ text: ' ' },
+			{ text: '1', color: 'white', bold: true },
+		],
 	},
 }
 
@@ -505,7 +866,7 @@ const MESSAGE_TITLE_SETTINGS: TitleSettingType = {
 			{ text: '다', color: '#91f938', bold: true },
 			{ text: '!', color: '#86fd3e', bold: true },
 		],
-		subtitle: [],
+		subtitle: [{ text: '' }],
 	},
 	rolling: {
 		title: [
@@ -876,50 +1237,6 @@ function pickRandomItem(crate: string): CrateContentType {
 /**
   [ action handler ] 
 */
-// open specific crate
-function openCrate(args: string[]): ReturnDataType {
-	// get args
-	const [, returnType, crate] = args
-
-	// get crate settings
-	const { name } = CRATE_SETTINGS[crate]
-
-	// send use message
-	const itemMessage = `&7[&9랜덤박스&7] ${name}(을)를 사용했습니다.`
-	sendMessage(consoleColorString(itemMessage))
-
-	// play sound effect
-	playSound('entity.firework_rocket.launch', PLAYER_NAME)
-
-	// get title settings
-	const { title } = MESSAGE_TITLE_SETTINGS.open
-	const { subtitle } = CRATE_TITLE_SETTINGS[crate]
-
-	// show title
-	playTitle(title, subtitle, PLAYER_NAME)
-
-	// return
-	return 1
-}
-
-// roll specific crate
-function rollCrate(args: string[]): ReturnDataType {
-	// get args
-	const [, returnType] = args
-
-	// get title settings
-	const { title, subtitle } = MESSAGE_TITLE_SETTINGS.rolling
-
-	// show title
-	playTitle(title, subtitle, PLAYER_NAME)
-
-	// play sound effect
-	playSound('entity.experience_orb.pickup', PLAYER_NAME)
-
-	// return
-	return 1
-}
-
 // give crate prize
 function givePrize(args: string[]): ReturnDataType {
 	// get args
@@ -928,11 +1245,20 @@ function givePrize(args: string[]): ReturnDataType {
 	// get crate settings
 	const { name: crateName } = CRATE_SETTINGS[crate]
 
+	// send use message
+	const itemMessage = `&7[#ECEAE4랜덤박스&7] ${crateName}(을)를 사용했습니다.`
+	sendMessage(consoleColorString(itemMessage))
+
 	// pick random item
 	const { name: itemName, itemCode, quantity, isEI, broadcast } = pickRandomItem(crate)
 
 	// get prize title settings
-	const { title, subtitle } = PRIZE_TITLE_SETTINGS[itemCode]
+	const { title } = CRATE_TITLE_SETTINGS[crate]
+	const { subtitle } = PRIZE_TITLE_SETTINGS[itemCode]
+
+	// adjust item quantity in subtitle text
+	const prizeSubtitle = [...(subtitle as TitleDataType[])]
+	prizeSubtitle[prizeSubtitle.length - 1].text = stringify(quantity)
 
 	// set title times
 	setTitleTimes(0, 60, 0, PLAYER_NAME)
@@ -943,17 +1269,20 @@ function givePrize(args: string[]): ReturnDataType {
 	// play sound effect
 	itemCode === 'none'
 		? playSound('entity.villager.no', PLAYER_NAME)
-		: playSound('entity.villager.yes', PLAYER_NAME)
+		: broadcast
+		? playSound('ui.toast.challenge_complete', PLAYER_NAME)
+		: playSound('entity.villager.celebrate', PLAYER_NAME)
 
 	// give item to player
-	giveItem(itemCode, quantity, isEI, PLAYER_NAME)
+	if (itemCode !== 'none') {
+		giveItem(itemCode, quantity, isEI, PLAYER_NAME)
+	}
 
 	// broadcast message
-	broadcast
-		? broadcastMessage(
-				`&7[&9랜덤박스&7] &b&l${PLAYER_NAME} &f님이 ${crateName}&7에서 ${itemName} &7x &6${quantity} &f를 획득했습니다!`
-		  )
-		: false
+	if (broadcast) {
+		const message = `&b&l${PLAYER_NAME} &f님이 ${crateName}&7에서 ${itemName} &7x &6${quantity} &f를 획득했습니다!`
+		broadcastMessage(consoleColorString(message))
+	}
 
 	// return
 	return 1
@@ -969,14 +1298,6 @@ function randomCrateCore(): string {
 
 	// command(placeholder) settings
 	const VALID_COMMANDS: { [index: string]: CommandObjectType } = {
-		openCrate: {
-			argLen: [3],
-			callback: openCrate,
-		},
-		rollCrate: {
-			argLen: [2],
-			callback: rollCrate,
-		},
 		givePrize: {
 			argLen: [3],
 			callback: givePrize,
