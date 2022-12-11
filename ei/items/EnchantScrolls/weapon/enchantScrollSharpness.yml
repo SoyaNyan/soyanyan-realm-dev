@@ -122,7 +122,7 @@ activators:
         part2: 'true'
         cancelEventIfNotValid: false
         messageIfNotValid: '&6>> 강화 패널티가 %javascript_enchant_scroll_repairCostLimit,0%를
-          초과할 수 없습니다.'
+          초과할 수 없습니다. (현재 패널티: %javascript_enchant_scroll_repairCostLimit,1%)'
     variablesModification: {}
 recognitions: []
 bannerSettings:

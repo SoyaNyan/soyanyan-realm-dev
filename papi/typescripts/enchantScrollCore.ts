@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.ts
- * Version: v1.4.9
- * Last Update: 2022-12-01
+ * Version: v1.5.0
+ * Last Update: 2022-12-11
  *
  * TypeScript Version: v4.9.3
  * Target: ES5
@@ -2607,6 +2607,9 @@ function repairCostLimit(args: string[]): ReturnDataType {
 
 	// get repair cost limit
 	const limit = getItemCostLimit(targetItem)
+
+	// return current repair cost
+	if (returnType === '1') return getRepairCost(40)
 
 	// normal return
 	return limit
