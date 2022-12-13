@@ -25,6 +25,17 @@ storeItemInfo: false
 unbreakable: false
 usage: 1
 usageLimit: -1
+cancelEventIfNoPerm: false
+cancelEventIfNotOwner: false
+disabledWorlds: []
+recognitions: []
+config_5: true
+config_update: true
+customModelData: 10042
+usePerDay:
+  maxUsePerDay: 5
+  messageIfMaxReached: '&c>> 오늘 사용 가능한 횟수를 초과했어요! &7(5회)'
+  cancelEventIfMaxReached: true
 dropOptions:
   glowDrop: false
   glowDropColor: WHITE
@@ -42,31 +53,28 @@ giveFirstJoin:
   giveFirstJoinAmount: 1
   giveFirstJoinSlot: 0
 restrictions:
-  cancel-enchant-anvil: true
-  cancel-item-frame: true
-  cancel-cartography: true
-  cancel-composter: true
-  cancel-dispenser: true
-  cancel-loom: true
-  cancel-smithing-table: true
-  cancel-dropper: true
-  cancel-rename-anvil: true
-  cancel-tool-interactions: true
   cancel-consumption: true
-  cancel-anvil: true
   cancel-hopper: true
+  cancel-tool-interactions: true
   cancel-grind-stone: true
-  cancel-brewing: true
-  cancel-lectern: true
-  cancel-item-craft: true
-  cancel-beacon: true
-  cancel-item-craft-no-custom: true
   cancel-deposit-in-furnace: true
+  cancel-item-frame: true
+  cancel-enchant-anvil: true
   cancel-stone-cutter: true
+  cancel-item-craft: true
+  cancel-dispenser: true
+  cancel-anvil: true
+  cancel-smithing-table: true
   cancel-enchant: true
-cancelEventIfNoPerm: false
-cancelEventIfNotOwner: false
-disabledWorlds: []
+  cancel-cartography: true
+  cancel-rename-anvil: true
+  cancel-composter: true
+  cancel-item-craft-no-custom: true
+  cancel-beacon: true
+  cancel-dropper: true
+  cancel-brewing: true
+  cancel-loom: true
+  cancel-lectern: true
 variables: {}
 activators:
   activator1:
@@ -75,8 +83,15 @@ activators:
     typeTarget: ONLY_AIR
     usageModification: -1
     cancelEvent: true
+    noActivatorRunIfTheEventIsCancelled: false
     silenceOutput: false
     autoUpdateItem: false
+    updateName: true
+    updateLore: true
+    updateDurability: false
+    updateAttributes: false
+    updateEnchants: false
+    updateCustomModelData: false
     cooldownOptions:
       cooldown: 5
       isCooldownInTicks: false
@@ -106,8 +121,6 @@ activators:
     customConditions: {}
     placeholdersConditions: {}
     variablesModification: {}
-recognitions: []
+bannerSettings:
+  patterns: {}
 attributes: {}
-config_5: true
-config_update: true
-customModelData: 10042
