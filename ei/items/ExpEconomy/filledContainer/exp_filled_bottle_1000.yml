@@ -65,7 +65,7 @@ activators:
     globalCooldownOptions:
       cooldown: 0
       isCooldownInTicks: false
-      cooldownMsg: '&cYou are in cooldown ! &7(&e%time_H%&6H &e%time_M%&6M &e%time_S%&6S&7)'
+      cooldownMsg: '&6>> 전체 재사용 대기중... &7(%time_S%초)'
       displayCooldownMessage: true
       cancelEventIfInCooldown: false
     otherEICooldowns: {}
