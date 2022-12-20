@@ -1,10 +1,10 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: randomCrateCore.js
- * Version: v1.0.1
- * Last Update: 2022-12-11
+ * Version: v1.0.2
+ * Last Update: 2022-12-19
  *
- * TypeScript Version: v4.9.3
+ * TypeScript Version: v4.9.4
  * Target: ES5
  * JSX: None
  * Module: ESNext
@@ -63,63 +63,63 @@ var PRIZE_SETTINGS = {
 		isEI: false,
 		broadcast: false,
 	},
-	coal_10: {
+	coal: {
 		name: '§8석탄',
 		prob: 0,
 		itemCode: 'coal',
-		quantity: 10,
+		quantity: 1,
 		isEI: false,
 		broadcast: false,
 	},
-	copper_ingot_10: {
+	copper: {
 		name: '&e구리 주괴',
 		prob: 0,
 		itemCode: 'copper_ingot',
-		quantity: 10,
+		quantity: 1,
 		isEI: false,
 		broadcast: false,
 	},
-	iron_ingot_10: {
+	iron_ingot: {
 		name: '&7철 주괴',
 		prob: 0,
 		itemCode: 'iron_ingot',
-		quantity: 10,
+		quantity: 1,
 		isEI: false,
 		broadcast: false,
 	},
-	gold_ingot_10: {
+	gold_ingot: {
 		name: '&6금 주괴',
 		prob: 0,
 		itemCode: 'gold_ingot',
-		quantity: 10,
+		quantity: 1,
 		isEI: false,
 		broadcast: false,
 	},
-	emerald_10: {
+	emerald: {
 		name: '&a에메랄드',
 		prob: 0,
 		itemCode: 'emerald',
-		quantity: 10,
+		quantity: 1,
 		isEI: false,
 		broadcast: false,
 	},
-	diamond_5: {
+	diamond: {
 		name: '§b다이아몬드',
 		prob: 0,
 		itemCode: 'diamond',
-		quantity: 5,
+		quantity: 1,
 		isEI: false,
 		broadcast: false,
 	},
-	netherite_ingot_2: {
+	netherite_ingot: {
 		name: '§5네더라이트 주괴',
 		prob: 0,
 		itemCode: 'netherite_ingot',
-		quantity: 2,
+		quantity: 1,
 		isEI: false,
 		broadcast: false,
 	},
-	costReducerLow_1: {
+	costReducerLow: {
 		name: '&7[#55CBCD ★ &7] #55CBCD&l희미한 #FFFFB5&l정화의 #ECEAE4&l가루',
 		prob: 0,
 		itemCode: 'costReducerLow',
@@ -127,7 +127,7 @@ var PRIZE_SETTINGS = {
 		isEI: true,
 		broadcast: false,
 	},
-	costReducerMedium_1: {
+	costReducerMedium: {
 		name: '&7[#55CBCD ★★ &7] #55CBCD&l선명한 #FFFFB5&l정화의 #ECEAE4&l가루',
 		prob: 0,
 		itemCode: 'costReducerMedium',
@@ -135,7 +135,7 @@ var PRIZE_SETTINGS = {
 		isEI: true,
 		broadcast: false,
 	},
-	costReducerHigh_1: {
+	costReducerHigh: {
 		name: '&7[#55CBCD ★★★ &7] #55CBCD&l반짝이는 #FFFFB5&l정화의 #ECEAE4&l가루',
 		prob: 0,
 		itemCode: 'costReducerHigh',
@@ -143,7 +143,7 @@ var PRIZE_SETTINGS = {
 		isEI: true,
 		broadcast: false,
 	},
-	enchantEssenceLow_1: {
+	enchantEssenceLow: {
 		name: '&7[#55CBCD ★ &7] #ECEAE4&l미약한 #FF968A&l인챈트 #FFC8A2&l에센스',
 		prob: 0,
 		itemCode: 'enchantEssenceLow',
@@ -151,7 +151,7 @@ var PRIZE_SETTINGS = {
 		isEI: true,
 		broadcast: false,
 	},
-	enchantEssenceMedium_1: {
+	enchantEssenceMedium: {
 		name: '&7[#55CBCD ★★ &7] #ECEAE4&l쓸만한 #FF968A&l인챈트 #FFC8A2&l에센스',
 		prob: 0,
 		itemCode: 'enchantEssenceMedium',
@@ -159,7 +159,7 @@ var PRIZE_SETTINGS = {
 		isEI: true,
 		broadcast: false,
 	},
-	enchantEssenceHigh_1: {
+	enchantEssenceHigh: {
 		name: '&7[#55CBCD ★★★ &7] #ECEAE4&l강력한 #FF968A&l인챈트 #FFC8A2&l에센스',
 		prob: 0,
 		itemCode: 'enchantEssenceHigh',
@@ -167,7 +167,7 @@ var PRIZE_SETTINGS = {
 		isEI: true,
 		broadcast: false,
 	},
-	enchantProtectScroll_1: {
+	enchantProtectScroll: {
 		name: '&7[#55CBCD ★★★ &7] #ECD5E3&l아이템 #FFFFB5&l프로텍트 #ECEAE4&l스크롤',
 		prob: 0,
 		itemCode: 'enchantProtectScroll',
@@ -175,7 +175,7 @@ var PRIZE_SETTINGS = {
 		isEI: true,
 		broadcast: false,
 	},
-	armorScrollRecipe_1: {
+	armorScrollRecipe: {
 		name: '&7[#FFC8A2 ★ &7] #ECEAE4&l방어구 주문서 #FF968A&l제작 #FFC8A2&l레시피',
 		prob: 0,
 		itemCode: 'armorScrollRecipe',
@@ -183,7 +183,7 @@ var PRIZE_SETTINGS = {
 		isEI: true,
 		broadcast: false,
 	},
-	armorScrollRecipePlus_1: {
+	armorScrollRecipePlus: {
 		name: '&7[#FFC8A2 ★★ &7] #ECD5E3&l놀라운 #ECEAE4&l방어구 주문서 #FF968A&l제작 #FFC8A2&l레시피',
 		prob: 0,
 		itemCode: 'armorScrollRecipePlus',
@@ -191,7 +191,7 @@ var PRIZE_SETTINGS = {
 		isEI: true,
 		broadcast: false,
 	},
-	randomScrollRecipe_1: {
+	randomScrollRecipe: {
 		name: '&7[#FFC8A2 ★ &7] #ECEAE4&l혼돈의 주문서 #FF968A&l제작 #FFC8A2&l레시피',
 		prob: 0,
 		itemCode: 'randomScrollRecipe',
@@ -199,7 +199,7 @@ var PRIZE_SETTINGS = {
 		isEI: true,
 		broadcast: false,
 	},
-	randomScrollRecipePlus_1: {
+	randomScrollRecipePlus: {
 		name: '&7[#FFC8A2 ★★ &7] #ECD5E3&l놀라운 #ECEAE4&l혼돈의 주문서 #FF968A&l제작 #FFC8A2&l레시피',
 		prob: 0,
 		itemCode: 'randomScrollRecipePlus',
@@ -207,7 +207,7 @@ var PRIZE_SETTINGS = {
 		isEI: true,
 		broadcast: false,
 	},
-	toolScrollRecipe_1: {
+	toolScrollRecipe: {
 		name: '&7[#FFC8A2 ★ &7] #ECEAE4&l도구 주문서 #FF968A&l제작 #FFC8A2&l레시피',
 		prob: 0,
 		itemCode: 'toolScrollRecipe',
@@ -215,7 +215,7 @@ var PRIZE_SETTINGS = {
 		isEI: true,
 		broadcast: false,
 	},
-	toolScrollRecipePlus_1: {
+	toolScrollRecipePlus: {
 		name: '&7[#FFC8A2 ★★ &7] #ECD5E3&l놀라운 #ECEAE4&l도구 주문서 #FF968A&l제작 #FFC8A2&l레시피',
 		prob: 0,
 		itemCode: 'toolScrollRecipePlus',
@@ -223,7 +223,7 @@ var PRIZE_SETTINGS = {
 		isEI: true,
 		broadcast: false,
 	},
-	weaponScrollRecipe_1: {
+	weaponScrollRecipe: {
 		name: '&7[#FFC8A2 ★ &7] #ECEAE4&l무기 주문서 #FF968A&l제작 #FFC8A2&l레시피',
 		prob: 0,
 		itemCode: 'weaponScrollRecipe',
@@ -231,7 +231,7 @@ var PRIZE_SETTINGS = {
 		isEI: true,
 		broadcast: false,
 	},
-	weaponScrollRecipePlus_1: {
+	weaponScrollRecipePlus: {
 		name: '&7[#FFC8A2 ★★ &7] #ECD5E3&l놀라운 #ECEAE4&l무기 주문서 #FF968A&l제작 #FFC8A2&l레시피',
 		prob: 0,
 		itemCode: 'weaponScrollRecipePlus',
@@ -239,39 +239,47 @@ var PRIZE_SETTINGS = {
 		isEI: true,
 		broadcast: false,
 	},
-	hardPaper_5: {
+	hardPaper: {
 		name: '&6&l가공된 &f&l종이',
 		prob: 0,
 		itemCode: 'hardPaper',
-		quantity: 5,
+		quantity: 1,
 		isEI: true,
 		broadcast: false,
 	},
-	softPaper_5: {
+	softPaper: {
 		name: '#CCE2CB&l매끄러운 #ECEAE4&l종이',
 		prob: 0,
 		itemCode: 'softPaper',
-		quantity: 5,
+		quantity: 1,
 		isEI: true,
 		broadcast: false,
 	},
-	magicPaper_5: {
+	magicPaper: {
 		name: '#55CBCD&l신비로운 #ECEAE4&l종이',
 		prob: 0,
 		itemCode: 'magicPaper',
-		quantity: 5,
+		quantity: 1,
 		isEI: true,
 		broadcast: false,
 	},
-	magicInk_5: {
+	holyPaper: {
+		name: '#F3B0C3&l성스러운 #ECEAE4&l종이',
+		prob: 0,
+		itemCode: 'holyPaper',
+		quantity: 1,
+		isEI: true,
+		broadcast: false,
+	},
+	magicInk: {
 		name: '&6&l마법의 &7&l잉크',
 		prob: 0,
 		itemCode: 'magicInk',
-		quantity: 5,
+		quantity: 1,
 		isEI: true,
 		broadcast: false,
 	},
-	itemEvaluator_1: {
+	itemEvaluator: {
 		name: '&7[#FFC8A2 ★★ &7] #FFFFB5&l아이템 #ECEAE4&l감정서',
 		prob: 0,
 		itemCode: 'itemEvaluator',
@@ -279,7 +287,7 @@ var PRIZE_SETTINGS = {
 		isEI: true,
 		broadcast: false,
 	},
-	itemEvaluatorPlus_1: {
+	itemEvaluatorPlus: {
 		name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l화려한 #FFFFB5&l아이템 #ECEAE4&l감정서',
 		prob: 0,
 		itemCode: 'itemEvaluatorPlus',
@@ -289,56 +297,105 @@ var PRIZE_SETTINGS = {
 	},
 }
 var CRATE_SETTINGS = {
-	testCrate: {
-		name: '&7[#FFC8A2 ★ &7] #F6EAC2&l평범한 #FFFFB5&l랜덤 #ECEAE4&l박스',
-		itemCode: 'commonRandomChest',
+	randomBox01: {
+		name: '#FCB9A9&l두#FDCCB5&l근#FCB9A9&l두#FDCCB5&l근 #FFFFB5&l랜덤 #ECEAE4&l박스',
 		contents: [
-			__assign(__assign({}, PRIZE_SETTINGS.none), { prob: 20 }),
-			__assign(__assign({}, PRIZE_SETTINGS.coal_10), { prob: 20 }),
-			__assign(__assign({}, PRIZE_SETTINGS.copper_ingot_10), { prob: 20 }),
-			__assign(__assign({}, PRIZE_SETTINGS.iron_ingot_10), { prob: 15 }),
-			__assign(__assign({}, PRIZE_SETTINGS.gold_ingot_10), { prob: 10 }),
-			__assign(__assign({}, PRIZE_SETTINGS.emerald_10), { prob: 10 }),
-			__assign(__assign({}, PRIZE_SETTINGS.diamond_5), { prob: 4 }),
-			__assign(__assign({}, PRIZE_SETTINGS.netherite_ingot_2), { prob: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.costReducerHigh), {
+				prob: 1,
+				quantity: 1,
+				broadcast: true,
+			}),
+			__assign(__assign({}, PRIZE_SETTINGS.costReducerMedium), {
+				prob: 2,
+				quantity: 1,
+				broadcast: true,
+			}),
+			__assign(__assign({}, PRIZE_SETTINGS.enchantProtectScroll), {
+				prob: 5,
+				quantity: 1,
+				broadcast: true,
+			}),
+			__assign(__assign({}, PRIZE_SETTINGS.randomScrollRecipePlus), {
+				prob: 5,
+				quantity: 1,
+				broadcast: true,
+			}),
+			__assign(__assign({}, PRIZE_SETTINGS.randomScrollRecipe), {
+				prob: 7,
+				quantity: 1,
+				broadcast: true,
+			}),
+			__assign(__assign({}, PRIZE_SETTINGS.costReducerLow), { prob: 15, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.toolScrollRecipe), { prob: 20, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.weaponScrollRecipe), { prob: 20, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.armorScrollRecipe), { prob: 20, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.netherite_ingot), { prob: 25, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.magicInk), { prob: 25, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.holyPaper), { prob: 25, quantity: 1 }),
 		],
 	},
-	eventCrate: {
-		name: '&7[#55CBCD ★★★ &7] #F6EAC2&l이벤트 #FFFFB5&l선물 #ECEAE4&l상자',
-		itemCode: 'commonRandomChest',
+	randomBox02: {
+		name: '#D4F0F1&l행#BDDEDF&l운#D4F0F1&l가#BDDEDF&l득 #FFFFB5&l랜덤 #ECEAE4&l박스',
 		contents: [
-			__assign(__assign({}, PRIZE_SETTINGS.hardPaper_5), { prob: 5, broadcast: true }),
-			__assign(__assign({}, PRIZE_SETTINGS.softPaper_5), { prob: 5, broadcast: true }),
-			__assign(__assign({}, PRIZE_SETTINGS.magicPaper_5), { prob: 10, broadcast: true }),
-			__assign(__assign({}, PRIZE_SETTINGS.magicInk_5), { prob: 10, broadcast: true }),
-			__assign(__assign({}, PRIZE_SETTINGS.enchantProtectScroll_1), { prob: 10, broadcast: true }),
-			__assign(__assign({}, PRIZE_SETTINGS.enchantEssenceLow_1), { prob: 10, broadcast: true }),
-			__assign(__assign({}, PRIZE_SETTINGS.enchantEssenceMedium_1), { prob: 10, broadcast: true }),
-			__assign(__assign({}, PRIZE_SETTINGS.enchantEssenceHigh_1), { prob: 10, broadcast: true }),
-			__assign(__assign({}, PRIZE_SETTINGS.costReducerLow_1), { prob: 10, broadcast: true }),
-			__assign(__assign({}, PRIZE_SETTINGS.costReducerMedium_1), { prob: 10, broadcast: true }),
-			__assign(__assign({}, PRIZE_SETTINGS.costReducerHigh_1), { prob: 10, broadcast: true }),
+			__assign(__assign({}, PRIZE_SETTINGS.enchantEssenceHigh), {
+				prob: 1,
+				quantity: 1,
+				broadcast: true,
+			}),
+			__assign(__assign({}, PRIZE_SETTINGS.enchantEssenceMedium), {
+				prob: 2,
+				quantity: 1,
+				broadcast: true,
+			}),
+			__assign(__assign({}, PRIZE_SETTINGS.enchantEssenceLow), {
+				prob: 5,
+				quantity: 1,
+				broadcast: true,
+			}),
+			__assign(__assign({}, PRIZE_SETTINGS.randomScrollRecipePlus), {
+				prob: 5,
+				quantity: 1,
+				broadcast: true,
+			}),
+			__assign(__assign({}, PRIZE_SETTINGS.enchantProtectScroll), {
+				prob: 7,
+				quantity: 1,
+				broadcast: true,
+			}),
+			__assign(__assign({}, PRIZE_SETTINGS.randomScrollRecipe), { prob: 15, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.toolScrollRecipePlus), { prob: 20, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.weaponScrollRecipePlus), { prob: 20, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.armorScrollRecipePlus), { prob: 20, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.netherite_ingot), { prob: 25, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.magicInk), { prob: 25, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.holyPaper), { prob: 25, quantity: 1 }),
 		],
 	},
 }
 var CRATE_TITLE_SETTINGS = {
-	testCrate: {
+	randomBox01: {
 		title: [
-			{ text: '평범한', color: '#F6EAC2', bold: true },
-			{ text: '' },
+			{ text: '두', color: '#FCB9A9', bold: true },
+			{ text: '근', color: '#FDCCB5', bold: true },
+			{ text: '두', color: '#FCB9A9', bold: true },
+			{ text: '근', color: '#FDCCB5', bold: true },
+			{ text: ' ' },
 			{ text: '랜덤', color: '#F6EAC2', bold: true },
 			{ text: ' ' },
 			{ text: '박스', color: '#ECEAE4', bold: true },
 		],
 		subtitle: [],
 	},
-	eventCrate: {
+	randomBox02: {
 		title: [
-			{ text: '이벤트', color: '#F6EAC2', bold: true },
-			{ text: '' },
-			{ text: '선물', color: '#FFFFB5', bold: true },
+			{ text: '행', color: '#D4F0F1', bold: true },
+			{ text: '운', color: '#BDDEDF', bold: true },
+			{ text: '가', color: '#D4F0F1', bold: true },
+			{ text: '득', color: '#BDDEDF', bold: true },
 			{ text: ' ' },
-			{ text: '상자', color: '#ECEAE4', bold: true },
+			{ text: '랜덤', color: '#F6EAC2', bold: true },
+			{ text: ' ' },
+			{ text: '박스', color: '#ECEAE4', bold: true },
 		],
 		subtitle: [],
 	},
@@ -660,6 +717,18 @@ var PRIZE_TITLE_SETTINGS = {
 		title: [],
 		subtitle: [
 			{ text: '신비로운', color: '#55CBCD', bold: true },
+			{ text: ' ' },
+			{ text: '종이', color: '#ECEAE4', bold: true },
+			{ text: ' ' },
+			{ text: 'x', color: 'gray', bold: true },
+			{ text: ' ' },
+			{ text: '1', color: 'white', bold: true },
+		],
+	},
+	holyPaper: {
+		title: [],
+		subtitle: [
+			{ text: '성스러운', color: '#F3B0C3', bold: true },
 			{ text: ' ' },
 			{ text: '종이', color: '#ECEAE4', bold: true },
 			{ text: ' ' },

@@ -1,10 +1,10 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: randomCrateCore.ts
- * Version: v1.0.1
- * Last Update: 2022-12-11
+ * Version: v1.0.2
+ * Last Update: 2022-12-19
  *
- * TypeScript Version: v4.9.3
+ * TypeScript Version: v4.9.4
  * Target: ES5
  * JSX: None
  * Module: ESNext
@@ -366,110 +366,143 @@ const PRIZE_SETTINGS: CratePrizeSettingType = {
 
 // crate settings
 const CRATE_SETTINGS: CrateSettingType = {
-	testCrate: {
-		name: '&7[#FFC8A2 ★ &7] #F6EAC2&l평범한 #FFFFB5&l랜덤 #ECEAE4&l박스',
+	randomBox01: {
+		name: '#FCB9A9&l두#FDCCB5&l근#FCB9A9&l두#FDCCB5&l근 #FFFFB5&l랜덤 #ECEAE4&l박스',
 		contents: [
 			{
-				...PRIZE_SETTINGS.none,
-				prob: 20,
-				quantity: 10,
-			},
-			{
-				...PRIZE_SETTINGS.coal,
-				prob: 20,
-				quantity: 10,
-			},
-			{
-				...PRIZE_SETTINGS.copper_ingot,
-				prob: 20,
-				quantity: 10,
-			},
-			{
-				...PRIZE_SETTINGS.iron_ingot,
-				prob: 15,
-				quantity: 10,
-			},
-			{
-				...PRIZE_SETTINGS.gold_ingot,
-				prob: 10,
-				quantity: 10,
-			},
-			{
-				...PRIZE_SETTINGS.emerald,
-				prob: 10,
-				quantity: 10,
-			},
-			{
-				...PRIZE_SETTINGS.diamond,
-				prob: 4,
-				quantity: 5,
-				broadcast: true,
-			},
-			{
-				...PRIZE_SETTINGS.netherite_ingot,
+				...PRIZE_SETTINGS.costReducerHigh,
 				prob: 1,
-				quantity: 2,
-				broadcast: true,
-			},
-		],
-	},
-	eventCrate: {
-		name: '&7[#55CBCD ★★★ &7] #F6EAC2&l이벤트 #FFFFB5&l선물 #ECEAE4&l상자',
-		contents: [
-			{
-				...PRIZE_SETTINGS.hardPaper,
-				prob: 5,
-				quantity: 5,
-			},
-			{
-				...PRIZE_SETTINGS.softPaper,
-				prob: 5,
-				quantity: 5,
-			},
-			{
-				...PRIZE_SETTINGS.magicPaper,
-				prob: 10,
-				quantity: 5,
-			},
-			{
-				...PRIZE_SETTINGS.magicInk,
-				prob: 10,
-				quantity: 5,
-			},
-			{
-				...PRIZE_SETTINGS.enchantProtectScroll,
-				prob: 10,
-				broadcast: true,
-			},
-			{
-				...PRIZE_SETTINGS.enchantEssenceLow,
-				prob: 10,
-				broadcast: true,
-			},
-			{
-				...PRIZE_SETTINGS.enchantEssenceMedium,
-				prob: 10,
-				broadcast: true,
-			},
-			{
-				...PRIZE_SETTINGS.enchantEssenceHigh,
-				prob: 10,
-				broadcast: true,
-			},
-			{
-				...PRIZE_SETTINGS.costReducerLow,
-				prob: 10,
+				quantity: 1,
 				broadcast: true,
 			},
 			{
 				...PRIZE_SETTINGS.costReducerMedium,
-				prob: 10,
+				prob: 2,
+				quantity: 1,
 				broadcast: true,
 			},
 			{
-				...PRIZE_SETTINGS.costReducerHigh,
-				prob: 10,
+				...PRIZE_SETTINGS.enchantProtectScroll,
+				prob: 5,
+				quantity: 1,
 				broadcast: true,
+			},
+			{
+				...PRIZE_SETTINGS.randomScrollRecipePlus,
+				prob: 5,
+				quantity: 1,
+				broadcast: true,
+			},
+			{
+				...PRIZE_SETTINGS.randomScrollRecipe,
+				prob: 7,
+				quantity: 1,
+				broadcast: true,
+			},
+			{
+				...PRIZE_SETTINGS.costReducerLow,
+				prob: 15,
+				quantity: 1,
+			},
+			{
+				...PRIZE_SETTINGS.toolScrollRecipe,
+				prob: 20,
+				quantity: 1,
+			},
+			{
+				...PRIZE_SETTINGS.weaponScrollRecipe,
+				prob: 20,
+				quantity: 1,
+			},
+			{
+				...PRIZE_SETTINGS.armorScrollRecipe,
+				prob: 20,
+				quantity: 1,
+			},
+			{
+				...PRIZE_SETTINGS.netherite_ingot,
+				prob: 25,
+				quantity: 1,
+			},
+			{
+				...PRIZE_SETTINGS.magicInk,
+				prob: 25,
+				quantity: 1,
+			},
+			{
+				...PRIZE_SETTINGS.holyPaper,
+				prob: 25,
+				quantity: 1,
+			},
+		],
+	},
+	randomBox02: {
+		name: '#D4F0F1&l행#BDDEDF&l운#D4F0F1&l가#BDDEDF&l득 #FFFFB5&l랜덤 #ECEAE4&l박스',
+		contents: [
+			{
+				...PRIZE_SETTINGS.enchantEssenceHigh,
+				prob: 1,
+				quantity: 1,
+				broadcast: true,
+			},
+			{
+				...PRIZE_SETTINGS.enchantEssenceMedium,
+				prob: 2,
+				quantity: 1,
+				broadcast: true,
+			},
+			{
+				...PRIZE_SETTINGS.enchantEssenceLow,
+				prob: 5,
+				quantity: 1,
+				broadcast: true,
+			},
+			{
+				...PRIZE_SETTINGS.randomScrollRecipePlus,
+				prob: 5,
+				quantity: 1,
+				broadcast: true,
+			},
+			{
+				...PRIZE_SETTINGS.enchantProtectScroll,
+				prob: 7,
+				quantity: 1,
+				broadcast: true,
+			},
+			{
+				...PRIZE_SETTINGS.randomScrollRecipe,
+				prob: 15,
+				quantity: 1,
+			},
+			{
+				...PRIZE_SETTINGS.toolScrollRecipePlus,
+				prob: 20,
+				quantity: 1,
+			},
+			{
+				...PRIZE_SETTINGS.weaponScrollRecipePlus,
+				prob: 20,
+				quantity: 1,
+			},
+			{
+				...PRIZE_SETTINGS.armorScrollRecipePlus,
+				prob: 20,
+				quantity: 1,
+			},
+			{
+				...PRIZE_SETTINGS.netherite_ingot,
+				prob: 25,
+				quantity: 1,
+			},
+			{
+				...PRIZE_SETTINGS.magicInk,
+				prob: 25,
+				quantity: 1,
+			},
+			{
+				...PRIZE_SETTINGS.holyPaper,
+				prob: 25,
+				quantity: 1,
 			},
 		],
 	},
@@ -477,23 +510,29 @@ const CRATE_SETTINGS: CrateSettingType = {
 
 // title & subtitle settings
 const CRATE_TITLE_SETTINGS: TitleSettingType = {
-	testCrate: {
+	randomBox01: {
 		title: [
-			{ text: '평범한', color: '#F6EAC2', bold: true },
-			{ text: '' },
+			{ text: '두', color: '#FCB9A9', bold: true },
+			{ text: '근', color: '#FDCCB5', bold: true },
+			{ text: '두', color: '#FCB9A9', bold: true },
+			{ text: '근', color: '#FDCCB5', bold: true },
+			{ text: ' ' },
 			{ text: '랜덤', color: '#F6EAC2', bold: true },
 			{ text: ' ' },
 			{ text: '박스', color: '#ECEAE4', bold: true },
 		],
 		subtitle: [],
 	},
-	eventCrate: {
+	randomBox02: {
 		title: [
-			{ text: '이벤트', color: '#F6EAC2', bold: true },
-			{ text: '' },
-			{ text: '선물', color: '#FFFFB5', bold: true },
+			{ text: '행', color: '#D4F0F1', bold: true },
+			{ text: '운', color: '#BDDEDF', bold: true },
+			{ text: '가', color: '#D4F0F1', bold: true },
+			{ text: '득', color: '#BDDEDF', bold: true },
 			{ text: ' ' },
-			{ text: '상자', color: '#ECEAE4', bold: true },
+			{ text: '랜덤', color: '#F6EAC2', bold: true },
+			{ text: ' ' },
+			{ text: '박스', color: '#ECEAE4', bold: true },
 		],
 		subtitle: [],
 	},
