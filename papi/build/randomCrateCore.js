@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: randomCrateCore.js
- * Version: v1.0.2
- * Last Update: 2022-12-19
+ * Version: v1.0.3
+ * Last Update: 2022-12-21
  *
  * TypeScript Version: v4.9.4
  * Target: ES5
@@ -320,18 +320,14 @@ var CRATE_SETTINGS = {
 				quantity: 1,
 				broadcast: true,
 			}),
-			__assign(__assign({}, PRIZE_SETTINGS.randomScrollRecipe), {
-				prob: 7,
-				quantity: 1,
-				broadcast: true,
-			}),
-			__assign(__assign({}, PRIZE_SETTINGS.costReducerLow), { prob: 15, quantity: 1 }),
-			__assign(__assign({}, PRIZE_SETTINGS.toolScrollRecipe), { prob: 20, quantity: 1 }),
-			__assign(__assign({}, PRIZE_SETTINGS.weaponScrollRecipe), { prob: 20, quantity: 1 }),
-			__assign(__assign({}, PRIZE_SETTINGS.armorScrollRecipe), { prob: 20, quantity: 1 }),
-			__assign(__assign({}, PRIZE_SETTINGS.netherite_ingot), { prob: 25, quantity: 1 }),
-			__assign(__assign({}, PRIZE_SETTINGS.magicInk), { prob: 25, quantity: 1 }),
-			__assign(__assign({}, PRIZE_SETTINGS.holyPaper), { prob: 25, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.randomScrollRecipe), { prob: 10, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.costReducerLow), { prob: 20, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.toolScrollRecipe), { prob: 40, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.weaponScrollRecipe), { prob: 40, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.armorScrollRecipe), { prob: 40, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.netherite_ingot), { prob: 37, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.magicInk), { prob: 50, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.holyPaper), { prob: 50, quantity: 1 }),
 		],
 	},
 	randomBox02: {
@@ -352,23 +348,23 @@ var CRATE_SETTINGS = {
 				quantity: 1,
 				broadcast: true,
 			}),
-			__assign(__assign({}, PRIZE_SETTINGS.randomScrollRecipePlus), {
-				prob: 5,
-				quantity: 1,
-				broadcast: true,
-			}),
 			__assign(__assign({}, PRIZE_SETTINGS.enchantProtectScroll), {
-				prob: 7,
+				prob: 10,
 				quantity: 1,
 				broadcast: true,
 			}),
-			__assign(__assign({}, PRIZE_SETTINGS.randomScrollRecipe), { prob: 15, quantity: 1 }),
-			__assign(__assign({}, PRIZE_SETTINGS.toolScrollRecipePlus), { prob: 20, quantity: 1 }),
-			__assign(__assign({}, PRIZE_SETTINGS.weaponScrollRecipePlus), { prob: 20, quantity: 1 }),
-			__assign(__assign({}, PRIZE_SETTINGS.armorScrollRecipePlus), { prob: 20, quantity: 1 }),
-			__assign(__assign({}, PRIZE_SETTINGS.netherite_ingot), { prob: 25, quantity: 1 }),
-			__assign(__assign({}, PRIZE_SETTINGS.magicInk), { prob: 25, quantity: 1 }),
-			__assign(__assign({}, PRIZE_SETTINGS.holyPaper), { prob: 25, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.randomScrollRecipePlus), {
+				prob: 10,
+				quantity: 1,
+				broadcast: true,
+			}),
+			__assign(__assign({}, PRIZE_SETTINGS.randomScrollRecipe), { prob: 32, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.toolScrollRecipePlus), { prob: 80, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.armorScrollRecipePlus), { prob: 80, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.weaponScrollRecipePlus), { prob: 80, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.netherite_ingot), { prob: 100, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.magicInk), { prob: 100, quantity: 1 }),
+			__assign(__assign({}, PRIZE_SETTINGS.holyPaper), { prob: 100, quantity: 1 }),
 		],
 	},
 }

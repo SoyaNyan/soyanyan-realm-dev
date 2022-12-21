@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: randomCrateCore.ts
- * Version: v1.0.2
- * Last Update: 2022-12-19
+ * Version: v1.0.3
+ * Last Update: 2022-12-21
  *
  * TypeScript Version: v4.9.4
  * Target: ES5
@@ -395,43 +395,42 @@ const CRATE_SETTINGS: CrateSettingType = {
 			},
 			{
 				...PRIZE_SETTINGS.randomScrollRecipe,
-				prob: 7,
+				prob: 10,
 				quantity: 1,
-				broadcast: true,
 			},
 			{
 				...PRIZE_SETTINGS.costReducerLow,
-				prob: 15,
+				prob: 20,
 				quantity: 1,
 			},
 			{
 				...PRIZE_SETTINGS.toolScrollRecipe,
-				prob: 20,
+				prob: 40,
 				quantity: 1,
 			},
 			{
 				...PRIZE_SETTINGS.weaponScrollRecipe,
-				prob: 20,
+				prob: 40,
 				quantity: 1,
 			},
 			{
 				...PRIZE_SETTINGS.armorScrollRecipe,
-				prob: 20,
+				prob: 40,
 				quantity: 1,
 			},
 			{
 				...PRIZE_SETTINGS.netherite_ingot,
-				prob: 25,
+				prob: 37,
 				quantity: 1,
 			},
 			{
 				...PRIZE_SETTINGS.magicInk,
-				prob: 25,
+				prob: 50,
 				quantity: 1,
 			},
 			{
 				...PRIZE_SETTINGS.holyPaper,
-				prob: 25,
+				prob: 50,
 				quantity: 1,
 			},
 		],
@@ -458,50 +457,50 @@ const CRATE_SETTINGS: CrateSettingType = {
 				broadcast: true,
 			},
 			{
-				...PRIZE_SETTINGS.randomScrollRecipePlus,
-				prob: 5,
+				...PRIZE_SETTINGS.enchantProtectScroll,
+				prob: 10,
 				quantity: 1,
 				broadcast: true,
 			},
 			{
-				...PRIZE_SETTINGS.enchantProtectScroll,
-				prob: 7,
+				...PRIZE_SETTINGS.randomScrollRecipePlus,
+				prob: 10,
 				quantity: 1,
 				broadcast: true,
 			},
 			{
 				...PRIZE_SETTINGS.randomScrollRecipe,
-				prob: 15,
+				prob: 32,
 				quantity: 1,
 			},
 			{
 				...PRIZE_SETTINGS.toolScrollRecipePlus,
-				prob: 20,
-				quantity: 1,
-			},
-			{
-				...PRIZE_SETTINGS.weaponScrollRecipePlus,
-				prob: 20,
+				prob: 80,
 				quantity: 1,
 			},
 			{
 				...PRIZE_SETTINGS.armorScrollRecipePlus,
-				prob: 20,
+				prob: 80,
+				quantity: 1,
+			},
+			{
+				...PRIZE_SETTINGS.weaponScrollRecipePlus,
+				prob: 80,
 				quantity: 1,
 			},
 			{
 				...PRIZE_SETTINGS.netherite_ingot,
-				prob: 25,
+				prob: 100,
 				quantity: 1,
 			},
 			{
 				...PRIZE_SETTINGS.magicInk,
-				prob: 25,
+				prob: 100,
 				quantity: 1,
 			},
 			{
 				...PRIZE_SETTINGS.holyPaper,
-				prob: 25,
+				prob: 100,
 				quantity: 1,
 			},
 		],
