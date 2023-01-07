@@ -1,10 +1,10 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.ts
- * Version: v1.5.0
- * Last Update: 2022-12-11
+ * Version: v1.5.1
+ * Last Update: 2023-01-03
  *
- * TypeScript Version: v4.9.3
+ * TypeScript Version: v4.9.4
  * Target: ES5
  * JSX: None
  * Module: ESNext
@@ -1270,6 +1270,15 @@ function translateHexCodes(targetStr: string, isConsole: boolean): string {
 	return converted
 }
 
+// remove color codes from text
+function removeColorCodes(text: string): string {
+	// color code pattern
+	const regex = /#[a-f0-9]{6}|&[0-9A-FK-OR]/gi
+
+	// return result
+	return text.replace(regex, '')
+}
+
 // stringify lore NBT object
 function convertLore(lore: Array<string>): string {
 	// stringify line by line
@@ -2170,6 +2179,13 @@ function sendSuccessMessage(playerName: string, enchant: string, nextLevel: numb
 	// set message
 	const message = `&7[&6강화&7] &7&l${krName}&f의 #FFFFB5&l${krEnchant} 인챈트 &6&l+${nextLevel} &f강화에 &a&l성공&f했습니다.`
 
+	// log to console
+	logConsole(
+		removeColorCodes(
+			`[강화로그]${PLAYER_NAME}|${krName}|${enchant}|${krEnchant}|${nextLevel}|success`
+		)
+	)
+
 	// send message
 	return sendMessage(consoleColorString(message))
 }
@@ -2184,6 +2200,11 @@ function sendFailMessage(playerName: string, enchant: string, nextLevel: number)
 
 	// set message
 	const message = `&7[&6강화&7] &7&l${krName}&f의 #FFFFB5&l${krEnchant} 인챈트 &6&l+${nextLevel} &f강화에 &c&l실패&f했습니다.`
+
+	// log to console
+	logConsole(
+		removeColorCodes(`[강화로그]${PLAYER_NAME}|${krName}|${enchant}|${krEnchant}|${nextLevel}|fail`)
+	)
 
 	// send message
 	return sendMessage(consoleColorString(message))
@@ -2224,6 +2245,13 @@ function broadcastSuccess(playerName: string, enchant: string, nextLevel: number
 	// set message
 	const message = `&b&l${playerName}&f님이 &7&l${krName}&f의 #FFFFB5&l${krEnchant} 인챈트 &6&l+${nextLevel} &f강화에 &a&l성공&f했습니다.`
 
+	// log to console
+	logConsole(
+		removeColorCodes(
+			`[강화로그]${PLAYER_NAME}|${krName}|${enchant}|${krEnchant}|${nextLevel}|success`
+		)
+	)
+
 	// broadcast message
 	return broadcastMessage(message)
 }
@@ -2239,6 +2267,11 @@ function broadcastFail(playerName: string, enchant: string, nextLevel: number): 
 	// set message
 	const message = `&b&l${playerName}&f님이 &7&l${krName}&f의 #FFFFB5&l${krEnchant} 인챈트 &6&l+${nextLevel} &f강화에 &c&l실패&f했습니다.`
 
+	// log to console
+	logConsole(
+		removeColorCodes(`[강화로그]${PLAYER_NAME}|${krName}|${enchant}|${krEnchant}|${nextLevel}|fail`)
+	)
+
 	// broadcast message
 	return broadcastMessage(message)
 }
@@ -2251,6 +2284,9 @@ function broadcastRandomSuccess(playerName: string): boolean {
 	// set message
 	const message = `&b&l${playerName}&f님이 &7&l${krName}&f의 #FFFFB5&l인챈트 &6&l랜덤 &f강화에 &a&l성공&f했습니다.`
 
+	// log to console
+	logConsole(removeColorCodes(`[강화로그]${PLAYER_NAME}|${krName}|random|랜덤|0|success`))
+
 	// broadcast message
 	return broadcastMessage(message)
 }
@@ -2262,6 +2298,9 @@ function broadcastRandomFail(playerName: string): boolean {
 
 	// set message
 	const message = `&b&l${playerName}&f님이 &7&l${krName}&f의 #FFFFB5&l인챈트 &6&l랜덤 &f강화에 &c&l실패&f했습니다.`
+
+	// log to console
+	logConsole(removeColorCodes(`[강화로그]${PLAYER_NAME}|${krName}|random|랜덤|0|fail`))
 
 	// broadcast message
 	return broadcastMessage(message)
