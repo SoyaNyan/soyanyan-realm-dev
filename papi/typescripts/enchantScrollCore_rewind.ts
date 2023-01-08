@@ -2182,7 +2182,7 @@ function sendSuccessMessage(playerName: string, enchant: string, nextLevel: numb
 	// log to console
 	logConsole(
 		removeColorCodes(
-			`[강화로그]${PLAYER_NAME}|${krName}|${enchant}|${krEnchant}|${nextLevel}|success`
+			`[강화로그]${PLAYER_NAME}|${krName}|${enchant}|${krEnchant}|${nextLevel}|success|`
 		)
 	)
 
@@ -2203,7 +2203,9 @@ function sendFailMessage(playerName: string, enchant: string, nextLevel: number)
 
 	// log to console
 	logConsole(
-		removeColorCodes(`[강화로그]${PLAYER_NAME}|${krName}|${enchant}|${krEnchant}|${nextLevel}|fail`)
+		removeColorCodes(
+			`[강화로그]${PLAYER_NAME}|${krName}|${enchant}|${krEnchant}|${nextLevel}|fail|`
+		)
 	)
 
 	// send message
@@ -2248,7 +2250,7 @@ function broadcastSuccess(playerName: string, enchant: string, nextLevel: number
 	// log to console
 	logConsole(
 		removeColorCodes(
-			`[강화로그]${PLAYER_NAME}|${krName}|${enchant}|${krEnchant}|${nextLevel}|success`
+			`[강화로그]${PLAYER_NAME}|${krName}|${enchant}|${krEnchant}|${nextLevel}|success|`
 		)
 	)
 
@@ -2269,7 +2271,9 @@ function broadcastFail(playerName: string, enchant: string, nextLevel: number): 
 
 	// log to console
 	logConsole(
-		removeColorCodes(`[강화로그]${PLAYER_NAME}|${krName}|${enchant}|${krEnchant}|${nextLevel}|fail`)
+		removeColorCodes(
+			`[강화로그]${PLAYER_NAME}|${krName}|${enchant}|${krEnchant}|${nextLevel}|fail|`
+		)
 	)
 
 	// broadcast message
@@ -2285,7 +2289,7 @@ function broadcastRandomSuccess(playerName: string): boolean {
 	const message = `&b&l${playerName}&f님이 &7&l${krName}&f의 #FFFFB5&l인챈트 &6&l랜덤 &f강화에 &a&l성공&f했습니다.`
 
 	// log to console
-	logConsole(removeColorCodes(`[강화로그]${PLAYER_NAME}|${krName}|random|랜덤|0|success`))
+	logConsole(removeColorCodes(`[강화로그]${PLAYER_NAME}|${krName}|random|랜덤|0|success|`))
 
 	// broadcast message
 	return broadcastMessage(message)
@@ -2300,7 +2304,7 @@ function broadcastRandomFail(playerName: string): boolean {
 	const message = `&b&l${playerName}&f님이 &7&l${krName}&f의 #FFFFB5&l인챈트 &6&l랜덤 &f강화에 &c&l실패&f했습니다.`
 
 	// log to console
-	logConsole(removeColorCodes(`[강화로그]${PLAYER_NAME}|${krName}|random|랜덤|0|fail`))
+	logConsole(removeColorCodes(`[강화로그]${PLAYER_NAME}|${krName}|random|랜덤|0|fail|`))
 
 	// broadcast message
 	return broadcastMessage(message)

@@ -834,7 +834,7 @@ function makeScroll(args: string[]): ReturnDataType {
 
 	// log to console
 	logConsole(
-		removeColorCodes(`[레시피로그]${PLAYER_NAME}|${recipeType}|${recipeName}|${eiCode}|${name}`)
+		removeColorCodes(`[레시피로그]${PLAYER_NAME}|${recipeType}|${recipeName}|${eiCode}|${name}|`)
 	)
 
 	return 1

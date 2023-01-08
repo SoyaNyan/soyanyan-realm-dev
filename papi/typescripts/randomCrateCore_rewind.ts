@@ -1361,7 +1361,7 @@ function givePrize(args: string[]): ReturnDataType {
 	// log to console
 	logConsole(
 		removeColorCodes(
-			`[랜덤박스로그]${PLAYER_NAME}|${crate}|${crateName}|${itemCode}|${itemName}|${quantity}`
+			`[랜덤박스로그]${PLAYER_NAME}|${crate}|${crateName}|${itemCode}|${itemName}|${quantity}|`
 		)
 	)
 
