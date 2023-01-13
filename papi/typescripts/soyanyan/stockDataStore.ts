@@ -1,10 +1,10 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: stockDataStore.ts
- * Version: v2.0.0
- * Last Update: 2022-07-31
+ * Version: v2.0.1
+ * Last Update: 2022-10-14
  *
- * TypeScript Version: v4.7.4
+ * TypeScript Version: v4.8.4
  * Target: ES5
  * JSX: None
  * Module: ESNext
@@ -683,36 +683,35 @@ function getNextStockData(stockData: StrictStockDataType): StockDataType {
 	const { currentPrice, priceFluct } = stockData
 
 	// get volatility
-	const randomVolit = Math.random()
-	const volatility = randomVolit * 10 + 2
+	const volatility = Math.random() * 10
 
-	const randomPerc = Math.random()
-	let variancePerc = 2 * volatility * randomPerc
+	// get variance
+	let variancePerc = 2 * volatility * Math.random()
 	if (variancePerc > volatility) variancePerc -= 2 * volatility
 
 	// update current price
 	const variancePrice = currentPrice * (variancePerc / 100)
-	const updatePrice = fixDigits(currentPrice + variancePrice)
+	const updatedPrice = fixDigits(currentPrice + variancePrice)
 
 	// updated fluct data
 	let fluct = '-'
-	if (updatePrice > currentPrice) {
+	if (updatedPrice > currentPrice) {
 		fluct = '1'
 	}
-	if (updatePrice < currentPrice) {
+	if (updatedPrice < currentPrice) {
 		fluct = '0'
 	}
-	const updateFluct = pushFluct(priceFluct, fluct)
+	const updatedFluct = pushFluct(priceFluct, fluct)
 
 	// return stock data for update
 	return {
 		lastPrice: currentPrice,
-		currentPrice: updatePrice,
+		currentPrice: updatedPrice,
 		slotBuy: 0,
 		slotSell: 0,
 		slotBuyBal: 0,
 		slotSellBal: 0,
-		priceFluct: updateFluct,
+		priceFluct: updatedFluct,
 	}
 }
 

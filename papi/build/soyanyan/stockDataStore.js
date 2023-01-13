@@ -1,10 +1,10 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: stockDataStore.ts
- * Version: v2.0.0
- * Last Update: 2022-07-31
+ * Version: v2.0.1
+ * Last Update: 2022-10-14
  *
- * TypeScript Version: v4.7.4
+ * TypeScript Version: v4.8.4
  * Target: ES5
  * JSX: None
  * Module: ESNext
@@ -442,29 +442,27 @@ function setVolatility(stockId) {
 function getNextStockData(stockData) {
 	var currentPrice = stockData.currentPrice,
 		priceFluct = stockData.priceFluct
-	var randomVolit = Math.random()
-	var volatility = randomVolit * 10 + 2
-	var randomPerc = Math.random()
-	var variancePerc = 2 * volatility * randomPerc
+	var volatility = Math.random() * 10
+	var variancePerc = 2 * volatility * Math.random()
 	if (variancePerc > volatility) variancePerc -= 2 * volatility
 	var variancePrice = currentPrice * (variancePerc / 100)
-	var updatePrice = fixDigits(currentPrice + variancePrice)
+	var updatedPrice = fixDigits(currentPrice + variancePrice)
 	var fluct = '-'
-	if (updatePrice > currentPrice) {
+	if (updatedPrice > currentPrice) {
 		fluct = '1'
 	}
-	if (updatePrice < currentPrice) {
+	if (updatedPrice < currentPrice) {
 		fluct = '0'
 	}
-	var updateFluct = pushFluct(priceFluct, fluct)
+	var updatedFluct = pushFluct(priceFluct, fluct)
 	return {
 		lastPrice: currentPrice,
-		currentPrice: updatePrice,
+		currentPrice: updatedPrice,
 		slotBuy: 0,
 		slotSell: 0,
 		slotBuyBal: 0,
 		slotSellBal: 0,
-		priceFluct: updateFluct,
+		priceFluct: updatedFluct,
 	}
 }
 function logCurrentPrice() {
