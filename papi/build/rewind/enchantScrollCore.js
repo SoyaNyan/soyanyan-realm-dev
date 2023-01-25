@@ -446,8 +446,8 @@ var RANDOM_ENCHANT_CHANCE = {
 	normal: 0.5,
 	plus: 0.6,
 }
-var EVENT_DAYS = [0, 6]
-var EVENT_CHANCE_MULTIPLIER = 2
+var EVENT_DAYS = []
+var EVENT_CHANCE_MULTIPLIER = 1
 var REPAIR_COST_LIMIT = {
 	material: {
 		NETHERITE: 10,
@@ -1035,6 +1035,10 @@ function translateHexCodes(targetStr, isConsole) {
 	}
 	return converted
 }
+function removeColorCodes(text) {
+	var regex = /#[a-f0-9]{6}|&[0-9A-FK-OR]/gi
+	return text.replace(regex, '')
+}
 function convertLore(lore) {
 	var lines = []
 	for (var _i = 0, lore_1 = lore; _i < lore_1.length; _i++) {
@@ -1528,6 +1532,16 @@ function sendSuccessMessage(playerName, enchant, nextLevel) {
 		.concat(krName, '&f\uC758 #FFFFB5&l')
 		.concat(krEnchant, ' \uC778\uCC48\uD2B8 &6&l+')
 		.concat(nextLevel, ' &f\uAC15\uD654\uC5D0 &a&l\uC131\uACF5&f\uD588\uC2B5\uB2C8\uB2E4.')
+	logConsole(
+		removeColorCodes(
+			'[\uAC15\uD654\uB85C\uADF8]'
+				.concat(PLAYER_NAME, '|')
+				.concat(krName, '|')
+				.concat(enchant, '|')
+				.concat(krEnchant, '|')
+				.concat(nextLevel, '|success|')
+		)
+	)
 	return sendMessage(consoleColorString(message))
 }
 function sendFailMessage(playerName, enchant, nextLevel) {
@@ -1537,6 +1551,16 @@ function sendFailMessage(playerName, enchant, nextLevel) {
 		.concat(krName, '&f\uC758 #FFFFB5&l')
 		.concat(krEnchant, ' \uC778\uCC48\uD2B8 &6&l+')
 		.concat(nextLevel, ' &f\uAC15\uD654\uC5D0 &c&l\uC2E4\uD328&f\uD588\uC2B5\uB2C8\uB2E4.')
+	logConsole(
+		removeColorCodes(
+			'[\uAC15\uD654\uB85C\uADF8]'
+				.concat(PLAYER_NAME, '|')
+				.concat(krName, '|')
+				.concat(enchant, '|')
+				.concat(krEnchant, '|')
+				.concat(nextLevel, '|fail|')
+		)
+	)
 	return sendMessage(consoleColorString(message))
 }
 function sendRandomSuccessMessage(playerName) {
@@ -1563,6 +1587,16 @@ function broadcastSuccess(playerName, enchant, nextLevel) {
 		.concat(krName, '&f\uC758 #FFFFB5&l')
 		.concat(krEnchant, ' \uC778\uCC48\uD2B8 &6&l+')
 		.concat(nextLevel, ' &f\uAC15\uD654\uC5D0 &a&l\uC131\uACF5&f\uD588\uC2B5\uB2C8\uB2E4.')
+	logConsole(
+		removeColorCodes(
+			'[\uAC15\uD654\uB85C\uADF8]'
+				.concat(PLAYER_NAME, '|')
+				.concat(krName, '|')
+				.concat(enchant, '|')
+				.concat(krEnchant, '|')
+				.concat(nextLevel, '|success|')
+		)
+	)
 	return broadcastMessage(message)
 }
 function broadcastFail(playerName, enchant, nextLevel) {
@@ -1573,6 +1607,16 @@ function broadcastFail(playerName, enchant, nextLevel) {
 		.concat(krName, '&f\uC758 #FFFFB5&l')
 		.concat(krEnchant, ' \uC778\uCC48\uD2B8 &6&l+')
 		.concat(nextLevel, ' &f\uAC15\uD654\uC5D0 &c&l\uC2E4\uD328&f\uD588\uC2B5\uB2C8\uB2E4.')
+	logConsole(
+		removeColorCodes(
+			'[\uAC15\uD654\uB85C\uADF8]'
+				.concat(PLAYER_NAME, '|')
+				.concat(krName, '|')
+				.concat(enchant, '|')
+				.concat(krEnchant, '|')
+				.concat(nextLevel, '|fail|')
+		)
+	)
 	return broadcastMessage(message)
 }
 function broadcastRandomSuccess(playerName) {
@@ -1583,6 +1627,13 @@ function broadcastRandomSuccess(playerName) {
 			krName,
 			'&f\uC758 #FFFFB5&l\uC778\uCC48\uD2B8 &6&l\uB79C\uB364 &f\uAC15\uD654\uC5D0 &a&l\uC131\uACF5&f\uD588\uC2B5\uB2C8\uB2E4.'
 		)
+	logConsole(
+		removeColorCodes(
+			'[\uAC15\uD654\uB85C\uADF8]'
+				.concat(PLAYER_NAME, '|')
+				.concat(krName, '|random|\uB79C\uB364|0|success|')
+		)
+	)
 	return broadcastMessage(message)
 }
 function broadcastRandomFail(playerName) {
@@ -1593,6 +1644,13 @@ function broadcastRandomFail(playerName) {
 			krName,
 			'&f\uC758 #FFFFB5&l\uC778\uCC48\uD2B8 &6&l\uB79C\uB364 &f\uAC15\uD654\uC5D0 &c&l\uC2E4\uD328&f\uD588\uC2B5\uB2C8\uB2E4.'
 		)
+	logConsole(
+		removeColorCodes(
+			'[\uAC15\uD654\uB85C\uADF8]'
+				.concat(PLAYER_NAME, '|')
+				.concat(krName, '|random|\uB79C\uB364|0|fail|')
+		)
+	)
 	return broadcastMessage(message)
 }
 function sendScrollMessage(scrollName, repairCost, nextRepairCost) {

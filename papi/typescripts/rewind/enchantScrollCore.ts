@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.ts
- * Version: v1.5.1
- * Last Update: 2023-01-03
+ * Version: v1.6.0
+ * Last Update: 2023-01-25
  *
  * TypeScript Version: v4.9.4
  * Target: ES5
@@ -2506,7 +2506,9 @@ function applyRandomEnchant(
 		broadcastRandomFail(PLAYER_NAME)
 
 		// replace target item
-		replaceItem(PLAYER_NAME, failNBTData, displayData, enchantData)
+		isPlus
+			? destroyItem(PLAYER_NAME)
+			: replaceItem(PLAYER_NAME, failNBTData, displayData, enchantData)
 
 		// return result
 		return 'fail'
