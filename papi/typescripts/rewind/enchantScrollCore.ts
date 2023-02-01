@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.ts
- * Version: v1.6.0
- * Last Update: 2023-01-25
+ * Version: v1.6.1
+ * Last Update: 2023-02-01
  *
  * TypeScript Version: v4.9.4
  * Target: ES5
@@ -2169,7 +2169,7 @@ function getNextEnchantData(
 }
 
 // send success message
-function sendSuccessMessage(playerName: string, enchant: string, nextLevel: number): boolean {
+function sendSuccessMessage(enchant: string, nextLevel: number): boolean {
 	// get kr name of target item
 	const krName = getKrName(40)
 
@@ -2182,7 +2182,7 @@ function sendSuccessMessage(playerName: string, enchant: string, nextLevel: numb
 	// log to console
 	logConsole(
 		removeColorCodes(
-			`[강화로그]${PLAYER_NAME}|${krName}|${enchant}|${krEnchant}|${nextLevel}|success|`
+			`[강화로그]${PLAYER_NAME}|${krName}|${enchant}|${krEnchant}|${nextLevel}|success|false|`
 		)
 	)
 
@@ -2191,7 +2191,7 @@ function sendSuccessMessage(playerName: string, enchant: string, nextLevel: numb
 }
 
 // send fail message
-function sendFailMessage(playerName: string, enchant: string, nextLevel: number): boolean {
+function sendFailMessage(enchant: string, nextLevel: number, sideEffect: boolean): boolean {
 	// get kr name of target item
 	const krName = getKrName(40)
 
@@ -2204,7 +2204,7 @@ function sendFailMessage(playerName: string, enchant: string, nextLevel: number)
 	// log to console
 	logConsole(
 		removeColorCodes(
-			`[강화로그]${PLAYER_NAME}|${krName}|${enchant}|${krEnchant}|${nextLevel}|fail|`
+			`[강화로그]${PLAYER_NAME}|${krName}|${enchant}|${krEnchant}|${nextLevel}|fail|${sideEffect}|`
 		)
 	)
 
@@ -2237,7 +2237,7 @@ function sendRandomFailMessage(playerName: string): boolean {
 }
 
 // broadcast success message
-function broadcastSuccess(playerName: string, enchant: string, nextLevel: number): boolean {
+function broadcastSuccess(enchant: string, nextLevel: number): boolean {
 	// get kr name of target item
 	const krName = getKrName(40)
 
@@ -2245,12 +2245,12 @@ function broadcastSuccess(playerName: string, enchant: string, nextLevel: number
 	const krEnchant = getKrEnchantName(enchant)
 
 	// set message
-	const message = `&b&l${playerName}&f님이 &7&l${krName}&f의 #FFFFB5&l${krEnchant} 인챈트 &6&l+${nextLevel} &f강화에 &a&l성공&f했습니다.`
+	const message = `&b&l${PLAYER_NAME}&f님이 &7&l${krName}&f의 #FFFFB5&l${krEnchant} 인챈트 &6&l+${nextLevel} &f강화에 &a&l성공&f했습니다.`
 
 	// log to console
 	logConsole(
 		removeColorCodes(
-			`[강화로그]${PLAYER_NAME}|${krName}|${enchant}|${krEnchant}|${nextLevel}|success|`
+			`[강화로그]${PLAYER_NAME}|${krName}|${enchant}|${krEnchant}|${nextLevel}|success|false|`
 		)
 	)
 
@@ -2259,7 +2259,7 @@ function broadcastSuccess(playerName: string, enchant: string, nextLevel: number
 }
 
 // broadcast fail message
-function broadcastFail(playerName: string, enchant: string, nextLevel: number): boolean {
+function broadcastFail(enchant: string, nextLevel: number, sideEffect: boolean): boolean {
 	// get kr name of target item
 	const krName = getKrName(40)
 
@@ -2267,12 +2267,12 @@ function broadcastFail(playerName: string, enchant: string, nextLevel: number): 
 	const krEnchant = getKrEnchantName(enchant)
 
 	// set message
-	const message = `&b&l${playerName}&f님이 &7&l${krName}&f의 #FFFFB5&l${krEnchant} 인챈트 &6&l+${nextLevel} &f강화에 &c&l실패&f했습니다.`
+	const message = `&b&l${PLAYER_NAME}&f님이 &7&l${krName}&f의 #FFFFB5&l${krEnchant} 인챈트 &6&l+${nextLevel} &f강화에 &c&l실패&f했습니다.`
 
 	// log to console
 	logConsole(
 		removeColorCodes(
-			`[강화로그]${PLAYER_NAME}|${krName}|${enchant}|${krEnchant}|${nextLevel}|fail|`
+			`[강화로그]${PLAYER_NAME}|${krName}|${enchant}|${krEnchant}|${nextLevel}|fail|${sideEffect}|`
 		)
 	)
 
@@ -2281,30 +2281,32 @@ function broadcastFail(playerName: string, enchant: string, nextLevel: number): 
 }
 
 // broadcast success message
-function broadcastRandomSuccess(playerName: string): boolean {
+function broadcastRandomSuccess(): boolean {
 	// get kr name of target item
 	const krName = getKrName(40)
 
 	// set message
-	const message = `&b&l${playerName}&f님이 &7&l${krName}&f의 #FFFFB5&l인챈트 &6&l랜덤 &f강화에 &a&l성공&f했습니다.`
+	const message = `&b&l${PLAYER_NAME}&f님이 &7&l${krName}&f의 #FFFFB5&l인챈트 &6&l랜덤 &f강화에 &a&l성공&f했습니다.`
 
 	// log to console
-	logConsole(removeColorCodes(`[강화로그]${PLAYER_NAME}|${krName}|random|랜덤|0|success|`))
+	logConsole(removeColorCodes(`[강화로그]${PLAYER_NAME}|${krName}|random|랜덤|0|success|false|`))
 
 	// broadcast message
 	return broadcastMessage(message)
 }
 
 // broadcast fail message
-function broadcastRandomFail(playerName: string): boolean {
+function broadcastRandomFail(sideEffect: boolean): boolean {
 	// get kr name of target item
 	const krName = getKrName(40)
 
 	// set message
-	const message = `&b&l${playerName}&f님이 &7&l${krName}&f의 #FFFFB5&l인챈트 &6&l랜덤 &f강화에 &c&l실패&f했습니다.`
+	const message = `&b&l${PLAYER_NAME}&f님이 &7&l${krName}&f의 #FFFFB5&l인챈트 &6&l랜덤 &f강화에 &c&l실패&f했습니다.`
 
 	// log to console
-	logConsole(removeColorCodes(`[강화로그]${PLAYER_NAME}|${krName}|random|랜덤|0|fail|`))
+	logConsole(
+		removeColorCodes(`[강화로그]${PLAYER_NAME}|${krName}|random|랜덤|0|fail|${sideEffect}|`)
+	)
 
 	// broadcast message
 	return broadcastMessage(message)
@@ -2384,10 +2386,10 @@ function applyNormalEnchant(
 
 		// broadcast success message (+12 ~)
 		if (nextEnchantData[enchant] >= 12) {
-			broadcastSuccess(PLAYER_NAME, enchant, nextEnchantData[enchant])
+			broadcastSuccess(enchant, nextEnchantData[enchant])
 		} else {
 			// or send message to player
-			sendSuccessMessage(PLAYER_NAME, enchant, nextEnchantData[enchant])
+			sendSuccessMessage(enchant, nextEnchantData[enchant])
 		}
 
 		// replace target item
@@ -2424,10 +2426,10 @@ function applyNormalEnchant(
 
 		// broadcast fail message (+12 ~)
 		if (nextLevel + 1 >= 12) {
-			broadcastFail(PLAYER_NAME, enchant, nextLevel + 1)
+			broadcastFail(enchant, nextLevel + 1, sideEffect)
 		} else {
 			// or send message to player
-			sendFailMessage(PLAYER_NAME, enchant, nextLevel + 1)
+			sendFailMessage(enchant, nextLevel + 1, sideEffect)
 		}
 
 		// replace target item
@@ -2456,10 +2458,10 @@ function applyNormalEnchant(
 
 	// broadcast fail message  (+12 ~)
 	if (nextLevel >= 12) {
-		broadcastFail(PLAYER_NAME, enchant, nextLevel)
+		broadcastFail(enchant, nextLevel, sideEffect)
 	} else {
 		// or send message to player
-		sendFailMessage(PLAYER_NAME, enchant, nextLevel)
+		sendFailMessage(enchant, nextLevel, sideEffect)
 	}
 
 	// replace target item
@@ -2503,7 +2505,7 @@ function applyRandomEnchant(
 		sendScrollMessage(name, RepairCost, nextRepairCost)
 
 		// broadcast fail message
-		broadcastRandomFail(PLAYER_NAME)
+		broadcastRandomFail(isPlus)
 
 		// replace target item
 		isPlus
@@ -2533,7 +2535,7 @@ function applyRandomEnchant(
 	playTitle(title, subtitle, PLAYER_NAME)
 
 	// broadcast success message
-	broadcastRandomSuccess(PLAYER_NAME)
+	broadcastRandomSuccess()
 
 	// replace target item
 	replaceItem(PLAYER_NAME, { Damage, RepairCost: nextRepairCost }, displayData, nextEnchantData)

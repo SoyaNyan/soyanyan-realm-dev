@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.js
- * Version: v1.6.0
- * Last Update: 2023-01-25
+ * Version: v1.6.1
+ * Last Update: 2023-02-01
  *
  * TypeScript Version: v4.9.4
  * Target: ES5
@@ -1525,7 +1525,7 @@ function getNextEnchantData(result, enchantData, enchant, isPlus) {
 		((_b = {}), (_b[enchant] = enchantData[enchant] - 1), _b)
 	)
 }
-function sendSuccessMessage(playerName, enchant, nextLevel) {
+function sendSuccessMessage(enchant, nextLevel) {
 	var krName = getKrName(40)
 	var krEnchant = getKrEnchantName(enchant)
 	var message = '&7[&6\uAC15\uD654&7] &7&l'
@@ -1539,12 +1539,12 @@ function sendSuccessMessage(playerName, enchant, nextLevel) {
 				.concat(krName, '|')
 				.concat(enchant, '|')
 				.concat(krEnchant, '|')
-				.concat(nextLevel, '|success|')
+				.concat(nextLevel, '|success|false|')
 		)
 	)
 	return sendMessage(consoleColorString(message))
 }
-function sendFailMessage(playerName, enchant, nextLevel) {
+function sendFailMessage(enchant, nextLevel, sideEffect) {
 	var krName = getKrName(40)
 	var krEnchant = getKrEnchantName(enchant)
 	var message = '&7[&6\uAC15\uD654&7] &7&l'
@@ -1559,6 +1559,7 @@ function sendFailMessage(playerName, enchant, nextLevel) {
 				.concat(enchant, '|')
 				.concat(krEnchant, '|')
 				.concat(nextLevel, '|fail|')
+				.concat(sideEffect, '|')
 		)
 	)
 	return sendMessage(consoleColorString(message))
@@ -1579,11 +1580,11 @@ function sendRandomFailMessage(playerName) {
 	)
 	return sendMessage(consoleColorString(message))
 }
-function broadcastSuccess(playerName, enchant, nextLevel) {
+function broadcastSuccess(enchant, nextLevel) {
 	var krName = getKrName(40)
 	var krEnchant = getKrEnchantName(enchant)
 	var message = '&b&l'
-		.concat(playerName, '&f\uB2D8\uC774 &7&l')
+		.concat(PLAYER_NAME, '&f\uB2D8\uC774 &7&l')
 		.concat(krName, '&f\uC758 #FFFFB5&l')
 		.concat(krEnchant, ' \uC778\uCC48\uD2B8 &6&l+')
 		.concat(nextLevel, ' &f\uAC15\uD654\uC5D0 &a&l\uC131\uACF5&f\uD588\uC2B5\uB2C8\uB2E4.')
@@ -1594,16 +1595,16 @@ function broadcastSuccess(playerName, enchant, nextLevel) {
 				.concat(krName, '|')
 				.concat(enchant, '|')
 				.concat(krEnchant, '|')
-				.concat(nextLevel, '|success|')
+				.concat(nextLevel, '|success|false|')
 		)
 	)
 	return broadcastMessage(message)
 }
-function broadcastFail(playerName, enchant, nextLevel) {
+function broadcastFail(enchant, nextLevel, sideEffect) {
 	var krName = getKrName(40)
 	var krEnchant = getKrEnchantName(enchant)
 	var message = '&b&l'
-		.concat(playerName, '&f\uB2D8\uC774 &7&l')
+		.concat(PLAYER_NAME, '&f\uB2D8\uC774 &7&l')
 		.concat(krName, '&f\uC758 #FFFFB5&l')
 		.concat(krEnchant, ' \uC778\uCC48\uD2B8 &6&l+')
 		.concat(nextLevel, ' &f\uAC15\uD654\uC5D0 &c&l\uC2E4\uD328&f\uD588\uC2B5\uB2C8\uB2E4.')
@@ -1615,14 +1616,15 @@ function broadcastFail(playerName, enchant, nextLevel) {
 				.concat(enchant, '|')
 				.concat(krEnchant, '|')
 				.concat(nextLevel, '|fail|')
+				.concat(sideEffect, '|')
 		)
 	)
 	return broadcastMessage(message)
 }
-function broadcastRandomSuccess(playerName) {
+function broadcastRandomSuccess() {
 	var krName = getKrName(40)
 	var message = '&b&l'
-		.concat(playerName, '&f\uB2D8\uC774 &7&l')
+		.concat(PLAYER_NAME, '&f\uB2D8\uC774 &7&l')
 		.concat(
 			krName,
 			'&f\uC758 #FFFFB5&l\uC778\uCC48\uD2B8 &6&l\uB79C\uB364 &f\uAC15\uD654\uC5D0 &a&l\uC131\uACF5&f\uD588\uC2B5\uB2C8\uB2E4.'
@@ -1631,15 +1633,15 @@ function broadcastRandomSuccess(playerName) {
 		removeColorCodes(
 			'[\uAC15\uD654\uB85C\uADF8]'
 				.concat(PLAYER_NAME, '|')
-				.concat(krName, '|random|\uB79C\uB364|0|success|')
+				.concat(krName, '|random|\uB79C\uB364|0|success|false|')
 		)
 	)
 	return broadcastMessage(message)
 }
-function broadcastRandomFail(playerName) {
+function broadcastRandomFail(sideEffect) {
 	var krName = getKrName(40)
 	var message = '&b&l'
-		.concat(playerName, '&f\uB2D8\uC774 &7&l')
+		.concat(PLAYER_NAME, '&f\uB2D8\uC774 &7&l')
 		.concat(
 			krName,
 			'&f\uC758 #FFFFB5&l\uC778\uCC48\uD2B8 &6&l\uB79C\uB364 &f\uAC15\uD654\uC5D0 &c&l\uC2E4\uD328&f\uD588\uC2B5\uB2C8\uB2E4.'
@@ -1649,6 +1651,7 @@ function broadcastRandomFail(playerName) {
 			'[\uAC15\uD654\uB85C\uADF8]'
 				.concat(PLAYER_NAME, '|')
 				.concat(krName, '|random|\uB79C\uB364|0|fail|')
+				.concat(sideEffect, '|')
 		)
 	)
 	return broadcastMessage(message)
@@ -1695,9 +1698,9 @@ function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) 
 		sendScrollMessage(name, RepairCost, nextRepairCost_1)
 		playTitle(title_1, subtitle_1, PLAYER_NAME)
 		if (nextEnchantData[enchant] >= 12) {
-			broadcastSuccess(PLAYER_NAME, enchant, nextEnchantData[enchant])
+			broadcastSuccess(enchant, nextEnchantData[enchant])
 		} else {
-			sendSuccessMessage(PLAYER_NAME, enchant, nextEnchantData[enchant])
+			sendSuccessMessage(enchant, nextEnchantData[enchant])
 		}
 		replaceItem(
 			PLAYER_NAME,
@@ -1720,9 +1723,9 @@ function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) 
 			? sendScrollMessage(name, RepairCost, 5)
 			: sendScrollMessage(name, RepairCost, nextRepairCost)
 		if (nextLevel + 1 >= 12) {
-			broadcastFail(PLAYER_NAME, enchant, nextLevel + 1)
+			broadcastFail(enchant, nextLevel + 1, sideEffect)
 		} else {
-			sendFailMessage(PLAYER_NAME, enchant, nextLevel + 1)
+			sendFailMessage(enchant, nextLevel + 1, sideEffect)
 		}
 		isPlus
 			? destroyItem(PLAYER_NAME)
@@ -1736,9 +1739,9 @@ function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) 
 	sendScrollMessage(name, RepairCost, nextRepairCost)
 	playTitle(title, subtitle, PLAYER_NAME)
 	if (nextLevel >= 12) {
-		broadcastFail(PLAYER_NAME, enchant, nextLevel)
+		broadcastFail(enchant, nextLevel, sideEffect)
 	} else {
-		sendFailMessage(PLAYER_NAME, enchant, nextLevel)
+		sendFailMessage(enchant, nextLevel, sideEffect)
 	}
 	replaceItem(PLAYER_NAME, failNBTData, displayData, nextEnchantData)
 	return 'fail'
@@ -1756,7 +1759,7 @@ function applyRandomEnchant(enchantData, displayData, nbtData, isPlus) {
 		var nextRepairCost_2 = getNextRepairCost(RepairCost, 'random', isPlus)
 		var failNBTData = { Damage: Damage, RepairCost: nextRepairCost_2 }
 		sendScrollMessage(name, RepairCost, nextRepairCost_2)
-		broadcastRandomFail(PLAYER_NAME)
+		broadcastRandomFail(isPlus)
 		isPlus
 			? destroyItem(PLAYER_NAME)
 			: replaceItem(PLAYER_NAME, failNBTData, displayData, enchantData)
@@ -1770,7 +1773,7 @@ function applyRandomEnchant(enchantData, displayData, nbtData, isPlus) {
 		title = _b.title,
 		subtitle = _b.subtitle
 	playTitle(title, subtitle, PLAYER_NAME)
-	broadcastRandomSuccess(PLAYER_NAME)
+	broadcastRandomSuccess()
 	replaceItem(
 		PLAYER_NAME,
 		{ Damage: Damage, RepairCost: nextRepairCost },
