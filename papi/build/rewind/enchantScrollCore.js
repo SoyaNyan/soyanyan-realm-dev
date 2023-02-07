@@ -1,10 +1,10 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.js
- * Version: v1.6.1
- * Last Update: 2023-02-01
+ * Version: v1.6.2
+ * Last Update: 2023-02-07
  *
- * TypeScript Version: v4.9.4
+ * TypeScript Version: v4.9.5
  * Target: ES5
  * JSX: None
  * Module: ESNext
@@ -1544,7 +1544,7 @@ function sendSuccessMessage(enchant, nextLevel) {
 	)
 	return sendMessage(consoleColorString(message))
 }
-function sendFailMessage(enchant, nextLevel, sideEffect) {
+function sendFailMessage(enchant, nextLevel, sideEffect, isProtected) {
 	var krName = getKrName(40)
 	var krEnchant = getKrEnchantName(enchant)
 	var message = '&7[&6\uAC15\uD654&7] &7&l'
@@ -1558,7 +1558,8 @@ function sendFailMessage(enchant, nextLevel, sideEffect) {
 				.concat(krName, '|')
 				.concat(enchant, '|')
 				.concat(krEnchant, '|')
-				.concat(nextLevel, '|fail|')
+				.concat(nextLevel, '|')
+				.concat(isProtected ? 'protected' : 'fail', '|')
 				.concat(sideEffect, '|')
 		)
 	)
@@ -1600,7 +1601,7 @@ function broadcastSuccess(enchant, nextLevel) {
 	)
 	return broadcastMessage(message)
 }
-function broadcastFail(enchant, nextLevel, sideEffect) {
+function broadcastFail(enchant, nextLevel, sideEffect, isProtected) {
 	var krName = getKrName(40)
 	var krEnchant = getKrEnchantName(enchant)
 	var message = '&b&l'
@@ -1615,7 +1616,8 @@ function broadcastFail(enchant, nextLevel, sideEffect) {
 				.concat(krName, '|')
 				.concat(enchant, '|')
 				.concat(krEnchant, '|')
-				.concat(nextLevel, '|fail|')
+				.concat(nextLevel, '|')
+				.concat(isProtected ? 'protected' : 'fail', '|')
 				.concat(sideEffect, '|')
 		)
 	)
@@ -1723,9 +1725,9 @@ function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) 
 			? sendScrollMessage(name, RepairCost, 5)
 			: sendScrollMessage(name, RepairCost, nextRepairCost)
 		if (nextLevel + 1 >= 12) {
-			broadcastFail(enchant, nextLevel + 1, sideEffect)
+			broadcastFail(enchant, isPlus ? nextLevel : nextLevel + 1, sideEffect, isProtected)
 		} else {
-			sendFailMessage(enchant, nextLevel + 1, sideEffect)
+			sendFailMessage(enchant, isPlus ? nextLevel : nextLevel + 1, sideEffect, isProtected)
 		}
 		isPlus
 			? destroyItem(PLAYER_NAME)
@@ -1739,9 +1741,9 @@ function applyNormalEnchant(enchantData, enchant, displayData, nbtData, isPlus) 
 	sendScrollMessage(name, RepairCost, nextRepairCost)
 	playTitle(title, subtitle, PLAYER_NAME)
 	if (nextLevel >= 12) {
-		broadcastFail(enchant, nextLevel, sideEffect)
+		broadcastFail(enchant, nextLevel, sideEffect, isProtected)
 	} else {
-		sendFailMessage(enchant, nextLevel, sideEffect)
+		sendFailMessage(enchant, nextLevel, sideEffect, isProtected)
 	}
 	replaceItem(PLAYER_NAME, failNBTData, displayData, nextEnchantData)
 	return 'fail'

@@ -1,10 +1,10 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.ts
- * Version: v1.6.1
- * Last Update: 2023-02-01
+ * Version: v1.6.2
+ * Last Update: 2023-02-07
  *
- * TypeScript Version: v4.9.4
+ * TypeScript Version: v4.9.5
  * Target: ES5
  * JSX: None
  * Module: ESNext
@@ -2191,7 +2191,12 @@ function sendSuccessMessage(enchant: string, nextLevel: number): boolean {
 }
 
 // send fail message
-function sendFailMessage(enchant: string, nextLevel: number, sideEffect: boolean): boolean {
+function sendFailMessage(
+	enchant: string,
+	nextLevel: number,
+	sideEffect: boolean,
+	isProtected: boolean
+): boolean {
 	// get kr name of target item
 	const krName = getKrName(40)
 
@@ -2204,7 +2209,9 @@ function sendFailMessage(enchant: string, nextLevel: number, sideEffect: boolean
 	// log to console
 	logConsole(
 		removeColorCodes(
-			`[강화로그]${PLAYER_NAME}|${krName}|${enchant}|${krEnchant}|${nextLevel}|fail|${sideEffect}|`
+			`[강화로그]${PLAYER_NAME}|${krName}|${enchant}|${krEnchant}|${nextLevel}|${
+				isProtected ? 'protected' : 'fail'
+			}|${sideEffect}|`
 		)
 	)
 
@@ -2259,7 +2266,12 @@ function broadcastSuccess(enchant: string, nextLevel: number): boolean {
 }
 
 // broadcast fail message
-function broadcastFail(enchant: string, nextLevel: number, sideEffect: boolean): boolean {
+function broadcastFail(
+	enchant: string,
+	nextLevel: number,
+	sideEffect: boolean,
+	isProtected: boolean
+): boolean {
 	// get kr name of target item
 	const krName = getKrName(40)
 
@@ -2272,7 +2284,9 @@ function broadcastFail(enchant: string, nextLevel: number, sideEffect: boolean):
 	// log to console
 	logConsole(
 		removeColorCodes(
-			`[강화로그]${PLAYER_NAME}|${krName}|${enchant}|${krEnchant}|${nextLevel}|fail|${sideEffect}|`
+			`[강화로그]${PLAYER_NAME}|${krName}|${enchant}|${krEnchant}|${nextLevel}|${
+				isProtected ? 'protected' : 'fail'
+			}|${sideEffect}|`
 		)
 	)
 
@@ -2426,10 +2440,10 @@ function applyNormalEnchant(
 
 		// broadcast fail message (+12 ~)
 		if (nextLevel + 1 >= 12) {
-			broadcastFail(enchant, nextLevel + 1, sideEffect)
+			broadcastFail(enchant, isPlus ? nextLevel : nextLevel + 1, sideEffect, isProtected)
 		} else {
 			// or send message to player
-			sendFailMessage(enchant, nextLevel + 1, sideEffect)
+			sendFailMessage(enchant, isPlus ? nextLevel : nextLevel + 1, sideEffect, isProtected)
 		}
 
 		// replace target item
@@ -2458,10 +2472,10 @@ function applyNormalEnchant(
 
 	// broadcast fail message  (+12 ~)
 	if (nextLevel >= 12) {
-		broadcastFail(enchant, nextLevel, sideEffect)
+		broadcastFail(enchant, nextLevel, sideEffect, isProtected)
 	} else {
 		// or send message to player
-		sendFailMessage(enchant, nextLevel, sideEffect)
+		sendFailMessage(enchant, nextLevel, sideEffect, isProtected)
 	}
 
 	// replace target item
