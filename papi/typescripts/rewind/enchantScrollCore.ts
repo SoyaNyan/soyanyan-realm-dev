@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.ts
- * Version: v1.6.2
- * Last Update: 2023-02-07
+ * Version: v1.6.3
+ * Last Update: 2023-02-10
  *
  * TypeScript Version: v4.9.5
  * Target: ES5
@@ -652,6 +652,7 @@ const ENCHANT_PANALTY: { [index: string]: number } = {
 	impaling: 3,
 	loyalty: 2,
 	riptide: 2,
+	quick_charge: 3,
 	piercing: 3,
 	random: 5,
 }
@@ -961,6 +962,16 @@ const ENCHANT_SCROLLS: {
 		plus: {
 			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l무기 #FFFFB5&l관통 #ECEAE4&l강화 주문서',
 			eiCode: 'enchantScrollPiercingPlus',
+		},
+	},
+	quick_charge: {
+		normal: {
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l빠른장전 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollQuickCharge',
+		},
+		plus: {
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l무기 #FFFFB5&l빠른장전 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollQuickChargePlus',
 		},
 	},
 	random: {
