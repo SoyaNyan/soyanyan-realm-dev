@@ -818,7 +818,7 @@ function updateStock(args) {
 }
 function nextUpdateETA(args) {
 	var returnType = args[1]
-	var seconds = parseInt(parsePlaceholder('commandtimer_stockTimer_nextExecution'))
+	var seconds = parseInt(parsePlaceholder('commandtimer_UpdateStock_nextExecution'))
 	if (seconds <= 0) return '&60&f분 &60&f초'
 	var etaMins = Math.floor(seconds / 60)
 	var etaSecs = seconds % 60
