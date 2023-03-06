@@ -15,12 +15,8 @@ lore:
   - '&7 > 총 발행량: &6%javascript_stock_store_totalShares,0,stock03%&f주'
   - '&7 > 현재가격: &a%javascript_stock_store_currentPrice,0,stock03%&f원 &7(%javascript_stock_store_stockFluct,4,stock03%
     %javascript_stock_store_priceFluctPercent,0,stock03%%&7)'
-  - '&7 > 매수량: &b%javascript_stock_store_slotBuy,0,stock03%&f주 &7(%javascript_stock_store_totalBuy,0,stock03%주)'
-  - '&7 > 매도량: &b%javascript_stock_store_slotSell,0,stock03%&f주 &7(%javascript_stock_store_totalSell,0,stock03%주)'
-  - '&7 > 매수금액: &e%javascript_stock_store_slotBuyBal,0,stock03%&f원 &7(%javascript_stock_store_totalBuyBal,0,stock03%원)'
-  - '&7 > 매도금액: &e%javascript_stock_store_slotSellBal,0,stock03%&f원 &7(%javascript_stock_store_totalSellBal,0,stock03%원)'
   - '&7 > 주가변동 추이: %javascript_stock_store_stockFluct,3,stock03%'
-  - '&7 > 다음 슬롯까지: %javascript_stock_store_nextUpdateETA,0%'
+  - '&7 > 다음 슬롯까지: -준비중-'
   - '&5 * 이번 &n&l슬롯&5에 대한 정보입니다. *'
   - '&7----------------------------'
   - '&7< &c&l사용방법 &7>'
@@ -269,41 +265,6 @@ activators:
         part2: 'true'
         cancelEventIfNotValid: false
         messageIfNotValid: '&6>> 보유중인 주식 수가 부족합니다. &7(현재 보유량: %javascript_stock_store_playerStockCount,0,stock03%주)'
-    variablesModification: {}
-  activator5:
-    name: '&eActivator'
-    option: PLAYER_SELECT_THE_EI
-    usageModification: 0
-    cancelEvent: false
-    silenceOutput: false
-    autoUpdateItem: false
-    cooldownOptions:
-      cooldown: 0
-      isCooldownInTicks: false
-      cooldownMsg: '&6>> 재사용 대기중... &7(%time_S%초)'
-      displayCooldownMessage: true
-      cancelEventIfInCooldown: false
-    globalCooldownOptions:
-      cooldown: 0
-      isCooldownInTicks: false
-      cooldownMsg: '&6>> 전체 재사용 대기중... &7(%time_S%초)'
-      displayCooldownMessage: true
-      cancelEventIfInCooldown: false
-    otherEICooldowns: {}
-    requiredItems:
-      errorMessage: ''
-    requiredExecutableItems:
-      errorMessage: ''
-    detailedSlots:
-      - -1
-    commands:
-      - SENDMESSAGE §7[§x§C§B§A§A§C§B주식§7] §3%javascript_stock_store_stockName,0,stock03%
-        §f주식정보 §e업데이트 §a완료. §7(주식증서)
-    playerConditions: {}
-    worldConditions: {}
-    itemConditions: {}
-    customConditions: {}
-    placeholdersConditions: {}
     variablesModification: {}
 recognitions: []
 attributes: {}
