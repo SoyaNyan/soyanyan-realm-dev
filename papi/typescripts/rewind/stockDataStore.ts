@@ -612,7 +612,7 @@ function getNextStockData(stockData: StrictStockDataType): StockDataType {
 
 	// check bias
 	if (checkBias(priceFluct, fluct)) {
-		updatedPrice = fixDigits(currentPrice + Math.abs(varPrice), 100)
+		updatedPrice = fixDigits(currentPrice + varPrice * -1, 100)
 		fluct = updatedPrice === currentPrice ? '-' : updatedPrice > currentPrice ? '1' : '0'
 	}
 
@@ -1062,7 +1062,7 @@ function estimatedProfit(args: string[]): DataType {
 	const { stocks, totalPrice } = getAccountData(stockId, PLAYER_NAME)
 
 	// calc estimated profit
-	const estimatedProfit = currentPrice * stocks - totalPrice
+	const estimatedProfit = stocks <= 0 ? 0 : currentPrice * stocks - totalPrice
 
 	// check return type (condition: estimated profit > 0)
 	const cond = estimatedProfit > 0
