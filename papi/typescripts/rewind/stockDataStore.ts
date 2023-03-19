@@ -1,10 +1,10 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: stockDataStore.ts
- * Version: v1.1.0
- * Last Update: 2023-02-23
+ * Version: v1.2.0
+ * Last Update: 2023-03-19
  *
- * TypeScript Version: v4.9.5
+ * TypeScript Version: v5.0.2
  * Target: ES5
  * JSX: None
  * Module: ESNext
@@ -109,10 +109,10 @@ const TRADING_FEE_RATE = 0.01
 const VOLATILITY: {
 	[index: string]: number
 } = {
-	'10000000': 0.1,
-	'1000000': 1,
-	'100000': 5,
-	'10000': 10,
+	'10000000': 0.05,
+	'1000000': 0.5,
+	'100000': 2.5,
+	'10000': 5,
 }
 
 // setting of stocks
@@ -941,7 +941,7 @@ function totalShares(args: string[]): DataType {
 	const path = `${stockId}.totalShares`
 
 	// get data
-	const data = get(path)
+	const data = get(path) as number
 
 	// check return type (condition: totalShares > 0)
 	const cond = data > 0
@@ -1092,7 +1092,7 @@ function slotBuy(args: string[]): DataType {
 	const path = `${stockId}.slotBuy`
 
 	// get data
-	const data = get(path)
+	const data = get(path) as number
 
 	// check return type (condition: if player bought this stock one or more)
 	const cond = data > 0
@@ -1115,7 +1115,7 @@ function slotSell(args: string[]): DataType {
 	const path = `${stockId}.slotSell`
 
 	// get data
-	const data = get(path)
+	const data = get(path) as number
 
 	// check return type (condition: if player sold this stock one or more)
 	const cond = data > 0
@@ -1138,7 +1138,7 @@ function slotBuyBal(args: string[]): DataType {
 	const path = `${stockId}.slotBuyBal`
 
 	// get data
-	const data = get(path)
+	const data = get(path) as number
 
 	// check return type (condition: if total buy balance is larger then 0)
 	const cond = data > 0
@@ -1161,7 +1161,7 @@ function slotSellBal(args: string[]): DataType {
 	const path = `${stockId}.slotSellBal`
 
 	// get data
-	const data = get(path)
+	const data = get(path) as number
 
 	// check return type (condition: if total sell balance is larger then 0)
 	const cond = data > 0
@@ -1184,7 +1184,7 @@ function totalBuy(args: string[]): DataType {
 	const path = `${stockId}.totalBuy`
 
 	// get data
-	const data = get(path)
+	const data = get(path) as number
 
 	// check return type (condition: if player bought this stock one or more)
 	const cond = data > 0
@@ -1207,7 +1207,7 @@ function totalSell(args: string[]): DataType {
 	const path = `${stockId}.totalSell`
 
 	// get data
-	const data = get(path)
+	const data = get(path) as number
 
 	// check return type (condition: if player sold this stock one or more)
 	const cond = data > 0
@@ -1230,7 +1230,7 @@ function totalBuyBal(args: string[]): DataType {
 	const path = `${stockId}.totalBuyBal`
 
 	// get data
-	const data = get(path)
+	const data = get(path) as number
 
 	// check return type (condition: if total buy balance is larger then 0)
 	const cond = data > 0
@@ -1253,7 +1253,7 @@ function totalSellBal(args: string[]): DataType {
 	const path = `${stockId}.totalSellBal`
 
 	// get data
-	const data = get(path)
+	const data = get(path) as number
 
 	// check return type (condition: if total sell balance is larger then 0)
 	const cond = data > 0

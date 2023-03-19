@@ -1,10 +1,10 @@
 /**
  * Author: SOYANYAN (소야냥)
- * Name: stockDataStore.js
- * Version: v1.1.0
- * Last Update: 2023-02-23
+ * Name: stockDataStore.ts
+ * Version: v1.2.0
+ * Last Update: 2023-03-19
  *
- * TypeScript Version: v4.9.5
+ * TypeScript Version: v5.0.2
  * Target: ES5
  * JSX: None
  * Module: ESNext
@@ -30,10 +30,10 @@ if (!String.prototype.repeat) {
 var PLAYER_NAME = '%player_name%'
 var TRADING_FEE_RATE = 0.01
 var VOLATILITY = {
-	'10000000': 0.1,
-	'1000000': 1,
-	'100000': 5,
-	'10000': 10,
+	'10000000': 0.05,
+	'1000000': 0.5,
+	'100000': 2.5,
+	'10000': 5,
 }
 var STOCKS = {
 	'stock01': {
@@ -346,7 +346,7 @@ function getNextStockData(stockData) {
 	var updatedPrice = fixDigits(currentPrice + varPrice, 100)
 	var fluct = updatedPrice === currentPrice ? '-' : updatedPrice > currentPrice ? '1' : '0'
 	if (checkBias(priceFluct, fluct)) {
-		updatedPrice = fixDigits(currentPrice + Math.abs(varPrice), 100)
+		updatedPrice = fixDigits(currentPrice + varPrice * -1, 100)
 		fluct = updatedPrice === currentPrice ? '-' : updatedPrice > currentPrice ? '1' : '0'
 	}
 	var updatedFluct = pushFluct(priceFluct, fluct)
@@ -584,7 +584,7 @@ function estimatedProfit(args) {
 	var _a = getAccountData(stockId, PLAYER_NAME),
 		stocks = _a.stocks,
 		totalPrice = _a.totalPrice
-	var estimatedProfit = currentPrice * stocks - totalPrice
+	var estimatedProfit = stocks <= 0 ? 0 : currentPrice * stocks - totalPrice
 	var cond = estimatedProfit > 0
 	if (returnType === '1') return cond
 	if (returnType === '2') return encodeBoolean(cond)
