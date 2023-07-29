@@ -253,6 +253,12 @@ function clearStockData() {
 function checkStock(stockId) {
 	if (!exists(stockId)) initStock(stockId)
 }
+function initAccount(stockId, playerName) {
+	setAccountData(stockId, playerName, {
+		stocks: 0,
+		totalPrice: 0,
+	})
+}
 function getAccountData(stockId, playerName) {
 	return {
 		stocks: get(''.concat(stockId, '.accounts.').concat(playerName, '.stocks')),
@@ -444,6 +450,14 @@ function initStocks(args) {
 	} else {
 		initStock(stockId)
 	}
+	return true
+}
+function initAccounts(args) {
+	var stockId = args[1],
+		playerName = args[2]
+	checkStock(stockId)
+	checkAccount(stockId, PLAYER_NAME)
+	initAccount(stockId, playerName)
 	return true
 }
 function checkBalance(args) {
@@ -764,7 +778,7 @@ function sellStock(args) {
 		setStockData(stockId, updateData)
 		var updatedAccount = {
 			stocks: stocks - amount,
-			totalPrice: totalPrice - profit,
+			totalPrice: totalPrice - profit <= 0 ? 0 : totalPrice - profit,
 		}
 		setAccountData(stockId, PLAYER_NAME, updatedAccount)
 	}
@@ -841,6 +855,10 @@ function stockDataStore() {
 		initStocks: {
 			argLen: [1, 2],
 			callback: initStocks,
+		},
+		initAccounts: {
+			argLen: [2, 3],
+			callback: initAccounts,
 		},
 		checkBalance: {
 			argLen: [2, 4],

@@ -1,8 +1,8 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: stockDataStore.ts
- * Version: v1.2.0
- * Last Update: 2023-03-19
+ * Version: v1.2.1
+ * Last Update: 2023-03-20
  *
  * TypeScript Version: v5.0.2
  * Target: ES5
@@ -424,6 +424,15 @@ function checkStock(stockId: string): void {
 	if (!exists(stockId)) initStock(stockId)
 }
 
+// initialize account data
+function initAccount(stockId: string, playerName: string): void {
+	// set account data as init object
+	setAccountData(stockId, playerName, {
+		stocks: 0,
+		totalPrice: 0,
+	})
+}
+
 // get player's stock account data
 function getAccountData(stockId: string, playerName: string): AccountDataType {
 	return {
@@ -778,6 +787,24 @@ function initStocks(args: string[]): boolean {
 	} else {
 		initStock(stockId)
 	}
+
+	// normal return
+	return true
+}
+
+// initialize account data
+function initAccounts(args: string[]): boolean {
+	// get args
+	const [, stockId, playerName] = args
+
+	// check stock exists
+	checkStock(stockId)
+
+	// check player stock account exists
+	checkAccount(stockId, PLAYER_NAME)
+
+	// initialize player's stock account data
+	initAccount(stockId, playerName)
 
 	// normal return
 	return true
@@ -1402,7 +1429,7 @@ function sellStock(args: string[]): DataType {
 		// update account data
 		const updatedAccount: AccountDataType = {
 			stocks: stocks - amount,
-			totalPrice: totalPrice - profit,
+			totalPrice: totalPrice - profit <= 0 ? 0 : totalPrice - profit,
 		}
 		setAccountData(stockId, PLAYER_NAME, updatedAccount)
 	}
@@ -1570,6 +1597,10 @@ function stockDataStore(): string {
 		initStocks: {
 			argLen: [1, 2],
 			callback: initStocks,
+		},
+		initAccounts: {
+			argLen: [2, 3],
+			callback: initAccounts,
 		},
 		checkBalance: {
 			argLen: [2, 4],
