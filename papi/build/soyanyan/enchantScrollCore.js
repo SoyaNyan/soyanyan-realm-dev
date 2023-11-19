@@ -1,10 +1,10 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollCore.js
- * Version: v1.6.0
- * Last Update: 2023-01-25
+ * Version: v1.7.0
+ * Last Update: 2023-11-18
  *
- * TypeScript Version: v4.9.4
+ * TypeScript Version: v5.2.2
  * Target: ES5
  * JSX: None
  * Module: ESNext

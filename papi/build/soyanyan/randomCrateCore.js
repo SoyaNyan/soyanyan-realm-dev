@@ -1,10 +1,10 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: randomCrateCore.js
- * Version: v1.0.3
- * Last Update: 2022-12-21
+ * Version: v1.1.0
+ * Last Update: 2023-11-18
  *
- * TypeScript Version: v4.9.4
+ * TypeScript Version: v5.2.2
  * Target: ES5
  * JSX: None
  * Module: ESNext
@@ -903,6 +903,10 @@ function translateHexCodes(targetStr, isConsole) {
 	}
 	return converted
 }
+function removeColorCodes(text) {
+	var regex = /#[a-f0-9]{6}|&[0-9A-FK-OR]/gi
+	return text.replace(regex, '')
+}
 function parsePlaceholder(placeholder) {
 	return PlaceholderAPI.static.setPlaceholders(BukkitPlayer, '%'.concat(placeholder, '%'))
 }
@@ -1042,6 +1046,17 @@ function givePrize(args) {
 			.concat(quantity, ' &f\uB97C \uD68D\uB4DD\uD588\uC2B5\uB2C8\uB2E4!')
 		broadcastMessage(consoleColorString(message))
 	}
+	logConsole(
+		removeColorCodes(
+			'[\uB79C\uB364\uBC15\uC2A4\uB85C\uADF8]'
+				.concat(PLAYER_NAME, '|')
+				.concat(crate, '|')
+				.concat(crateName, '|')
+				.concat(itemCode, '|')
+				.concat(itemName, '|')
+				.concat(quantity, '|')
+		)
+	)
 	return 1
 }
 function randomCrateCore() {

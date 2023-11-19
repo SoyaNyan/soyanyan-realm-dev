@@ -333,7 +333,7 @@ function encodeBoolean(data: boolean): string {
 	return data ? '1' : '0'
 }
 
-// round under 100
+// round under specific digits
 function fixDigits(value: number, roundValue: number): number {
 	return Math.round(value / roundValue) * roundValue
 }

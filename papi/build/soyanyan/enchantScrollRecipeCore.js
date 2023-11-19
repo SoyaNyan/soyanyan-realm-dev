@@ -1,10 +1,10 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollRecipeCore.js
- * Version: v1.1.0
- * Last Update: 2022-09-26
+ * Version: v1.2.0
+ * Last Update: 2023-11-18
  *
- * TypeScript Version: v4.8.4
+ * TypeScript Version: v5.2.2
  * Target: ES5
  * JSX: None
  * Module: ESNext
@@ -335,6 +335,16 @@ var ENCHANT_SCROLLS = {
 			eiCode: 'enchantScrollPiercingPlus',
 		},
 	},
+	quick_charge: {
+		normal: {
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l빠른장전 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollQuickCharge',
+		},
+		plus: {
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l무기 #FFFFB5&l빠른장전 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollQuickChargePlus',
+		},
+	},
 	random: {
 		normal: {
 			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l아이템 #FFFFB5&l인챈트 #ECEAE4&l혼돈의 주문서',
@@ -373,6 +383,7 @@ var SCROLL_RECIPES = {
 			'loyalty',
 			'riptide',
 			'piercing',
+			'quick_charge',
 		],
 	},
 	armorScrolls: {
@@ -464,6 +475,10 @@ function translateHexCodes(targetStr, isConsole) {
 		}
 	}
 	return converted
+}
+function removeColorCodes(text) {
+	var regex = /#[a-f0-9]{6}|&[0-9A-FK-OR]/gi
+	return text.replace(regex, '')
 }
 function parsePlaceholder(placeholder) {
 	return PlaceholderAPI.static.setPlaceholders(BukkitPlayer, '%'.concat(placeholder, '%'))
@@ -590,6 +605,16 @@ function makeScroll(args) {
 			.concat(name, '&f\uB97C \uD68D\uB4DD\uD588\uC2B5\uB2C8\uB2E4!')
 		broadcastMessage(consoleColorString(message_1))
 	}
+	logConsole(
+		removeColorCodes(
+			'[\uB808\uC2DC\uD53C\uB85C\uADF8]'
+				.concat(PLAYER_NAME, '|')
+				.concat(recipeType, '|')
+				.concat(recipeName, '|')
+				.concat(eiCode, '|')
+				.concat(name, '|')
+		)
+	)
 	return 1
 }
 function enchantScrollRecipeCore() {

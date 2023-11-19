@@ -1,10 +1,10 @@
 /**
  * Author: SOYANYAN (소야냥)
- * Name: stockDataStore.ts
- * Version: v2.0.1
- * Last Update: 2022-10-14
+ * Name: stockDataStore.js
+ * Version: v2.1.0
+ * Last Update: 2023-11-18
  *
- * TypeScript Version: v4.8.4
+ * TypeScript Version: v5.2.2
  * Target: ES5
  * JSX: None
  * Module: ESNext
@@ -26,6 +26,12 @@ var __assign =
 	}
 var PLAYER_NAME = '%player_name%'
 var TRADING_FEE_RATE = 0.01
+var VOLATILITY = {
+	'10000000': 0.05,
+	'1000000': 0.5,
+	'100000': 2.5,
+	'10000': 5,
+}
 var STOCKS = {
 	'stock01': {
 		name: '소야냥건설',
@@ -284,8 +290,8 @@ function stringify(data) {
 function encodeBoolean(data) {
 	return data ? '1' : '0'
 }
-function fixDigits(value) {
-	return Math.round(value / 100) * 100
+function fixDigits(value, roundValue) {
+	return Math.round(value / roundValue) * roundValue
 }
 function formatWithCommas(value) {
 	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
@@ -341,6 +347,12 @@ function clearStockData() {
 }
 function checkStock(stockId) {
 	if (!exists(stockId)) initStock(stockId)
+}
+function initAccount(stockId, playerName) {
+	setAccountData(stockId, playerName, {
+		stocks: 0,
+		totalPrice: 0,
+	})
 }
 function getAccountData(stockId, playerName) {
 	return {
@@ -421,7 +433,7 @@ function pushFluct(priceFluct, symbol) {
 }
 function getCost(currentPrice, amount) {
 	var cost = amount * currentPrice
-	var fee = fixDigits(cost * TRADING_FEE_RATE)
+	var fee = fixDigits(cost * TRADING_FEE_RATE, 100)
 	return cost + fee
 }
 function getChange(totalExp, cost) {
@@ -430,10 +442,23 @@ function getChange(totalExp, cost) {
 }
 function getProfit(currentPrice, amount) {
 	var profit = amount * currentPrice
-	var fee = fixDigits(profit * TRADING_FEE_RATE)
+	var fee = fixDigits(profit * TRADING_FEE_RATE, 100)
 	return profit - fee
 }
-function setVolatility(stockId) {
+function getVolatility(currentPrice) {
+	for (var keyValue in VOLATILITY) {
+		if (parseInt(keyValue) <= currentPrice) {
+			return Math.random() * VOLATILITY[keyValue]
+		}
+	}
+	return Math.random() * 10
+}
+function checkBias(priceFluct, fluct) {
+	var ratio = 4
+	var regex = new RegExp('/'.concat(fluct.repeat(ratio), '/g'))
+	return (priceFluct.match(regex) || []).length > 0
+}
+function updateStockPrice(stockId) {
 	checkStock(stockId)
 	var stockData = getStockData(stockId)
 	var updateData = getNextStockData(stockData)
@@ -442,17 +467,14 @@ function setVolatility(stockId) {
 function getNextStockData(stockData) {
 	var currentPrice = stockData.currentPrice,
 		priceFluct = stockData.priceFluct
-	var volatility = Math.random() * 10
-	var variancePerc = 2 * volatility * Math.random()
-	if (variancePerc > volatility) variancePerc -= 2 * volatility
-	var variancePrice = currentPrice * (variancePerc / 100)
-	var updatedPrice = fixDigits(currentPrice + variancePrice)
-	var fluct = '-'
-	if (updatedPrice > currentPrice) {
-		fluct = '1'
-	}
-	if (updatedPrice < currentPrice) {
-		fluct = '0'
+	var volatility = getVolatility(currentPrice)
+	var varPerc = 2 * volatility * (Math.random() - 0.5)
+	var varPrice = currentPrice * (varPerc / 100)
+	var updatedPrice = fixDigits(currentPrice + varPrice, 100)
+	var fluct = updatedPrice === currentPrice ? '-' : updatedPrice > currentPrice ? '1' : '0'
+	if (checkBias(priceFluct, fluct)) {
+		updatedPrice = fixDigits(currentPrice + varPrice * -1, 100)
+		fluct = updatedPrice === currentPrice ? '-' : updatedPrice > currentPrice ? '1' : '0'
 	}
 	var updatedFluct = pushFluct(priceFluct, fluct)
 	return {
@@ -695,7 +717,7 @@ function estimatedProfit(args) {
 	var _a = getAccountData(stockId, PLAYER_NAME),
 		stocks = _a.stocks,
 		totalPrice = _a.totalPrice
-	var estimatedProfit = currentPrice * stocks - totalPrice
+	var estimatedProfit = stocks <= 0 ? 0 : currentPrice * stocks - totalPrice
 	var cond = estimatedProfit > 0
 	if (returnType === '1') return cond
 	if (returnType === '2') return encodeBoolean(cond)
@@ -912,15 +934,15 @@ function giveStock(args) {
 	setAccountData(stockId, playerName, updatedAccount)
 	return true
 }
-function setStockVolatility(args) {
+function updateStock(args) {
 	var returnType = args[1],
 		stockId = args[2]
 	if (stockId === undefined) {
 		for (var stock in STOCKS) {
-			setVolatility(stock)
+			updateStockPrice(stock)
 		}
 	} else {
-		setVolatility(stockId)
+		updateStockPrice(stockId)
 	}
 	var cond = true
 	if (returnType === '1') return encodeBoolean(cond)
@@ -1047,7 +1069,7 @@ function stockDataStore() {
 		},
 		setV: {
 			argLen: [2, 3],
-			callback: setStockVolatility,
+			callback: updateStock,
 		},
 		nextUpdateETA: {
 			argLen: [2],

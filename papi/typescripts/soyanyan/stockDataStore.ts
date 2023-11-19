@@ -1,10 +1,10 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: stockDataStore.ts
- * Version: v2.0.1
- * Last Update: 2022-10-14
+ * Version: v2.1.0
+ * Last Update: 2023-11-18
  *
- * TypeScript Version: v4.8.4
+ * TypeScript Version: v5.2.2
  * Target: ES5
  * JSX: None
  * Module: ESNext
@@ -23,6 +23,13 @@ const args: string[] = []
 /**
   [ type definition ] 
 */
+// for polyfills
+declare global {
+	interface String {
+		repeat(count: number): string
+	}
+}
+
 // available stored data types
 type DataType = number | string | boolean
 type StockDataType = {
@@ -75,6 +82,16 @@ const PLAYER_NAME = '%player_name%'
 
 // stock trading fee setting
 const TRADING_FEE_RATE = 0.01
+
+// volatility setting
+const VOLATILITY: {
+	[index: string]: number
+} = {
+	'10000000': 0.05,
+	'1000000': 0.5,
+	'100000': 2.5,
+	'10000': 5,
+}
 
 // setting of stocks
 const STOCKS: {
@@ -392,9 +409,9 @@ function encodeBoolean(data: boolean): string {
 	return data ? '1' : '0'
 }
 
-// round under 100
-function fixDigits(value: number): number {
-	return Math.round(value / 100) * 100
+// round under specific digits
+function fixDigits(value: number, roundValue: number): number {
+	return Math.round(value / roundValue) * roundValue
 }
 
 // format currency with commas
@@ -481,6 +498,15 @@ function clearStockData(): boolean {
 function checkStock(stockId: string): void {
 	// if stock data not exists, initialize it
 	if (!exists(stockId)) initStock(stockId)
+}
+
+// initialize account data
+function initAccount(stockId: string, playerName: string): void {
+	// set account data as init object
+	setAccountData(stockId, playerName, {
+		stocks: 0,
+		totalPrice: 0,
+	})
 }
 
 // get player's stock account data
@@ -636,7 +662,7 @@ function getCost(currentPrice: number, amount: number): number {
 	const cost = amount * currentPrice
 
 	// add traiding fee
-	const fee = fixDigits(cost * TRADING_FEE_RATE)
+	const fee = fixDigits(cost * TRADING_FEE_RATE, 100)
 
 	// return total value of profit
 	return cost + fee
@@ -657,14 +683,39 @@ function getProfit(currentPrice: number, amount: number): number {
 	const profit = amount * currentPrice
 
 	// subs traiding fee
-	const fee = fixDigits(profit * TRADING_FEE_RATE)
+	const fee = fixDigits(profit * TRADING_FEE_RATE, 100)
 
 	// return total value of profit
 	return profit - fee
 }
 
-// set volatility to each stock data
-function setVolatility(stockId: string) {
+// get volatility by stock's current price
+function getVolatility(currentPrice: number): number {
+	for (const keyValue in VOLATILITY) {
+		// in price range
+		if (parseInt(keyValue) <= currentPrice) {
+			return Math.random() * VOLATILITY[keyValue]
+		}
+	}
+
+	// default
+	return Math.random() * 10
+}
+
+// check fluct bias
+function checkBias(priceFluct: string, fluct: string): boolean {
+	// bias ratio
+	const ratio = 4
+
+	// set regex
+	const regex = new RegExp(`/${fluct.repeat(ratio)}/g`)
+
+	// check bias
+	return (priceFluct.match(regex) || []).length > 0
+}
+
+// update price to each stock data
+function updateStockPrice(stockId: string) {
 	// check stock exists
 	checkStock(stockId)
 
@@ -683,24 +734,25 @@ function getNextStockData(stockData: StrictStockDataType): StockDataType {
 	const { currentPrice, priceFluct } = stockData
 
 	// get volatility
-	const volatility = Math.random() * 10
+	const volatility = getVolatility(currentPrice)
 
 	// get variance
-	let variancePerc = 2 * volatility * Math.random()
-	if (variancePerc > volatility) variancePerc -= 2 * volatility
+	const varPerc = 2 * volatility * (Math.random() - 0.5)
 
 	// update current price
-	const variancePrice = currentPrice * (variancePerc / 100)
-	const updatedPrice = fixDigits(currentPrice + variancePrice)
+	const varPrice = currentPrice * (varPerc / 100)
+	let updatedPrice = fixDigits(currentPrice + varPrice, 100)
 
-	// updated fluct data
-	let fluct = '-'
-	if (updatedPrice > currentPrice) {
-		fluct = '1'
+	// update fluct data
+	let fluct = updatedPrice === currentPrice ? '-' : updatedPrice > currentPrice ? '1' : '0'
+
+	// check bias
+	if (checkBias(priceFluct, fluct)) {
+		updatedPrice = fixDigits(currentPrice + varPrice * -1, 100)
+		fluct = updatedPrice === currentPrice ? '-' : updatedPrice > currentPrice ? '1' : '0'
 	}
-	if (updatedPrice < currentPrice) {
-		fluct = '0'
-	}
+
+	// updated data
 	const updatedFluct = pushFluct(priceFluct, fluct)
 
 	// return stock data for update
@@ -1031,7 +1083,7 @@ function totalShares(args: string[]): DataType {
 	const path = `${stockId}.totalShares`
 
 	// get data
-	const data = get(path)
+	const data = get(path) as number
 
 	// check return type (condition: totalShares > 0)
 	const cond = data > 0
@@ -1152,7 +1204,7 @@ function estimatedProfit(args: string[]): DataType {
 	const { stocks, totalPrice } = getAccountData(stockId, PLAYER_NAME)
 
 	// calc estimated profit
-	const estimatedProfit = currentPrice * stocks - totalPrice
+	const estimatedProfit = stocks <= 0 ? 0 : currentPrice * stocks - totalPrice
 
 	// check return type (condition: estimated profit > 0)
 	const cond = estimatedProfit > 0
@@ -1182,7 +1234,7 @@ function slotBuy(args: string[]): DataType {
 	const path = `${stockId}.slotBuy`
 
 	// get data
-	const data = get(path)
+	const data = get(path) as number
 
 	// check return type (condition: if player bought this stock one or more)
 	const cond = data > 0
@@ -1205,7 +1257,7 @@ function slotSell(args: string[]): DataType {
 	const path = `${stockId}.slotSell`
 
 	// get data
-	const data = get(path)
+	const data = get(path) as number
 
 	// check return type (condition: if player sold this stock one or more)
 	const cond = data > 0
@@ -1228,7 +1280,7 @@ function slotBuyBal(args: string[]): DataType {
 	const path = `${stockId}.slotBuyBal`
 
 	// get data
-	const data = get(path)
+	const data = get(path) as number
 
 	// check return type (condition: if total buy balance is larger then 0)
 	const cond = data > 0
@@ -1251,7 +1303,7 @@ function slotSellBal(args: string[]): DataType {
 	const path = `${stockId}.slotSellBal`
 
 	// get data
-	const data = get(path)
+	const data = get(path) as number
 
 	// check return type (condition: if total sell balance is larger then 0)
 	const cond = data > 0
@@ -1274,7 +1326,7 @@ function totalBuy(args: string[]): DataType {
 	const path = `${stockId}.totalBuy`
 
 	// get data
-	const data = get(path)
+	const data = get(path) as number
 
 	// check return type (condition: if player bought this stock one or more)
 	const cond = data > 0
@@ -1297,7 +1349,7 @@ function totalSell(args: string[]): DataType {
 	const path = `${stockId}.totalSell`
 
 	// get data
-	const data = get(path)
+	const data = get(path) as number
 
 	// check return type (condition: if player sold this stock one or more)
 	const cond = data > 0
@@ -1320,7 +1372,7 @@ function totalBuyBal(args: string[]): DataType {
 	const path = `${stockId}.totalBuyBal`
 
 	// get data
-	const data = get(path)
+	const data = get(path) as number
 
 	// check return type (condition: if total buy balance is larger then 0)
 	const cond = data > 0
@@ -1343,7 +1395,7 @@ function totalSellBal(args: string[]): DataType {
 	const path = `${stockId}.totalSellBal`
 
 	// get data
-	const data = get(path)
+	const data = get(path) as number
 
 	// check return type (condition: if total sell balance is larger then 0)
 	const cond = data > 0
@@ -1550,17 +1602,17 @@ function giveStock(args: string[]): boolean {
 }
 
 // set volatility to stock price
-function setStockVolatility(args: string[]): string | boolean {
+function updateStock(args: string[]): string | boolean {
 	// get args
 	const [, returnType, stockId] = args
 
 	// check stockId specified
 	if (stockId === undefined) {
 		for (const stock in STOCKS) {
-			setVolatility(stock)
+			updateStockPrice(stock)
 		}
 	} else {
-		setVolatility(stockId)
+		updateStockPrice(stockId)
 	}
 
 	// check return type (condition: in update cooldown)
@@ -1755,7 +1807,7 @@ function stockDataStore(): string {
 		},
 		setV: {
 			argLen: [2, 3],
-			callback: setStockVolatility,
+			callback: updateStock,
 		},
 		nextUpdateETA: {
 			argLen: [2],

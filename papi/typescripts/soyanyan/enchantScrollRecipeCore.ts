@@ -1,10 +1,10 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: enchantScrollRecipeCore.ts
- * Version: v1.1.0
- * Last Update: 2022-09-26
+ * Version: v1.2.0
+ * Last Update: 2023-11-18
  *
- * TypeScript Version: v4.8.4
+ * TypeScript Version: v5.2.2
  * Target: ES5
  * JSX: None
  * Module: ESNext
@@ -400,6 +400,16 @@ const ENCHANT_SCROLLS: {
 			eiCode: 'enchantScrollPiercingPlus',
 		},
 	},
+	quick_charge: {
+		normal: {
+			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l무기 #FFFFB5&l빠른장전 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollQuickCharge',
+		},
+		plus: {
+			name: '&7[#FFC8A2 ★★★ &7] #ECD5E3&l놀라운 #55CBCD&l무기 #FFFFB5&l빠른장전 #ECEAE4&l강화 주문서',
+			eiCode: 'enchantScrollQuickChargePlus',
+		},
+	},
 	random: {
 		normal: {
 			name: '&7[#FFC8A2 ★★ &7] #55CBCD&l아이템 #FFFFB5&l인챈트 #ECEAE4&l혼돈의 주문서',
@@ -442,6 +452,7 @@ const SCROLL_RECIPES: {
 			'loyalty',
 			'riptide',
 			'piercing',
+			'quick_charge',
 		],
 	},
 	armorScrolls: {
@@ -579,6 +590,15 @@ function translateHexCodes(targetStr: string, isConsole: boolean): string {
 	}
 
 	return converted
+}
+
+// remove color codes from text
+function removeColorCodes(text: string): string {
+	// color code pattern
+	const regex = /#[a-f0-9]{6}|&[0-9A-FK-OR]/gi
+
+	// return result
+	return text.replace(regex, '')
 }
 
 /**
@@ -822,6 +842,11 @@ function makeScroll(args: string[]): ReturnDataType {
 		// broadcast message
 		broadcastMessage(consoleColorString(message))
 	}
+
+	// log to console
+	logConsole(
+		removeColorCodes(`[레시피로그]${PLAYER_NAME}|${recipeType}|${recipeName}|${eiCode}|${name}|`)
+	)
 
 	return 1
 }

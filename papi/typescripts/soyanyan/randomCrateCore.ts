@@ -1,10 +1,10 @@
 /**
  * Author: SOYANYAN (소야냥)
  * Name: randomCrateCore.ts
- * Version: v1.0.3
- * Last Update: 2022-12-21
+ * Version: v1.1.0
+ * Last Update: 2023-11-18
  *
- * TypeScript Version: v4.9.4
+ * TypeScript Version: v5.2.2
  * Target: ES5
  * JSX: None
  * Module: ESNext
@@ -1127,6 +1127,15 @@ function translateHexCodes(targetStr: string, isConsole: boolean): string {
 	return converted
 }
 
+// remove color codes from text
+function removeColorCodes(text: string): string {
+	// color code pattern
+	const regex = /#[a-f0-9]{6}|&[0-9A-FK-OR]/gi
+
+	// return result
+	return text.replace(regex, '')
+}
+
 /**
   [ Placeholder API utilities ]
 */
@@ -1348,6 +1357,13 @@ function givePrize(args: string[]): ReturnDataType {
 		const message = `&b&l${PLAYER_NAME} &f님이 ${crateName}&7에서 ${itemName} &7x &6${quantity} &f를 획득했습니다!`
 		broadcastMessage(consoleColorString(message))
 	}
+
+	// log to console
+	logConsole(
+		removeColorCodes(
+			`[랜덤박스로그]${PLAYER_NAME}|${crate}|${crateName}|${itemCode}|${itemName}|${quantity}|`
+		)
+	)
 
 	// return
 	return 1
